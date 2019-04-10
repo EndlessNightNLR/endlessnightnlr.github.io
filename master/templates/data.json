@@ -1,9 +1,44 @@
 {
-  "Foe": {
-   	 "name": "Foe.png",
-  	  "x": 2274,
-  	  "y": 1094,
-  	  "width": 1026,
-  	  "height": 725 
+  "NLR_Flag": {
+     "name": "NLR_Flag.png",
+      "x": 277,
+      "y": -1907,
+      "width": 321,
+      "height": 184 
+},
+  "Blue_Starlight": {
+     "name": "Blue_Starlight.png",
+      "x": 3743,
+      "y": 1321,
+      "width": 353,
+      "height": 199 
+},
+  "Rainbow": {
+     "name": "Rainbow.png",
+      "x": 277,
+      "y": -1723,
+      "width": 87,
+      "height": 57 
+},
+  "Flutty": {
+     "name": "Flutty.png",
+      "x": 598,
+      "y": -1907,
+      "width": 93,
+      "height": 128 
+},
+  "Rarity": {
+     "name": "Rarity.png",
+      "x": 3537,
+      "y": 1475,
+      "width": 201,
+      "height": 199 
+},
+  "West_PonyTown": {
+     "name": "West_PonyTown.png",
+      "x": 3537,
+      "y": 1475,
+      "width": -4074,
+      "height": 1270 
 }
 }

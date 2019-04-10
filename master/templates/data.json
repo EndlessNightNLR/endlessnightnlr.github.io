@@ -36,9 +36,9 @@
 },
   "West_PonyTown": {
      "name": "West_PonyTown.png",
-      "x": 3537,
-      "y": 1475,
-      "width": -4074,
-      "height": 1270 
+      "x": -4074,
+      "y": 1270,
+      "width": 401,
+      "height": 184
 }
 }

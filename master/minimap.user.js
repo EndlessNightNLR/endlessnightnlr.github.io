@@ -19,7 +19,10 @@ Number.prototype.between = function(a, b) {
 };
 var range = 25;
 
-window.baseTepmlateUrl = 'https://endlessnightnlr.github.io/master/';
+window.baseTemplateUrl = {
+    NLR:'https://endlessnightnlr.github.io/master/',
+    MLPP:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/'
+};
 
 window.addEventListener('load', function () {
     //Regular Expression to get coordinates out of URL
@@ -53,10 +56,18 @@ window.addEventListener('load', function () {
     //Cachebreaker to force refresh
     cachebreaker = null;
 
+    window.faction = 'NLR';
+
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
-    div.innerHTML = '<div id="minimapbg" style="position: absolute; right: 1em; bottom: 1em;">' +
+    div.innerHTML =
+        '<div id="minimapbg" style="position: absolute; right: 1em; bottom: 1em;">' +
         '<div class="posy" id="posyt" style="background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;">' +
+        '<span style="line-height:20px;" id="myElem">Faction</span>'+
+        '<ul id="dropdown" style="display:none;line-height:20px;text-align:left;">'+
+        '<li id="NLR">New Lunar Republic</li>'+
+        '<li id="MLPP">MLP : Pixel</li>'+
+        '</ul>'+
         '<div id="minimap-text" style="display: none;"></div>' +
         '<div id="minimap-box" style="position: relative;width:420px;height:300px">' +
         '<canvas id="minimap" style="width: 100%; height: 100%;z-index:1;position:absolute;top:0;left:0;"></canvas>' +
@@ -92,6 +103,13 @@ window.addEventListener('load', function () {
     //drawBoard();
     drawCursor();
 
+    const change = () => {let a = document.getElementById("dropdown"); if ( a.style.display == "none") a.style.display = "block"; else if ( a.style.display == "block")a.style.display = "none";}
+    for(let name in baseTemplateUrl)
+        document.getElementById(name).addEventListener('click',function(){
+            change();
+            faction = name;
+            updateloop();
+        })
     document.getElementById("hide-map").onclick = function () {
         console.log("This should do something, but it doesn't");
         toggle_show = false;
@@ -128,8 +146,11 @@ window.addEventListener('load', function () {
         zooming_out = false;
     }, false);
 
-
-
+    document.getElementById('myElem').addEventListener('click',function() {
+        let a = document.getElementById("dropdown");
+        if ( a.style.display == "none") a.style.display = "block";
+        else if ( a.style.display == "block")a.style.display = "none";}
+);
 
 
     gameWindow = document.getElementById("canvas");
@@ -171,7 +192,18 @@ function updateloop() {
     console.log("Updating Template List");
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
-    var url = window.baseTepmlateUrl + "templates/data.json";//?" + new Date().getTime();
+
+    switch(faction){
+        case 'NLR':
+        var url = window.baseTemplateUrl[faction] + "templates/data.json";
+            break;
+        case '...':
+        case 'MLPP':
+            var url = window.baseTemplateUrl[faction] + "templates/data.json?" + new Date().getTime();
+            break;
+    }
+
+
 
     console.log("!URL  " + url);
 
@@ -307,9 +339,9 @@ function loadImage(imagename) {
     console.log("    Load image " + imagename);
     image_list[imagename] = new Image();
     if (cachebreaker != null)
-        image_list[imagename].src = window.baseTepmlateUrl +"images/"+template_list[imagename].name;
+        image_list[imagename].src = window.baseTemplateUrl[faction] +"images/"+template_list[imagename].name;
     else
-        image_list[imagename].src = window.baseTepmlateUrl +"images/"+ template_list[imagename].name;
+        image_list[imagename].src = window.baseTemplateUrl[faction] +"images/"+ template_list[imagename].name;
     image_list[imagename].onload = function () {
         counter += 1;
         //if last needed image loaded, start drawing

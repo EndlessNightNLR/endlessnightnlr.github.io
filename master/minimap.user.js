@@ -194,13 +194,10 @@ function updateloop() {
     var xmlhttp = new XMLHttpRequest();
 
     switch(faction){
-<<<<<<< HEAD
         case 'NLR':
-        var url = window.baseTemplateUrl[faction] + "templates/data.json";
-=======
-        case 'New Lunar Republic':
-            var url = window.listOfFactions[faction] + "templates/data.json";
->>>>>>> parent of 30bcb80... Revert "Update minimap.user.js"
+            var url = window.baseTemplateUrl[faction] + "templates/data.json";
+        /*case 'New Lunar Republic':
+            var url = window.listOfFactions[faction] + "templates/data.json";*/
             break;
         case '...':
         case 'MLPP':

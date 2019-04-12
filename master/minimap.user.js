@@ -19,6 +19,11 @@ Number.prototype.between = function(a, b) {
 };
 var range = 25;
 
+window.baseTemplateUrl = {
+    NLR:'https://endlessnightnlr.github.io/master/',
+    MLPP:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/'
+};
+
 window.addEventListener('load', function () {
     //Regular Expression to get coordinates out of URL
     re = /(.*)\/\?p=(\-?(?:\d*)),(\-?(?:\d*))/g;
@@ -49,27 +54,10 @@ window.addEventListener('load', function () {
     //templates which are needed in the current area
     needed_templates = null;
     //Cachebreaker to force refresh
-    //cachebreaker = null;
+    cachebreaker = null;
 
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            window.listOfFactions = JSON.parse(this.responseText);
-            //
-            this.responseText = this.responseText + 1 + '1';
-            //
-            //console.log(this.responseText);
-            if (!toggle_follow)
-                getCenter();
-        }
-    };
-    xmlhttp.open("GET",'https://endlessnightnlr.github.io/master/factions.json', false);
-    xmlhttp.send();
-    window.faction = Object.keys(listOfFactions)[0];
-    let items = '';
-    for(let item in listOfFactions){
-        items += '<li id="'+item+'">'+item+'</li>';
-    }
+    window.faction = 'NLR';
+
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
     div.innerHTML =
@@ -77,7 +65,8 @@ window.addEventListener('load', function () {
         '<div class="posy" id="posyt" style="background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;">' +
         '<span style="line-height:20px;" id="myElem">Faction</span>'+
         '<ul id="dropdown" style="display:none;line-height:20px;text-align:left;">'+
-        items+
+        '<li id="NLR">New Lunar Republic</li>'+
+        '<li id="MLPP">MLP : Pixel</li>'+
         '</ul>'+
         '<div id="minimap-text" style="display: none;"></div>' +
         '<div id="minimap-box" style="position: relative;width:420px;height:300px">' +
@@ -103,7 +92,6 @@ window.addEventListener('load', function () {
     minimap_cursor.height = minimap_cursor.offsetHeight;
     ctx_minimap = minimap.getContext("2d");
     ctx_minimap_board = minimap_board.getContext("2d");
-
     ctx_minimap_cursor = minimap_cursor.getContext("2d");
 
     //No Antialiasing when scaling!
@@ -112,14 +100,14 @@ window.addEventListener('load', function () {
     ctx_minimap.msImageSmoothingEnabled = false;
     ctx_minimap.imageSmoothingEnabled = false;
 
-    drawBoard();
+    //drawBoard();
     drawCursor();
 
     const change = () => {let a = document.getElementById("dropdown"); if ( a.style.display == "none") a.style.display = "block"; else if ( a.style.display == "block")a.style.display = "none";}
-    for(let item in listOfFactions)
-        document.getElementById(item).addEventListener('click',function(){
+    for(let name in baseTemplateUrl)
+        document.getElementById(name).addEventListener('click',function(){
             change();
-            faction = item;
+            faction = name;
             updateloop();
         })
     document.getElementById("hide-map").onclick = function () {
@@ -206,18 +194,18 @@ function updateloop() {
     var xmlhttp = new XMLHttpRequest();
 
     switch(faction){
-        case 'New Lunar Republic':
-        var url = window.listOfFactions[faction] + "templates/data.json";
+        case 'NLR':
+        var url = window.baseTemplateUrl[faction] + "templates/data.json";
             break;
         case '...':
-        case 'MLP : Pixel':
-            var url = window.listOfFactions[faction] + "templates/data.json?" + new Date().getTime();
+        case 'MLPP':
+            var url = window.baseTemplateUrl[faction] + "templates/data.json?" + new Date().getTime();
             break;
     }
 
 
 
-    //console.log("!URL  " + url);
+    console.log("!URL  " + url);
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -268,7 +256,7 @@ function zoomIn() {
         zoomlevel = 45;
         return;
     }
-    drawBoard();
+    //drawBoard();
     drawCursor();
     loadTemplates();
     setTimeout(zoomIn, zoom_time);
@@ -282,7 +270,7 @@ function zoomOut() {
         zoomlevel = 1;
         return;
     }
-    drawBoard();
+    //drawBoard();
     drawCursor();
     loadTemplates();
     setTimeout(zoomOut, zoom_time);
@@ -350,10 +338,10 @@ function loadTemplates() {
 function loadImage(imagename) {
     console.log("    Load image " + imagename);
     image_list[imagename] = new Image();
-    /*if (cachebreaker != null)
-        image_list[imagename].src = window.listOfFactions[faction] +"images/"+template_list[imagename].name;
-    else*/
-        image_list[imagename].src = window.listOfFactions[faction] +"images/"+ template_list[imagename].name;
+    if (cachebreaker != null)
+        image_list[imagename].src = window.baseTemplateUrl[faction] +"images/"+template_list[imagename].name;
+    else
+        image_list[imagename].src = window.baseTemplateUrl[faction] +"images/"+ template_list[imagename].name;
     image_list[imagename].onload = function () {
         counter += 1;
         //if last needed image loaded, start drawing
@@ -379,7 +367,7 @@ function drawTemplates() {
     }
 }
 
-function drawBoard() {
+/*function drawBoard() {
     ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
     if (zoomlevel <= 4.6)
         return;
@@ -390,22 +378,18 @@ function drawBoard() {
     var yoff_m = (minimap.height / 2) % zoomlevel - zoomlevel;
     var z = 1 * zoomlevel;
 
-    let xStart = bw / 2 + 1;
-    let xEnd = xStart + z + 1;
-    for (var x = xStart; x <= xEnd; x += z) {
+    for (var x = 0; x <= bw; x += z) {
         ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
         ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
     }
 
-    let yStart = bh / 2 - 1;
-    let yEnd = yStart + z;
-    for (var x = yStart; x <= yEnd; x += z) {
+    for (var x = 0; x <= bh; x += z) {
         ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
         ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
     }
     ctx_minimap_board.strokeStyle = "black";
     ctx_minimap_board.stroke();
-}
+}*/
 
 function drawCursor() {
     var x_left = x_window * 1 - minimap.width / zoomlevel / 2;

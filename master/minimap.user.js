@@ -207,14 +207,12 @@ function updateloop() {
 
     switch(faction){
         case 'New Lunar Republic':
-            var url = window.listOfFactions[faction] + "templates/data.json";
+        var url = window.listOfFactions[faction] + "templates/data.json";
             break;
         case '...':
         case 'MLP : Pixel':
             var url = window.listOfFactions[faction] + "templates/data.json?" + new Date().getTime();
             break;
-        default:
-            var url = window.listOfFactions[faction] + "templates/data.json?" + new Date().getTime();
     }
 
 

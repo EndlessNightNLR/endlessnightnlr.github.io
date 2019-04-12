@@ -1,0 +1,60 @@
+{
+  "NLR_Flag": {
+     "name": "NLR_Flag.png",
+      "x": 277,
+      "y": -1907,
+      "width": 321,
+      "height": 184 
+},
+  "Blue_Starlight": {
+     "name": "Blue_Starlight.bmp",
+      "x": 3743,
+      "y": 1321,
+      "width": 353,
+      "height": 199 
+},
+  "Rainbow": {
+     "name": "Rainbow.png",
+      "x": 277,
+      "y": -1723,
+      "width": 87,
+      "height": 57 
+},
+  "Flutty": {
+     "name": "Flutty.png",
+      "x": 598,
+      "y": -1907,
+      "width": 93,
+      "height": 128 
+},
+  "Rarity": {
+     "name": "Rarity.png",
+      "x": 3537,
+      "y": 1475,
+      "width": 201,
+      "height": 199 
+},
+  "West_PonyTown": {
+     "name": "West_PonyTown.png",
+      "x": -4074,
+      "y": 1270,
+      "width": 401,
+      "height": 184
+},
+
+  "Project_Nyashka": {
+     "name": "Project_Nyashka.png",
+      "x": 2329,
+      "y": 1037,
+      "width": 43,
+      "height": 48
+},
+
+  "Aryanne": {
+     "name": "Aryanne.png",
+      "x": 3157,
+      "y": 60,
+      "width": 114,
+      "height": 107
+}
+}

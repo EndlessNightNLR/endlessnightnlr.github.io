@@ -1,0 +1,16 @@
+{
+  "arspony": {
+     "name": "arspony.png",
+      "x": 701,
+      "y": -224,
+      "width": 440,
+      "height": 384
+},
+  "novaars": {
+     "name": "novaars.png",
+      "x": -402,
+      "y": -176,
+      "width": 542,
+      "height": 86
+}
+}

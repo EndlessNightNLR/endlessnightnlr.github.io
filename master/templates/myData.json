@@ -56,5 +56,13 @@
       "y": 60,
       "width": 114,
       "height": 107
+},
+
+  "arstotzka": {
+     "name": "arstotzka.png",
+      "x": 723,
+      "y": -202,
+      "width": 198,
+      "height": 170
 }
 }

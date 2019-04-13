@@ -47,5 +47,20 @@
       "y": 60,
       "width": 114,
       "height": 107
+},
+  "Aryanne": {
+     "name": "Aryanne.png",
+      "x": 3157,
+      "y": 60,
+      "width": 114,
+      "height": 107
+},
+
+  "arspony": {
+     "name": "arspony.png",
+      "x": 701,
+      "y": -224,
+      "width": 440,
+      "height": 384
 }
 }

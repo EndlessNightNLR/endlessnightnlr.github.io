@@ -2,7 +2,7 @@
 // @name         NLR Minimap
 // @namespace    http://tampermonkey.net/
 // @version      1.2.4
-// @description  VP Minimap Zone
+// @description  NLR Minimap Zone
 // @author       EndlessNight
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
@@ -22,6 +22,7 @@ var range = 25;
 window.baseTemplateUrl = {
     NLR:'https://endlessnightnlr.github.io/master/',
     MLPP:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/'
+    Arstotzka:'https://endlessnightnlr.github.io/master/',
 };
 
 window.addEventListener('load', function () {
@@ -56,7 +57,7 @@ window.addEventListener('load', function () {
     //Cachebreaker to force refresh
     cachebreaker = null;
 
-    window.faction = 'NLR';
+    window.faction = 'Arstotzka';
 
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
@@ -67,6 +68,7 @@ window.addEventListener('load', function () {
         '<ul id="dropdown" style="display:none;line-height:20px;text-align:left;">'+
         '<li id="NLR">New Lunar Republic</li>'+
         '<li id="MLPP">MLP : Pixel</li>'+
+        '<li id="Arstotzka">Arstotzka</li>'+
         '</ul>'+
         '<div id="minimap-text" style="display: none;"></div>' +
         '<div id="minimap-box" style="position: relative;width:420px;height:300px">' +
@@ -194,6 +196,9 @@ function updateloop() {
     var xmlhttp = new XMLHttpRequest();
 
     switch(faction){
+        case 'Arstotzka':
+            var url = window.baseTemplateUrl[faction] + "templates/Arstotzka.json";
+            break
         case 'NLR':
             var url = window.baseTemplateUrl[faction] + "templates/data.json";
         /*case 'New Lunar Republic':

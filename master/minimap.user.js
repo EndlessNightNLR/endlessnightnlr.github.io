@@ -21,8 +21,8 @@ var range = 25;
 
 window.baseTemplateUrl = {
     NLR:'https://endlessnightnlr.github.io/master/',
-    MLPP:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/'
-    Arstotzka:'https://endlessnightnlr.github.io/master/',
+    MLPP:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/',
+    Arstotzka:'https://endlessnightnlr.github.io/master/'
 };
 
 window.addEventListener('load', function () {

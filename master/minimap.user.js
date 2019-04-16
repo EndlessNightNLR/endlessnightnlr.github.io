@@ -57,7 +57,7 @@ window.addEventListener('load', function () {
     //Cachebreaker to force refresh
     cachebreaker = null;
 
-    window.faction = 'Arstotzka';
+    window.faction = 'NLR';
 
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');

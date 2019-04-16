@@ -47,5 +47,12 @@
       "y": 60,
       "width": 114,
       "height": 107
+},
+  "Luna": {
+     "name": "Luna.png",
+      "x": 277,
+      "y": -2072,
+      "width": 234,
+      "height": 165
 }
 }

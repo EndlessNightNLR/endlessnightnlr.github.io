@@ -64,5 +64,13 @@
       "y": -224,
       "width": 440,
       "height": 384
+},
+
+  "cake": {
+     "name": "cake.png",
+      "x": 2400,
+      "y": 930,
+      "width": 31,
+      "height": 32
 }
 }

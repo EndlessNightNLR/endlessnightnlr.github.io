@@ -19,11 +19,12 @@ Number.prototype.between = function(a, b) {
 };
 var range = 25;
 
-window.baseTemplateUrl = {
-    NLR:'https://endlessnightnlr.github.io/master/',
-    MLPP:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/',
-    Arstotzka:'https://endlessnightnlr.github.io/master/'
+window.factions = {
+    'New Lunar Republic':{url:'https://endlessnightnlr.github.io/master/',color:'aqua'},
+    'MLP : Pixel':{url:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/',color:'#1992E3'},
+    'Arstotzka':{url:'https://endlessnightnlr.github.io/master/',color:'red'}
 };
+window.faction = Object.keys(factions)[0];
 
 window.addEventListener('load', function () {
     //Regular Expression to get coordinates out of URL
@@ -57,7 +58,8 @@ window.addEventListener('load', function () {
     //Cachebreaker to force refresh
     cachebreaker = null;
 
-    window.faction = 'NLR';
+    let list = '';
+    for(let name in factions) list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>';
 
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
@@ -66,9 +68,7 @@ window.addEventListener('load', function () {
         '<div class="posy" id="posyt" style="background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;">' +
         '<span style="line-height:20px;" id="myElem">Faction</span>'+
         '<ul id="dropdown" style="display:none;line-height:20px;text-align:left;">'+
-        '<li id="NLR">New Lunar Republic</li>'+
-        '<li id="MLPP">MLP : Pixel</li>'+
-        '<li id="Arstotzka">Arstotzka</li>'+
+        list+
         '</ul>'+
         '<div id="minimap-text" style="display: none;"></div>' +
         '<div id="minimap-box" style="position: relative;width:420px;height:300px">' +
@@ -106,12 +106,27 @@ window.addEventListener('load', function () {
     drawCursor();
 
     const change = () => {let a = document.getElementById("dropdown"); if ( a.style.display == "none") a.style.display = "block"; else if ( a.style.display == "block")a.style.display = "none";}
-    for(let name in baseTemplateUrl)
-        document.getElementById(name).addEventListener('click',function(){
-            change();
-            faction = name;
-            updateloop();
-        })
+    for(let name in factions)document.getElementById(name).addEventListener('click',function(){change();faction = name;updateloop();})
+
+    let lif = new XMLHttpRequest();
+    lif.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            factions = JSON.parse(this.responseText);
+            //
+            this.responseText = this.responseText + 1 + '1';
+            //
+            console.log(this.responseText);
+            faction = Object.keys(factions)[0];
+            let ul = document.getElementById('dropdown');
+            let list = '';
+            for(let name in factions) list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>'
+            ul.innerHTML = list;
+            for(let name in factions)document.getElementById(name).addEventListener('click',function(){change();faction = name;updateloop();})
+        }
+    };
+    lif.open("GET", 'https://endlessnightnlr.github.io/master/factions.json', true);
+    lif.send();
+
     document.getElementById("hide-map").onclick = function () {
         console.log("This should do something, but it doesn't");
         toggle_show = false;
@@ -194,26 +209,16 @@ function updateloop() {
     console.log("Updating Template List");
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
-
     switch(faction){
         case 'Arstotzka':
-            var url = window.baseTemplateUrl[faction] + "templates/Arstotzka.json";
-            break
-        case 'NLR':
-            var url = window.baseTemplateUrl[faction] + "templates/data.json";
-        /*case 'New Lunar Republic':
-            var url = window.listOfFactions[faction] + "templates/data.json";*/
+            var url = factions[faction].url + "templates/Arstotzka.json";
             break;
-        case '...':
-        case 'MLPP':
-            var url = window.baseTemplateUrl[faction] + "templates/data.json?" + new Date().getTime();
+        case 'New Lunar Republic':
+             var url = factions[faction].url + "templates/data.json";
             break;
         default:
-            var url = window.listOfFactions[faction] + "templates/data.json?" + new Date().getTime();
-    }
-
-
-
+            var url =  factions[faction].url + "templates/data.json?" + new Date().getTime();
+    };
     console.log("!URL  " + url);
 
     xmlhttp.onreadystatechange = function () {
@@ -348,9 +353,9 @@ function loadImage(imagename) {
     console.log("    Load image " + imagename);
     image_list[imagename] = new Image();
     if (cachebreaker != null)
-        image_list[imagename].src = window.baseTemplateUrl[faction] +"images/"+template_list[imagename].name;
+        image_list[imagename].src =  factions[faction].url +"images/"+template_list[imagename].name;
     else
-        image_list[imagename].src = window.baseTemplateUrl[faction] +"images/"+ template_list[imagename].name;
+        image_list[imagename].src =  factions[faction].url +"images/"+ template_list[imagename].name;
     image_list[imagename].onload = function () {
         counter += 1;
         //if last needed image loaded, start drawing

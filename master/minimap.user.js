@@ -209,14 +209,14 @@ function updateloop() {
     console.log("Updating Template List");
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
-    switch(faction){
+    switch(factions[faction].type){
         case 'Arstotzka':
             var url = factions[faction].url + "templates/Arstotzka.json";
             break;
-        case 'New Lunar Republic':
+        case '2':
              var url = factions[faction].url + "templates/data.json";
             break;
-        default:
+        case '1':
             var url =  factions[faction].url + "templates/data.json?" + new Date().getTime();
     };
     console.log("!URL  " + url);

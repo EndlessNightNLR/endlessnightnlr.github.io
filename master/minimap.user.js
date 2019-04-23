@@ -59,7 +59,7 @@ window.addEventListener('load', function () {
     cachebreaker = null;
 
     let list = '';
-    for(let name in factions) if(name != '') ist += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>';
+    for(let name in factions) if(name != '') list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>';
 
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
@@ -119,7 +119,7 @@ window.addEventListener('load', function () {
             faction = Object.keys(factions)[0];
             let ul = document.getElementById('dropdown');
             let list = '';
-            for(let name in factions) list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>'
+            for(let name in factions) if(name !="")list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>'
             ul.innerHTML = list;
             for(let name in factions)document.getElementById(name).addEventListener('click',function(){change();faction = name;updateloop();})
         }

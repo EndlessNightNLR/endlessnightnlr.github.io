@@ -20,9 +20,9 @@ Number.prototype.between = function(a, b) {
 var range = 25;
 
 window.factions = {
-    'New Lunar Republic':{url:'https://endlessnightnlr.github.io/master/',color:'aqua'},
-    'MLP : Pixel':{url:'https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/',color:'#1992E3'},
-    'Arstotzka':{url:'https://endlessnightnlr.github.io/master/',color:'red'}
+    "New Lunar Republic":{"url":"https://endlessnightnlr.github.io/master/","color":"aqua","type":"2"},
+    "MLP : Pixel":{"url":"https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/","color":"#1992E3","type":"1"},
+    "Arstotzka":{"url":"https://endlessnightnlr.github.io/master/","color":"red","type":"Arstotzka"}
 };
 window.faction = Object.keys(factions)[0];
 

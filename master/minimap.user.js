@@ -59,14 +59,14 @@ window.addEventListener('load', function () {
     cachebreaker = null;
 
     let list = '';
-    for(let name in factions) if(name != '') list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>';
+    for(let name in factions) if(name != '') list += '<li id="'+name+'">'+'<span Style="cursor:pointer;color:'+factions[name].color+'">'+name+'<span></li>';
 
     var div = document.createElement('div');
     div.setAttribute('class', 'post block bc2');
     div.innerHTML =
         '<div id="minimapbg" style="position: absolute; right: 1em; bottom: 1em;">' +
         '<div class="posy" id="posyt" style="background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;">' +
-        '<span style="line-height:20px;" id="myElem">Faction</span>'+
+        '<div style="cursor:pointer;line-height:20px;" id="myElem">Faction</div>'+
         '<ul id="dropdown" style="display:none;line-height:20px;text-align:left;">'+
         list+
         '</ul>'+
@@ -117,9 +117,10 @@ window.addEventListener('load', function () {
             //
             console.log(this.responseText);
             faction = Object.keys(factions)[0];
+            updateloop();
             let ul = document.getElementById('dropdown');
             let list = '';
-            for(let name in factions) if(name !="")list += '<li id="'+name+'">'+'<span Style="color:'+factions[name].color+'">'+name+'<span></li>'
+            for(let name in factions) if(name !="")list += '<li id="'+name+'">'+'<span Style="cursor:pointer;color:'+factions[name].color+'">'+name+'<span></li>'
             ul.innerHTML = list;
             for(let name in factions)document.getElementById(name).addEventListener('click',function(){change();faction = name;updateloop();})
         }

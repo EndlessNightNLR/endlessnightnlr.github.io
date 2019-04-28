@@ -61,5 +61,12 @@
       "y": -2072,
       "width": 234,
       "height": 165
+},
+  "test": {
+     "name": "test.png",
+      "x": 3272,
+      "y": -314,
+      "width": 34,
+      "height": 30
 }
 }

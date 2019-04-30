@@ -62,8 +62,15 @@
       "width": 234,
       "height": 165
 },
-  "test": {
-     "name": "test.png",
+  "test_white": {
+     "name": "test_white.png",
+      "x": 3272,
+      "y": -314,
+      "width": 34,
+      "height": 30
+},
+  "test_empty": {
+     "name": "test_empty.png",
       "x": 3272,
       "y": -314,
       "width": 34,

@@ -68,5 +68,12 @@
       "y": -314,
       "width": 34,
       "height": 30
+},
+  "white_0": {
+     "name": "white_0.png",
+      "x": 598,
+      "y": -1779,
+      "width": 93,
+      "height": 115
 }
 }

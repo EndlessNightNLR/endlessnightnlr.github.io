@@ -41,13 +41,6 @@
       "width": 201,
       "height": 199 
 },
-  "West_PonyTown": {
-     "name": "West_PonyTown.png",
-      "x": -4074,
-      "y": 1270,
-      "width": 401,
-      "height": 184
-},
   "Aryanne": {
      "name": "Aryanne.png",
       "x": 3271,
@@ -61,13 +54,6 @@
       "y": -2072,
       "width": 234,
       "height": 165
-},
-  "test_empty": {
-     "name": "test_empty.png",
-      "x": 3272,
-      "y": -314,
-      "width": 34,
-      "height": 30
 },
   "white_0": {
      "name": "white_0.png",

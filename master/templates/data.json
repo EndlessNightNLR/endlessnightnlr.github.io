@@ -50,9 +50,9 @@
 },
   "Aryanne": {
      "name": "Aryanne.png",
-      "x": 3157,
-      "y": 60,
-      "width": 114,
+      "x": 3271,
+      "y": 106,
+      "width": 72,
       "height": 107
 },
   "Luna": {
@@ -82,5 +82,12 @@
       "y": -1723,
       "width": 234,
       "height": 57
+},
+  "Dash_Tia": {
+     "name": "Dash_Tia.png",
+      "x": 3271,
+      "y": -315,
+      "width": 58,
+      "height": 131
 }
 }

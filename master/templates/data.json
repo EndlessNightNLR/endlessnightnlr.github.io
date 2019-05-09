@@ -75,5 +75,12 @@
       "y": -222,
       "width": 440,
       "height": 384
+},
+  "megaflag": {
+     "name": "megaflag.png",
+      "x": -138,
+      "y": -670,
+      "width": 376,
+      "height": 219
 }
 }

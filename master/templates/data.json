@@ -69,11 +69,11 @@
       "width": 234,
       "height": 57
 },
-  "Dash_Tia": {
-     "name": "Dash_Tia.png",
-      "x": 3271,
-      "y": -315,
-      "width": 58,
-      "height": 131
+  "arspony": {
+     "name": "arspony.png",
+      "x": 703,
+      "y": -222,
+      "width": 440,
+      "height": 384
 }
 }

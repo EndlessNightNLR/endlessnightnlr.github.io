@@ -68,26 +68,5 @@
       "y": -1723,
       "width": 234,
       "height": 57
-},
-  "arspony": {
-     "name": "arspony.png",
-      "x": 701,
-      "y": -224,
-      "width": 440,
-      "height": 384
-},
-  "megaflag": {
-     "name": "megaflag.png",
-      "x": -402,
-      "y": -394,
-      "width": 376,
-      "height": 219
-},
-  "novaars": {
-     "name": "novaars.png",
-      "x": -402, 
-      "y": -175,
-      "width": 542,
-      "height": 86
 }
 }

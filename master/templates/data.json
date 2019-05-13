@@ -68,5 +68,12 @@
       "y": -1723,
       "width": 234,
       "height": 57
+},
+  "germany": {
+     "name": "germany.png",
+      "x": -149,
+      "y": -85,
+      "width": 377,
+      "height": 302
 }
 }

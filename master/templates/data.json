@@ -82,12 +82,5 @@
       "y": -2523,
       "width": 385,
       "height": 349
-},
-  "test": {
-     "name": "test.png",
-      "x": -4096,
-      "y": 3500,
-      "width": 10,
-      "height": 10
 }
 }

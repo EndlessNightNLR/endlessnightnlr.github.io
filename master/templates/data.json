@@ -76,17 +76,10 @@
       "width": 377,
       "height": 302
 },
-  "void": {
-     "name": "void.png",
-      "x": -2300,
-      "y": -2523,
-      "width": 385,
-      "height": 349
-},
   "void_1": {
      "name": "void_1.png",
-      "x": -2300,
-      "y": -2049,
+      "x": -2049,
+      "y": -2506,
       "width": 298,
       "height": 333
 }

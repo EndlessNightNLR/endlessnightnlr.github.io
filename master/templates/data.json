@@ -83,11 +83,11 @@
       "width": 385,
       "height": 349
 },
-  "derp_zone": {
-     "name": "derp_zone.png",
-      "x": 3394,
-      "y": 27,
-      "width": 165,
-      "height": 186
+  "void_1": {
+     "name": "void_1.png",
+      "x": -2300,
+      "y": -2049,
+      "width": 298,
+      "height": 333
 }
 }

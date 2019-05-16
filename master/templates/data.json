@@ -82,33 +82,5 @@
       "y": -2523,
       "width": 385,
       "height": 349
-},
- "top": {
-  "name": "top.png",
-  "x": -4096,
-  "y": 3295,
-  "width": 1308,
-  "height": 75
-  },
- "middle": {
-  "name": "middle.png",
-  "x": -4096,
-  "y": 3573,
-  "width": 1308,
-  "height": 75
-  },
- "bottom": {
-  "name": "bottom.png",
-  "x": -4096,
-  "y": 3818,
-  "width": 1308,
-  "height": 75
-  },
- "revenge": {
-  "name": "revenge.png",
-  "x": -4096,
-  "y": 3818,
-  "width": 1308,
-  "height": 798
-  } 
+}
 }

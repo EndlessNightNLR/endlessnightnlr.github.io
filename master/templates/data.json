@@ -82,5 +82,12 @@
       "y": -2523,
       "width": 385,
       "height": 349
+},
+  "derp_zone": {
+     "name": "derp_zone.png",
+      "x": 3394,
+      "y": 27,
+      "width": 165,
+      "height": 186
 }
 }

@@ -89,5 +89,12 @@
       "y": -2506,
       "width": 298,
       "height": 333
+},
+  "World": {
+     "name": "World.png",
+      "x": 298,
+      "y": 1759,
+      "width": 566,
+      "height": 162
 }
 }

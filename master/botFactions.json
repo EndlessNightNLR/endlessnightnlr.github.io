@@ -1,5 +1,5 @@
 {
-	"Arstotzka":{"url":"https://endlessnightnlr.github.io/master/","color":"red","type":"Arstotzka","perm":"1"},
-    "New Lunar Republic":{"url":"https://endlessnightnlr.github.io/master/","color":"aqua","type":"2","perm":"1"},
-    "Argentina":{"url":"https://raw.githubusercontent.com/Marxarg/argentina-zone/master/","color":"aqua","type":"1","perm":"1"}
+	"Arstotzka":{"url":"https://endlessnightnlr.github.io/master/","color":"red","type":"Arstotzka","perm":"1","templates":"mine"},
+    "New Lunar Republic":{"url":"https://endlessnightnlr.github.io/master/","color":"aqua","type":"2","perm":"1","templates":"mine"},
+    "Argentina":{"url":"https://raw.githubusercontent.com/Marxarg/argentina-zone/master/","color":"aqua","type":"1","perm":"1","templates":"own"}
 }

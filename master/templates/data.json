@@ -69,13 +69,6 @@
       "width": 234,
       "height": 57
 },
-  "germany": {
-     "name": "germany.png",
-      "x": -149,
-      "y": -85,
-      "width": 377,
-      "height": 302
-},
   "void": {
      "name": "void.png",
       "x": -2300,

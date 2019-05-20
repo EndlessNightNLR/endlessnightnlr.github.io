@@ -6,18 +6,11 @@
       "width": 322,
       "height": 184 
 },
-  "Starlight_1": {
-     "name": "Starlight_1.png",
+  "Starlight": {
+     "name": "Starlight.png",
       "x": 3743,
       "y": 1321,
-      "width": 174,
-      "height": 199 
-},
-  "Starlight_2": {
-     "name": "Starlight_2.png",
-      "x": 3917,
-      "y": 1321,
-      "width": 179,
+      "width": 353,
       "height": 199 
 },
   "Rainbow": {

@@ -82,5 +82,12 @@
       "y": 1759,
       "width": 597,
       "height": 171
+},
+  "Lyra": {
+     "name": "Lyra.png",
+      "x": 3271,
+      "y": -18,
+      "width": 216,
+      "height": 231
 }
 }

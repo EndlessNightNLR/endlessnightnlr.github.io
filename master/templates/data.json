@@ -83,11 +83,18 @@
       "width": 597,
       "height": 171
 },
-  "Lyra": {
-     "name": "Lyra.png",
+  "Lyra_art": {
+     "name": "Lyra_art.png",
       "x": 3271,
       "y": -18,
       "width": 216,
       "height": 231
+},
+  "Dash_heart": {
+     "name": "Dash_heart.png",
+      "x": 818,
+      "y": -1879,
+      "width": 42,
+      "height": 63
 }
 }

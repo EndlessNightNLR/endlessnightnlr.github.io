@@ -19,5 +19,12 @@
       "y": -394,
       "width": 542,
       "height": 86
+},
+  "ArsWorld": {
+     "name": "ArsWorld.png",
+      "x": -270, 
+      "y": 1731,
+      "width": 203,
+      "height": 296
 }
 }

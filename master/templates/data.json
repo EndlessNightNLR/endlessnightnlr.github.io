@@ -96,5 +96,12 @@
       "y": -1879,
       "width": 42,
       "height": 63
+},
+  "Logo": {
+     "name": "Logo.png",
+      "x": 510,
+      "y": -2108,
+      "width": 200,
+      "height": 200
 }
 }

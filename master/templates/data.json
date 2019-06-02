@@ -27,13 +27,6 @@
       "width": 93,
       "height": 128 
 },
-  "Rarity": {
-     "name": "Rarity.png",
-      "x": 3537,
-      "y": 1475,
-      "width": 201,
-      "height": 199 
-},
   "Aryanne": {
      "name": "Aryanne.png",
       "x": 3271,
@@ -62,33 +55,12 @@
       "width": 234,
       "height": 57
 },
-  "void": {
-     "name": "void.png",
-      "x": -2300,
-      "y": -2523,
-      "width": 385,
-      "height": 349
-},
-  "void_1": {
-     "name": "void_1.png",
-      "x": -2049,
-      "y": -2506,
-      "width": 298,
-      "height": 333
-},
   "World": {
      "name": "World.png",
       "x": 298,
       "y": 1759,
       "width": 597,
       "height": 171
-},
-  "Lyra_art": {
-     "name": "Lyra_art.png",
-      "x": 3271,
-      "y": -18,
-      "width": 216,
-      "height": 231
 },
   "Dash_heart": {
      "name": "Dash_heart.png",

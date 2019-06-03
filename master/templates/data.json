@@ -55,8 +55,8 @@
       "width": 234,
       "height": 57
 },
-  "World": {
-     "name": "World.png",
+  "World_NLR": {
+     "name": "World_NLR.png",
       "x": 298,
       "y": 1759,
       "width": 596,
@@ -75,5 +75,12 @@
       "y": -1667,
       "width": 200,
       "height": 200
-}
+},
+  "World": {
+     "name": "World.png",
+      "x": -270,
+      "y": 1731,
+      "width": 596,
+      "height": 329
+},
 }

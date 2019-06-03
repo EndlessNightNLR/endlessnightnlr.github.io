@@ -20,9 +20,7 @@ Number.prototype.between = function(a, b) {
 var range = 25;
 
 window.factions = {
-    "New Lunar Republic":{"url":"https://endlessnightnlr.github.io/master/","color":"aqua","type":"2"},
-    "MLP : Pixel":{"url":"https://raw.githubusercontent.com/Autumn-Blaze/ponehs/master/","color":"#1992E3","type":"1"},
-    "Arstotzka":{"url":"https://endlessnightnlr.github.io/master/","color":"red","type":"Arstotzka"}
+    "New Lunar Republic":{"url":"https://endlessnightnlr.github.io/master/","color":"aqua","type":"2"}
 };
 window.faction = Object.keys(factions)[0];
 
@@ -210,16 +208,15 @@ function updateloop() {
     console.log("Updating Template List");
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
-    switch(factions[faction].type){
-        case 'Arstotzka':
-            var url = factions[faction].url + "templates/Arstotzka.json";
-            break;
-        case '2':
-             var url = factions[faction].url + "templates/data.json";
-            break;
-        case '1':
-            var url =  factions[faction].url + "templates/data.json?" + new Date().getTime();
-    };
+
+    if(factions[faction].templates == 'own')
+        if(factions[faction].type = 2)
+            url = factions[faction].url + 'templates/data.json';
+        else
+            url = factions[faction].url + 'templates/data.json?' + new Date().getTime();
+    else
+        url = factions['New Lunar Republic'].url + 'templates/' + faction + '.json';
+
     console.log("!URL  " + url);
 
     xmlhttp.onreadystatechange = function () {
@@ -353,10 +350,10 @@ function loadTemplates() {
 function loadImage(imagename) {
     console.log("    Load image " + imagename);
     image_list[imagename] = new Image();
-    if (cachebreaker != null)
+    //if (cachebreaker != null)
         image_list[imagename].src =  factions[faction].url +"images/"+template_list[imagename].name;
-    else
-        image_list[imagename].src =  factions[faction].url +"images/"+ template_list[imagename].name;
+    //else
+        //image_list[imagename].src =  factions[faction].url +"images/"+ template_list[imagename].name;
     image_list[imagename].onload = function () {
         counter += 1;
         //if last needed image loaded, start drawing

@@ -66,7 +66,7 @@ window.addEventListener('load', function () {
         '<div class="posy" id="posyt" style="background-color: rgba(0, 0, 0, 0.75); color: rgb(250, 250, 250); text-align: center; line-height: 42px; vertical-align: middle; width: auto; height: auto; border-radius: 21px; padding: 6px;">' +
         '<div style="cursor:pointer;line-height:20px;" id="myElem">Faction</div>'+
         '<ul id="dropdown" style="display:none;line-height:20px;text-align:left;">'+
-        list+
+            list+
         '</ul>'+
         '<div id="minimap-text" style="display: none;"></div>' +
         '<div id="minimap-box" style="position: relative;width:420px;height:300px">' +
@@ -110,24 +110,29 @@ window.addEventListener('load', function () {
     lif.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             factions = JSON.parse(this.responseText);
-            //
+            
             this.responseText = this.responseText + 1 + '1';
-            //
+            
             console.log(this.responseText);
-            faction = Object.keys(factions)[0];
+
+            if((localStorage.getItem('faction') == null)||(factions[localStorage.getItem('faction')] == undefined))
+                faction = Object.keys(factions)[0];
+            else
+                faction = localStorage.getItem('faction');
+
             updateloop();
+
             let ul = document.getElementById('dropdown');
             let list = '';
             for(let name in factions) if(name !="")list += '<li id="'+name+'">'+'<span Style="cursor:pointer;color:'+factions[name].color+'">'+name+'<span></li>'
             ul.innerHTML = list;
-            for(let name in factions)document.getElementById(name).addEventListener('click',function(){change();faction = name;updateloop();})
+            for(let name in factions)document.getElementById(name).addEventListener('click',function(){change();faction = name;localStorage.setItem('faction',name);updateloop();})
         }
     };
     lif.open("GET", 'https://endlessnightnlr.github.io/master/factions.json', true);
     lif.send();
 
     document.getElementById("hide-map").onclick = function () {
-        console.log("This should do something, but it doesn't");
         toggle_show = false;
         document.getElementById("minimap-box").style.display = "none";
         document.getElementById("minimap-config").style.display = "none";
@@ -209,13 +214,13 @@ function updateloop() {
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
 
-	if(factions[faction].templates == 'own')
-		if(factions[faction].type = 2)
-			url = factions[faction].url + 'templates/data.json';
-		else
-			url = factions[faction].url + 'templates/data.json?' + new Date().getTime();
-	else
-		url = factions['New Lunar Republic'].url + 'templates/' + faction + '.json';
+    if(factions[faction].templates == 'own')
+        if(factions[faction].type = 2)
+            url = factions[faction].url + 'templates/data.json';
+        else
+            url = factions[faction].url + 'templates/data.json?' + new Date().getTime();
+    else
+        url = factions['New Lunar Republic'].url + 'templates/' + faction + '.json';
 
     console.log("!URL  " + url);
 
@@ -379,30 +384,6 @@ function drawTemplates() {
     }
 }
 
-/*function drawBoard() {
-    ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
-    if (zoomlevel <= 4.6)
-        return;
-    ctx_minimap_board.beginPath();
-    var bw = minimap_board.width + zoomlevel;
-    var bh = minimap_board.height + zoomlevel;
-    var xoff_m = (minimap.width / 2) % zoomlevel - zoomlevel;
-    var yoff_m = (minimap.height / 2) % zoomlevel - zoomlevel;
-    var z = 1 * zoomlevel;
-
-    for (var x = 0; x <= bw; x += z) {
-        ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
-        ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
-    }
-
-    for (var x = 0; x <= bh; x += z) {
-        ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
-        ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
-    }
-    ctx_minimap_board.strokeStyle = "black";
-    ctx_minimap_board.stroke();
-}*/
-
 function drawCursor() {
     var x_left = x_window * 1 - minimap.width / zoomlevel / 2;
     var x_right = x_window * 1 + minimap.width / zoomlevel / 2;
@@ -420,7 +401,7 @@ function drawCursor() {
     ctx_minimap_cursor.rect(zoomlevel * xoff_c, zoomlevel * yoff_c, zoomlevel, zoomlevel);
     ctx_minimap_cursor.stroke();
 
-}
+};
 
 function getCenter() {
     var url = window.location.href;
@@ -431,23 +412,4 @@ function getCenter() {
         y_window = 0;
     }
     loadTemplates();
-}
-
-function findCoor() {
-    //all elements with style attributes
-    var elms = document.querySelectorAll("*[style]");
-    // Loop and find the element with the right style attributes
-
-
-    Array.prototype.forEach.call(elms, function (elm) {
-        var style = elm.style.cssText;
-        if (style == "position: absolute; left: 1em; bottom: 1em;") {
-            console.log("Found It!");
-            coorDOM = elm.firstChild;
-            console.log(coorDOM.innerHTML);
-        }
-    });
-
-
-    coorDOM = document.getElementById("coords");
-}
+};

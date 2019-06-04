@@ -209,13 +209,13 @@ function updateloop() {
     // Get JSON of available templates
     var xmlhttp = new XMLHttpRequest();
 
-    if(factions[faction].templates == 'own')
-        if(factions[faction].type = 2)
-            url = factions[faction].url + 'templates/data.json';
-        else
-            url = factions[faction].url + 'templates/data.json?' + new Date().getTime();
-    else
-        url = factions['New Lunar Republic'].url + 'templates/' + faction + '.json';
+	if(factions[faction].templates == 'own')
+		if(factions[faction].type = 2)
+			url = factions[faction].url + 'templates/data.json';
+		else
+			url = factions[faction].url + 'templates/data.json?' + new Date().getTime();
+	else
+		url = factions['New Lunar Republic'].url + 'templates/' + faction + '.json';
 
     console.log("!URL  " + url);
 

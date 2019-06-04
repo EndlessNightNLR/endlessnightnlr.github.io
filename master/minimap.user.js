@@ -32,7 +32,6 @@ window.addEventListener('load', function () {
     gameWindow = document.getElementById("canvas");
     //DOM element of the displayed X, Y variables
     coorDOM = null;
-    findCoor();
     //coordinates of the middle of the window
     x_window = 0;
     y_window = 0;

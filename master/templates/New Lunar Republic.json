@@ -75,5 +75,12 @@
       "y": -1667,
       "width": 200,
       "height": 200
+},
+  "forHelp": {
+     "name": "forHelp.png",
+      "x": 1749,
+      "y": 1218,
+      "width": 181,
+      "height": 177
 }
 }

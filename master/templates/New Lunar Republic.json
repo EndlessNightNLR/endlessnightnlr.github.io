@@ -89,5 +89,12 @@
       "y": 3295,
       "width": 1308,
       "height": 798
+},
+  "arg": {
+    "name": "arg.png",
+    "x": 325,
+    "y": 257,
+    "width": 347,
+    "height": 246
 }
 }

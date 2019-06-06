@@ -83,13 +83,6 @@
       "width": 181,
       "height": 177
 },
-  "Revenge": {
-     "name": "Revenge.png",
-      "x": -4096,
-      "y": 3295,
-      "width": 1308,
-      "height": 798
-},
   "arg": {
     "name": "arg.png",
     "x": 325,

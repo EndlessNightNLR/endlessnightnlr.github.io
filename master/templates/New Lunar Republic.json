@@ -83,11 +83,11 @@
       "width": 181,
       "height": 177
 },
-  "arg": {
-    "name": "arg.png",
-    "x": 325,
-    "y": 257,
-    "width": 347,
-    "height": 246
+  "World_NA": {
+    "name": "World_NA.png",
+    "x": -262,
+    "y": 1740,
+    "width": 404,
+    "height": 305
 }
 }

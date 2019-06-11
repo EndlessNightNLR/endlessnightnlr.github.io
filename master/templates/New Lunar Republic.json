@@ -89,5 +89,12 @@
     "y": 1740,
     "width": 404,
     "height": 305
+},
+  "Board": {
+    "name": "Board.png",
+    "x": -2184,
+    "y": -2187,
+    "width": 350,
+    "height": 121
 }
 }

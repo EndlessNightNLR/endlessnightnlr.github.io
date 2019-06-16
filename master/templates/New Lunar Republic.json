@@ -96,5 +96,12 @@
     "y": -2187,
     "width": 350,
     "height": 121
+},
+  "test": {
+    "name": "test.png",
+    "x": 900,
+    "y": 900,
+    "width": 10,
+    "height": 10
 }
 }

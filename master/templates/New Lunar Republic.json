@@ -97,11 +97,11 @@
     "width": 350,
     "height": 121
 },
-  "test": {
-    "name": "test.png",
-    "x": 900,
-    "y": 900,
-    "width": 10,
-    "height": 10
+  "Text": {
+    "name": "Text.png",
+    "x": 1288,
+    "y": -3040,
+    "width": 286,
+    "height": 95
 }
 }

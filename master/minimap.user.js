@@ -221,8 +221,6 @@ function updateloop() {
     else
         url = factions['New Lunar Republic'].url + 'templates/' + faction + '.json';
 
-    console.log("!URL  " + url);
-
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             template_list = JSON.parse(this.responseText);
@@ -354,11 +352,8 @@ function loadTemplates() {
 function loadImage(imagename) {
     console.log("    Load image " + imagename);
     image_list[imagename] = new Image();
-    //if (cachebreaker != null)
-        image_list[imagename].src =  factions[faction].url +"images/"+template_list[imagename].name;
-    //else
-        //image_list[imagename].src =  factions[faction].url +"images/"+ template_list[imagename].name;
-    image_list[imagename].onload = function () {
+    image_list[imagename].src =  factions[faction].url +"images/"+template_list[imagename].name;
+    image_list[imagename].onload = function(){
         counter += 1;
         //if last needed image loaded, start drawing
         if (counter == needed_templates.length)

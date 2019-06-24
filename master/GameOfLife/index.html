@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<style type="text/css">
+		body{color:white;user-select:none;}
+		.button{
+			background-color:rgb(20,20,20);
+			color:springGreen;
+			border-color:rgb(0,150,0);
+			user-select:none;
+		}
+	</style>
 	<title>Game Of Life</title>
 </head>
-<body>
-	<canvas id = "canvas" width = '300' height = '300' style = 'position: absolute; top:0; left:0;'></canvas>
+<body style = "background-color:rgb(20,20,20);">
+	<div id = "settings" style = "width: auto; height: auto; padding: 5px;background-color: rgb(40,40,40);">
+		<button id = "start" class = "button" style = "cursor: pointer;position:relative;">Start</button>
+		<button id = "stop" class = "button" style = "cursor: pointer;position:relative;">Stop</button>
+		<button id = "restart" class = "button" style = "cursor: pointer;position:relative;">Restart</button>
+		<br>
+		Time for generation (sec.): <span id = "time" style = "user-select:none;">null</span>
+	</div>
+	<canvas id = "canvas" width = '300' height = '300' style = 'position: relative;'></canvas>
 	<script src = "code.js"></script>
 </body>
 </html>

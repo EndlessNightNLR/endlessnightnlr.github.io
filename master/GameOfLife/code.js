@@ -5,17 +5,17 @@
 "use strict";
 var canvas = $('canvas'),
 	ctx = canvas.getContext('2d'),
-	settings = $(`settings`),
 	minTime = $(`minTime`),
 	map, newMap,
-	generation = 0,
+	generation,
 	width = $(`width`).value,
 	height = $(`height`).value,
 	sWidth,sHeight,//SPECIAL
 	pxlSize = 2,
 	isStart = false,
-	intervalID, timeStart, timeEnd, intervalTime = 1000,
-	 times = [],
+	intervalID, intervalTime = 1000,
+	times,
+	drawFull = false,
 	userOpti = true,
     debug = false,
     intervalStart = false,
@@ -23,7 +23,6 @@ var canvas = $('canvas'),
     cells;
 
 var data = {
-	arr: ctx.getImageData(0,0,canvas.width,canvas.height),
 	get: function(){
 		this.imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
 		this.data = this.imageData.data;
@@ -61,8 +60,16 @@ var timer = {
 	}
 };
 
-$(`start`).onclick = () => {start();intervalStart = true;/*$(`beforeTime`).innerHTML = `Time for generation (sec.): `;*/}
-$(`stop`).onclick = () => stop();
+$(`startStop`).onclick = () => {
+	if($(`startStop`).innerText == `Start`){
+		start();
+		intervalStart = true;
+		$(`startStop`).innerText = `Stop`;
+	} else {
+		stop();
+		$(`startStop`).innerText = `Start`;
+	}
+}
 $(`restart`).onclick = () => restart();
 
 canvas.width = width * pxlSize;
@@ -73,13 +80,15 @@ restart();
 window.onkeydown = e => {
     switch(e.keyCode){
     	case 32:
-	    	if(intervalStart){
-	    		stop();
-	    	}else{
-	    		start();
-	    		intervalStart = true;
-	    		//$(`beforeTime`).innerHTML = `Time for generation (sec.): `;
-	    	}
+			if($(`startStop`).innerText == `Start`){
+				start();
+				intervalStart = true;
+				$(`startStop`).innerText = `Stop`;
+			} else {
+				stop();
+				$(`startStop`).innerText = `Start`;
+			}
+			return false;
     		break;
     }
 }
@@ -183,17 +192,20 @@ function start() {
         }
     }
 
-    if((intervalTime > 20)||(!userOpti)){
+    if((intervalTime > 20)||(!userOpti)||(drawFull)){
 		for (let y = 0; y < height; y++)
 			for (let x = 0; x < width; x++){
-				if ((map[y][x] != newMap[y][x])&&(newMap[y][x] == 1))data.drawCell(y,x);
+				if ((map[y][x] != newMap[y][x])&&(newMap[y][x] == 1))
+					data.drawCell(y,x);
 				map[y][x] = newMap[y][x];// COPY ARR
 			}
-			data.set();
+		drawFull = false;
+		data.set();
     }else if(isEven(generation)){
     	for (let y = 0; y < height; y++)
 			for (let x = 0; x < width; x++){
-				if ((map[y][x] != newMap[y][x])&&(newMap[y][x] == 1))data.drawCell(y,x);
+				if ((map[y][x] != newMap[y][x])&&(newMap[y][x] == 1))
+					data.drawCell(y,x);
 				map[y][x] = newMap[y][x];// COPY ARR
 			}
 			data.set();
@@ -213,11 +225,13 @@ function start() {
 	    log(`>-----------------------`);
 	};
 
-    if(!(generation++ % 5)){
+    if(!(generation % 5)){
     	$(`intervalTime`).innerHTML = intervalTime / 1000;
 	    $(`time`).innerHTML = times[times.length - 1] / 1000;
 	    $(`generation`).innerHTML = generation;
 	};
+
+	generation++;
 
 	isStart = false;
 
@@ -265,8 +279,9 @@ function restart(part = 1, parts = 6) {
 
 function stop(){
     if (!intervalTime) return;
-    intervalStart = false;
     clearInterval(intervalID);
+    intervalStart = false;
+    drawFull = true;
 };
 
 function log(msg){

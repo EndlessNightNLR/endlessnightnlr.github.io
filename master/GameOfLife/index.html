@@ -13,6 +13,8 @@
 			color:springGreen;
 			border-color:rgb(0,150,0);
 			user-select:none;
+			cursor: pointer;
+			width: 60px;
 		}
 		.input1{
 			border-color:rgb(0,150,0); 
@@ -24,10 +26,9 @@
 </head>
 <body style = "background-color:rgb(20,20,20);">
 	<div style = "background-color: rgb(40,40,40);">
-		<div id = "settings" style = "position:relative; width: 200px;top:0; left:0; height: auto; padding-left: 5px;padding-top: 5px;">
-			<button id = "start" class = "button" style = "cursor: pointer;position:relative;">Start</button>
-			<button id = "stop" class = "button" style = "cursor: pointer;position:relative;">Stop</button>
-			<button id = "restart" class = "button" style = "cursor: pointer;position:relative;">Restart</button>
+		<div id = "settings" style = "position:relative; top:0; left:0; height: auto; padding-left: 5px;padding-top: 5px;">
+			<button id = "startStop" class = "button" style = ";position:relative;">Start</button>
+			<button id = "restart" class = "button" style = "position:relative;">Restart</button>
 			<br>
 			Minimum time interval(millisec.): <input id = "minTime" class = "input1" value = "15" maxlength = "4" size = "1" type = "text">
 			<br>

@@ -4,26 +4,46 @@
 	<title>Game Of Life</title>
 	<link rel="shortcut icon" href="icon.png" type="image/png">
 	<style type="text/css">
-		body{color:white;user-select:none;}
+		body{
+			color:darkGrey;
+			user-select:none;
+		}
 		.button{
 			background-color:rgb(20,20,20);
 			color:springGreen;
 			border-color:rgb(0,150,0);
 			user-select:none;
 		}
+		.input1{
+			border-color:rgb(0,150,0); 
+			border-radius:5px;
+			background-color:rgb(40,40,40);
+			color:white;
+		}
 	</style>
 </head>
 <body style = "background-color:rgb(20,20,20);">
-	<div id = "settings" style = "width: auto; height: auto; padding: 5px;background-color: rgb(40,40,40);">
-		<button id = "start" class = "button" style = "cursor: pointer;position:relative;">Start</button>
-		<button id = "stop" class = "button" style = "cursor: pointer;position:relative;">Stop</button>
-		<button id = "restart" class = "button" style = "cursor: pointer;position:relative;">Restart</button>
-		<br>
-		Time for generation (sec.): <span id = "time" style = "user-select:none;">null</span>
-		<br>
-		IntervalTime (sec.): <span id = "intervalTime" style = "user-select:none;">null</span>
+	<div style = "background-color: rgb(40,40,40);">
+		<div id = "settings" style = "position:relative; width: 200px;top:0; left:0; height: auto; padding-left: 5px;padding-top: 5px;">
+			<button id = "start" class = "button" style = "cursor: pointer;position:relative;">Start</button>
+			<button id = "stop" class = "button" style = "cursor: pointer;position:relative;">Stop</button>
+			<button id = "restart" class = "button" style = "cursor: pointer;position:relative;">Restart</button>
+			<br>
+			Minimum time interval(millisec.): <input id = "minTime" class = "input1" value = "15" maxlength = "4" size = "1" type = "text">
+			<br>
+			Width: <input id = "width" class = "input1" value = "400" maxlength = "4" size = "1" type = "text">
+			<br>
+			Height: <input id = "height" class = "input1" value = "250" maxlength = "4" size = "1" type = "text">
+		</div>
+		<div id = "display" style = "position:relative; width: auto:150; height: auto; padding-left: 5px;padding-bottom: 5px;">
+			Generation: <span id = "generation">null</span>
+			<br>
+			<span id = "beforeTime">Time for generation (sec.): </span><span id = "time">null</span>
+			<br>
+			IntervalTime (sec.): <span id = "intervalTime">null</span>
+		</div>
 	</div>
-	<canvas id = "canvas" width = '300' height = '300' style = 'position: relative;'></canvas>
+	<canvas id = "canvas" width = '300' height = '300' style = "position:relative;"></canvas>
 	<script src = "code.js"></script>
 </body>
 </html>

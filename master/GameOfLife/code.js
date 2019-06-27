@@ -1,220 +1,350 @@
-var canvas = $('canvas');
-var ctx = canvas.getContext('2d');
-var settings = $(`settings`);
-var map, newMap;
-var generation = 0;
-var width = 300;
-var height = 200;
-var pxlSize = 2;
-var isStart = false;
-var intervalID, timeStart, timeEnd, intervalTime = 500;
-var times = [];
-var borders = false,
-    debug = true;
+//Endless Night
+//Wow, you decided to look here?
+//Apparently you are interested in my code ...
+//I am very pleased)
+"use strict";
+var canvas = $('canvas'),
+	ctx = canvas.getContext('2d'),
+	settings = $(`settings`),
+	minTime = $(`minTime`),
+	map, newMap,
+	generation = 0,
+	width = $(`width`).value,
+	height = $(`height`).value,
+	sWidth,sHeight,//SPECIAL
+	pxlSize = 2,
+	isStart = false,
+	intervalID, timeStart, timeEnd, intervalTime = 1000,
+	 times = [],
+	userOpti = true,
+    debug = false,
+    intervalStart = false,
+    y0, yMax, x0, xMax,
+    cells;
 
-/*if(!localStorage.debug)localStorage.debug = true;
-else debug = localStorage.debug;*/
+var data = {
+	arr: ctx.getImageData(0,0,canvas.width,canvas.height),
+	get: function(){
+		this.imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+		this.data = this.imageData.data;
+	},
+	drawCell: function(yMap,xMap){
+		let startPosy = pxlSize * ((yMap * canvas.width + xMap) << 2) + 1;//IN DATA
+		for(let a = 0;a < pxlSize;a++)
+			for(let b = 0;b < pxlSize;b++)
+				this.data[startPosy + ((a*canvas.width + b) << 2)] = 150;
+	},
+	killCell: function(yMap,xMap){
+		let startPosy = pxlSize * ((yMap * canvas.width + xMap) << 2) + 1;//IN DATA
+		for(let a = 0;a < pxlSize;a++)
+			for(let b = 0;b < pxlSize;b++)
+				this.data[startPosy + ((a*canvas.width + b) << 2)] = 0;
+	},
+	set: function(){
+		ctx.putImageData(this.imageData,0,0);
+	}
+};
 
-$(`start`).onclick = () => start();
+var timer = {
+	start: function(name){
+		let date = new Date();
+		this[`time_start_${name}`] = [date.getMinutes(), date.getSeconds(), date.getMilliseconds()];
+	},
+	stop: function(name){
+		let date = new Date();
+		this[`time_end_${name}`] = [date.getMinutes(), date.getSeconds(), date.getMilliseconds()];
+	},
+	get: function(name){
+		let d1 = this[`time_start_${name}`];
+		let d2 = this[`time_end_${name}`];
+		return (d2[0] - d1[0]) + (d2[1] - d1[1]) + (d2[2] - d1[2]);
+	}
+};
+
+$(`start`).onclick = () => {start();intervalStart = true;/*$(`beforeTime`).innerHTML = `Time for generation (sec.): `;*/}
 $(`stop`).onclick = () => stop();
 $(`restart`).onclick = () => restart();
-
-settings.style.width = '100%';
 
 canvas.width = width * pxlSize;
 canvas.height = height * pxlSize;
 
-restart(1, 3);
-
-intervalID = setInterval(start, intervalTime);
+restart();
 
 window.onkeydown = e => {
-    log(`keyCode: ${e.keyCode}`);
-    if (e.keyCode == 48)
-        if (localStorage.debug == `true`) {
-            localStorage.debug = false;
-            debug = `false`;
-        } else {
-            localStorage.debug = `true`;
-            debug = false;
-        }
-    if(e.keyCode = 32)
-    	if(isStart)stop();
-    else start();
+    switch(e.keyCode){
+    	case 32:
+	    	if(intervalStart){
+	    		stop();
+	    	}else{
+	    		start();
+	    		intervalStart = true;
+	    		//$(`beforeTime`).innerHTML = `Time for generation (sec.): `;
+	    	}
+    		break;
+    }
 }
 
 function start() {
+	if(isStart){
+		console.warn(`Interval is stopped!`);
+		return;
+	}
+	
     isStart = true;
 
-    //intervalID = setInterval(function(){
-    timeStart = new Date();
-    timeStart = timeStart.getSeconds() + timeStart.getMilliseconds();
+    timer.start(`interval`);
 
-    var y0 = true,
-        yMax, x0, xMax;
-    let cells;
-    for (var y = 0; y < height; y++) {
-        if (y != 0) y0 = false;
-        if (y == height - 1) yMax = true;
-        else yMax = false;
+    for (let y = 0; y < height; y++) {
 
-        for (var x = 0; x < width; x++) {
-            if (x == 0) x0 = true;
-            else x0 = false;
-            if (x == width - 1) xMax = true;
-            else xMax = false;
+        if (y == 0){
+        	y0 = true;
+        	yMax = false;
+        }else{
+        	y0 = false;
+	        if (y == sHeight)yMax = true;
+	        else yMax = false;
+   		}
 
-            //log(`y: ${y} x: ${x}`);
+        for (let x = 0; x < width; x++) {
+
+            if (x == 0){
+            	x0 = true;
+            	xMax = false;
+            }else{
+            	x0 = false;
+            	if (x == sWidth) xMax = true;
+            	else xMax = false;
+            }
 
             cells = 0;
-            //UP
-            //CENTER
-            if (y0) {
-                if (map[height - 1][x] == 1) cells++;
-            } else if (map[y - 1][x] == 1) cells++;
 
-            //LEFT
-            if (x0) {
-                if (y0) {
-                    if (map[height - 1][width - 1]) cells++;
-                } else if (map[y - 1][width - 1]) cells++;
-            } else {
-                if (y0) {
-                    if (map[height - 1][x - 1]) cells++;
-                } else if (map[y - 1][x - 1]) cells++;
+            //>------------------<OPTIMIZED>------------------<
+	            if (x0) {
+	                if (yMax) {
+	                    cells += map[sHeight][sWidth];
+	                } else cells += map[y + 1][sWidth];
+	            	cells += map[y][sWidth];
+	                if (y0) {
+	                	cells += map[sHeight][x];
+	                    cells += map[sHeight][sWidth];
+	                } else {
+	                	cells += map[y - 1][sWidth];
+	                	cells += map[y - 1][x];
+	                }
+	            } else {
+	                if (yMax) {
+	                    cells += map[sHeight][x - 1];
+	                } else cells += map[y + 1][x - 1];
+	            	cells += map[y][x - 1];
+	                if (y0) {
+	                	cells += map[sHeight][x];
+	                    cells += map[sHeight][x - 1];
+	                } else {
+	                	cells += map[y - 1][x - 1];
+	                	cells += map[y - 1][x];
+	                }
+	            }
+
+	            if (xMax) {
+	                if (yMax) {
+	                	cells += map[0][x];
+	                    cells += map[0][0];
+	                } else {
+	                	cells += map[y + 1][0];
+	                	cells += map[y + 1][x];
+	                }
+	            	cells += map[y][0];
+	                if (y0) {
+	                    cells += map[sHeight][0];
+	                } else cells += map[y - 1][0];
+	            } else {
+	                if (yMax) {
+	                	cells += map[0][x];
+	                    cells += map[0][x + 1];
+	                } else {
+	                	cells += map[y + 1][x];
+	                	cells += map[y + 1][x + 1];
+	                }
+	            	cells += map[y][x + 1];
+	                if (y0) {
+	                    cells += map[sHeight][x + 1];
+	                } else cells += map[y - 1][x + 1];
+	            }
+	        //>-----------------------------------------------<
+
+            if (cells == 3){
+            	newMap[y][x] = 1;
+            }else if (cells == 2) newMap[y][x] = map[y][x];
+            else {
+            	newMap[y][x] = 0;
+            	if(map[y][x] != 0)
+            		data.killCell(y,x);
             }
-
-            //RIGHT
-            if (xMax) {
-                if (y0) {
-                    if (map[height - 1][0]) cells++;
-                } else if (map[y - 1][0]) cells++;
-            } else {
-                if (y0) {
-                    if (map[height - 1][x + 1]) cells++;
-                } else if (map[y - 1][x + 1]) cells++;
-            }
-            //CENTER
-            //RIGHT
-            if (xMax) {
-                if (map[y][0] == 1) cells++;
-            } else if (map[y][x + 1] == 1) cells++;
-
-            //LEFT
-            if (x0) {
-                if (map[y][width - 1] == 1) cells++;
-            } else if (map[y][x - 1] == 1) cells++;
-            //DOWN
-            //CENTER
-            if (yMax) {
-                if (map[0][x] == 1) cells++;
-            } else if (map[y + 1][x] == 1) cells++;
-
-            //LEFT
-            if (x0) {
-                if (yMax) {
-                    if (map[height - 1][width - 1]) cells++;
-                } else if (map[y + 1][width - 1]) cells++;
-            } else {
-                if (yMax) {
-                    if (map[height - 1][x - 1]) cells++;
-                } else if (map[y + 1][x - 1]) cells++;
-            }
-            //RIGHT
-            if (xMax) {
-                if (yMax) {
-                    if (map[0][0]) cells++;
-                } else if (map[y + 1][0]) cells++;
-            } else {
-                if (yMax) {
-                    if (map[0][x + 1]) cells++;
-                } else if (map[y + 1][x + 1]) cells++;
-            }
-
-            if (cells == 3) newMap[y][x] = 1;
-            else if (cells == 2) newMap[y][x] = map[y][x];
-            else newMap[y][x] = 0;
         }
     }
 
-    ctx.fillStyle = 'rgb(0,150,0)';
-    for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++)
-            if ((newMap[y][x] == 1) && (map[y][x] != newMap[y][x])) ctx.fillRect(x * pxlSize, y * pxlSize, pxlSize, pxlSize);
-    ctx.fillStyle = 'rgb(0,0,0)';
-    for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++)
-            if ((newMap[y][x] == 0) && (map[y][x] != newMap[y][x])) ctx.fillRect(x * pxlSize, y * pxlSize, pxlSize, pxlSize);
+    if((intervalTime > 20)||(!userOpti)){
+		for (let y = 0; y < height; y++)
+			for (let x = 0; x < width; x++){
+				if ((map[y][x] != newMap[y][x])&&(newMap[y][x] == 1))data.drawCell(y,x);
+				map[y][x] = newMap[y][x];// COPY ARR
+			}
+			data.set();
+    }else if(isEven(generation)){
+    	for (let y = 0; y < height; y++)
+			for (let x = 0; x < width; x++){
+				if ((map[y][x] != newMap[y][x])&&(newMap[y][x] == 1))data.drawCell(y,x);
+				map[y][x] = newMap[y][x];// COPY ARR
+			}
+			data.set();
+    }
 
-    for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++)
-            map[y][x] = newMap[y][x];
 
-    timeEnd = new Date();
-    timeEnd = timeEnd.getSeconds() + timeEnd.getMilliseconds();
-    times.push(timeEnd - timeStart);
-    log(`Time for generation ${generation++}: ${times[times.length - 1] / 1000} sec.`);
-	$(`time`).innerHTML = times[times.length - 1] / 1000;
+    timer.stop(`interval`);
+    times.push(timer.get(`interval`));
 
-    intervalTime = times[times.length - 1] * 1.2;
-    log(`intervalTime: ${intervalTime / 1000} sec.`);
-    $(`intervalTime`).innerHTML = intervalTime / 1000;
+    if(times[times.length - 1] > 0)intervalTime = times[times.length - 1] * 1.3;
+    let value = +minTime.value;
+    if(intervalTime < value)intervalTime = value;
 
-    log(`>-----------------------`);
+    if(debug){
+    	log(`Time for generation ${generation}: ${times[times.length - 1] / 1000} sec.`);
+	    log(`intervalTime: ${intervalTime / 1000} sec.`);
+	    log(`>-----------------------`);
+	};
+
+    if(!(generation++ % 5)){
+    	$(`intervalTime`).innerHTML = intervalTime / 1000;
+	    $(`time`).innerHTML = times[times.length - 1] / 1000;
+	    $(`generation`).innerHTML = generation;
+	};
+
+	isStart = false;
 
     clearInterval(intervalID);
     intervalID = setInterval(start, intervalTime);
 };
 
-function restart(part = 1, parts = 3) {
+function restart(part = 1, parts = 6) {
+	width = $(`width`).value;
+	height = $(`height`).value;
+	sWidth = width - 1;
+	sHeight = height - 1;
+
+	$(`generation`).innerHTML = null;
+
+	canvas.width = width * pxlSize;
+	canvas.height = height * pxlSize;
 	generation = 0;
-	intervalTime = 500;
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    times = [];
 
-    map = new Array(height);
-    for (let y = 0; y < height; y++) map[y] = new Array(width);
-
-    newMap = new Array(height);
-    for (let y = 0; y < height; y++) newMap[y] = new Array(width);
-
-    for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++)
-            newMap[y][x] = 0;
+	intervalTime = 1000;
 
     ctx.fillStyle = 'rgb(0,0,0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++)
-            if (rand(1, parts) <= part) map[y][x] = 1;
+    map = new Array(height);
+    newMap = new Array(height);
+
+    ctx.fillStyle = 'rgb(0,150,0)';
+    for (let y = 0; y < height; y++){
+    	map[y] = new Array(width);
+    	newMap[y] = new Array(width);
+        for (let x = 0; x < width; x++){
+            if (rand(parts) <= part){
+            	ctx.fillRect(x * pxlSize, y * pxlSize, pxlSize, pxlSize);
+            	map[y][x] = 1;
+            }
             else map[y][x] = 0;
+            newMap[y][x] = map[y][x];
+        }
+    }
 
-    times = [];
+    data.get();
 };
 
-function stop() {
-    if (!isStart) return;
-    isStart = false;
+function stop(){
+    if (!intervalTime) return;
+    intervalStart = false;
     clearInterval(intervalID);
-
-    let sum = 0;
-    for (let i = 0; i < times.length; i++) sum += times[i];
-    log(`Average generation time: ${sum/times.length}`);
-    delete sum;
 };
 
-function log(msg) {
-    if (debug == true) console.log(msg)
+function log(msg){
+	console.log(msg)
 };
 
-function rand(a, b) {
-    return Math.round(a - .5 + Math.random() * (b - a + 1))
-}; //ВКЛЮЧАЕТ И МИНИМУМ, И МАКСИМУМ
+function rand(a){return Math.round(.5+Math.random()*a)};//ВКЛЮЧАЕТ И МИНИМУМ, И МАКСИМУМ(ОТ 1 ВКЛЮЧИТЕЛЬНО)
 
-function div(a, b) {
-    return (a - (a % b)) / b
-};
+function div(a,b){return(a-a%b)/b};
 
-function $(id) {
-    return document.getElementById(id);
-}
+function $(id){return document.getElementById(id)};
+
+function isEven(a){return !(a<<31>>>31)};
+
+// ИСПРАВИТЬ SWIDTH И SHEIGHT !!!
+			/*SOURCE
+
+			//UP
+	            //CENTER
+	            if (y0) {
+	                cells += map[sHeight][x];
+	            } else cells += map[y - 1][x];
+
+	            //LEFT
+	            if (x0) {
+	                if (y0) {
+	                    cells += map[sHeight][sWidth];
+	                } else cells += map[y - 1][sWidth];
+	            } else {
+	                if (y0) {
+	                    cells += map[sHeight][x - 1];
+	                } else cells += map[y - 1][x - 1];
+	            }
+
+	            //RIGHT
+	            if (xMax) {
+	                if (y0) {
+	                    cells += map[sHeight][0];
+	                } else cells += map[y - 1][0];
+	            } else {
+	                if (y0) {
+	                    cells += map[sHeight][x + 1];
+	                } else cells += map[y - 1][x + 1];
+	            }
+            //CENTER
+	            //RIGHT
+	            if (xMax) {
+	                cells += map[y][0];
+	            } else cells += map[y][x + 1];
+
+	            //LEFT
+	            if (x0) {
+	                cells += map[y][sWidth];
+	            } else cells += map[y][x - 1];
+            //DOWN
+	            //CENTER
+	            if (yMax) {
+	                cells += map[0][x];
+	            } else cells += map[y + 1][x];
+
+	            //LEFT
+	            if (x0) {
+	                if (yMax) {
+	                    cells += map[sHeight][sWidth];
+	                } else cells += map[y + 1][sWidth];
+	            } else {
+	                if (yMax) {
+	                    cells += map[sHeight][x - 1];
+	                } else cells += map[y + 1][x - 1];
+	            }
+	            //RIGHT
+	            if (xMax) {
+	                if (yMax) {
+	                    cells += map[0][0];
+	                } else cells += map[y + 1][0];
+	            } else {
+	                if (yMax) {
+	                    cells += map[0][x + 1];
+	                } else cells += map[y + 1][x + 1];
+	            }
+*/

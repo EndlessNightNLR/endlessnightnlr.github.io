@@ -1,7 +1,7 @@
 # endlessnightnlr.github.io
 
 Templates for the NLR fraction and some other + minimap are stored here. 
-You can also see my implementation of the "Game Of Life" cellular automaton with the ability to change the rules: 
+You can also see my implementation of the "Game Of Life" cellular automaton with the ability to change the rules:
 https://endlessnightnlr.github.io/master/GameOfLife/index.html
 
 

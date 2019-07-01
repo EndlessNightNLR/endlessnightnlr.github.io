@@ -8,3 +8,4 @@ https://endlessnightnlr.github.io/master/GameOfLife/index.html
 Здесь хранятся шаблоны для фракции NLR и некоторых других + миникарта. 
 Также можете посмотреть мою реализацию клеточного автомата "Game Of Life" с возможностью изменения правил: 
 https://endlessnightnlr.github.io/master/GameOfLife/index.html
+//

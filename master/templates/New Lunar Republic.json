@@ -83,20 +83,6 @@
       "width": 181,
       "height": 177
 },
-  "World_NA": {
-    "name": "World_NA.png",
-    "x": -262,
-    "y": 1740,
-    "width": 404,
-    "height": 305
-},
-  "Board": {
-    "name": "Board.png",
-    "x": -2184,
-    "y": -2187,
-    "width": 350,
-    "height": 121
-},
   "Text": {
     "name": "Text.png",
     "x": 1288,

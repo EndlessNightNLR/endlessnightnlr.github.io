@@ -557,6 +557,8 @@ function start() {
         $(`intervalTime`).innerHTML = intervalTime / 1000;
         $(`time`).innerHTML = timer.lastTime / 1000;
         $(`generation`).innerHTML = generation;
+
+        minTime = +$(`minTime`).value;
     };
 
     generation++;

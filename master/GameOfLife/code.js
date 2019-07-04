@@ -55,7 +55,7 @@ var timer = {
     },
     stop: function(name){
         let date = new Date();
-        this.lastTime = (date.getMinutes() - this[`time_start_${name}`][0]) + (date.getSeconds() - this[`time_start_${name}`][1]) + (date.getMilliseconds() - this[`time_start_${name}`][2]);
+        this.lastTime = (date.getMinutes() - this[`time_start_${name}`][0]) / 60000 + (date.getSeconds() - this[`time_start_${name}`][1]) / 1000 + (date.getMilliseconds() - this[`time_start_${name}`][2]);
     },
     lastTime: null
 };
@@ -122,6 +122,8 @@ $(`userBorder`).onclick = function(){
     }
     updateBorder = true;
 };
+
+$(`minTime`).onkeyup = () => minTime = +$(`minTime`).value;
 
 window.onload = restart();
 
@@ -368,23 +370,14 @@ function start() {
                 if (y == sHeight)yMax = true;
                 else yMax = false;
             }
+
             for (let x = 0; x < width; x++) {
                 if(scanMap[y][x] == 0) continue;
-
-                if (x == 0){
-                    x0 = true;
-                    xMax = false;
-                }else{
-                    x0 = false;
-                    if (x == sWidth) xMax = true;
-                    else xMax = false;
-                }
-
                 cells = 0;
 
                 //>------------------<OPTIMIZED>------------------<
 
-                    if (x0) {
+                    if (x == 0) {
                         if (yMax) {
                             cells += map[sHeight][sWidth];
                         } else cells += map[y + 1][sWidth];
@@ -396,6 +389,17 @@ function start() {
                             cells += map[y - 1][sWidth];
                             cells += map[y - 1][x];
                         }
+                        if (yMax) {
+                            cells += map[0][x];
+                            cells += map[0][x + 1];
+                        } else {
+                            cells += map[y + 1][x];
+                            cells += map[y + 1][x + 1];
+                        }
+                        cells += map[y][x + 1];
+                        if (y0) {
+                            cells += map[sHeight][x + 1];
+                        } else cells += map[y - 1][x + 1];
                     } else {
                         if (yMax) {
                             cells += map[sHeight][x - 1];
@@ -408,33 +412,34 @@ function start() {
                             cells += map[y - 1][x - 1];
                             cells += map[y - 1][x];
                         }
+                        if (x == sWidth) {
+                            if (yMax) {
+                                cells += map[0][x];
+                                cells += map[0][0];
+                            } else {
+                                cells += map[y + 1][0];
+                                cells += map[y + 1][x];
+                            }
+                            cells += map[y][0];
+                            if (y0) {
+                                cells += map[sHeight][0];
+                            } else cells += map[y - 1][0];
+
+                        } else {
+                            if (yMax) {
+                                cells += map[0][x];
+                                cells += map[0][x + 1];
+                            } else {
+                                cells += map[y + 1][x];
+                                cells += map[y + 1][x + 1];
+                            }
+                            cells += map[y][x + 1];
+                            if (y0) {
+                                cells += map[sHeight][x + 1];
+                            } else cells += map[y - 1][x + 1];
+                        }
                     }
 
-                    if (xMax) {
-                        if (yMax) {
-                            cells += map[0][x];
-                            cells += map[0][0];
-                        } else {
-                            cells += map[y + 1][0];
-                            cells += map[y + 1][x];
-                        }
-                        cells += map[y][0];
-                        if (y0) {
-                            cells += map[sHeight][0];
-                        } else cells += map[y - 1][0];
-                    } else {
-                        if (yMax) {
-                            cells += map[0][x];
-                            cells += map[0][x + 1];
-                        } else {
-                            cells += map[y + 1][x];
-                            cells += map[y + 1][x + 1];
-                        }
-                        cells += map[y][x + 1];
-                        if (y0) {
-                            cells += map[sHeight][x + 1];
-                        } else cells += map[y - 1][x + 1];
-                    }
                 //>-----------------------------------------------<
 
                 if(rules[cells]){
@@ -470,18 +475,9 @@ function start() {
 
                 map[y][x] = newMap[y][x];// COPY ARR
 
-                if (x == 0){
-                    x0 = true;
-                    xMax = false;
-                }else{
-                    x0 = false;
-                    if (x == sWidth) xMax = true;
-                    else xMax = false;
-                }
-
                 //>------------------<OPTIMIZED_SCAN>------------------<
 
-                    if (x0) {
+                    if (x == 0) {
                         if (yMax) {
                             scanMap[sHeight][sWidth] = 1;
                         } else scanMap[y + 1][sWidth] = 1;
@@ -493,6 +489,17 @@ function start() {
                             scanMap[y - 1][sWidth] = 1;
                             scanMap[y - 1][x] = 1;
                         }
+                        if (yMax) {
+                            scanMap[0][x] = 1;
+                            scanMap[0][x + 1] = 1;
+                        } else {
+                            scanMap[y + 1][x] = 1;
+                            scanMap[y + 1][x + 1] = 1;
+                        }
+                        scanMap[y][x + 1] = 1;
+                        if (y0) {
+                            scanMap[sHeight][x + 1] = 1;
+                        } else scanMap[y - 1][x + 1] = 1;
                     } else {
                         if (yMax) {
                             scanMap[sHeight][x - 1] = 1;
@@ -505,33 +512,33 @@ function start() {
                             scanMap[y - 1][x - 1] = 1;
                             scanMap[y - 1][x] = 1;
                         }
+                        if (x == sWidth) {
+                            if (yMax) {
+                                scanMap[0][x] = 1;
+                                scanMap[0][0] = 1;
+                            } else {
+                                scanMap[y + 1][0] = 1;
+                                scanMap[y + 1][x] = 1;
+                            }
+                            scanMap[y][0] = 1;
+                            if (y0) {
+                                scanMap[sHeight][0] = 1;
+                            } else scanMap[y - 1][0] = 1;
+                        } else {
+                            if (yMax) {
+                                scanMap[0][x] = 1;
+                                scanMap[0][x + 1] = 1;
+                            } else {
+                                scanMap[y + 1][x] = 1;
+                                scanMap[y + 1][x + 1] = 1;
+                            }
+                            scanMap[y][x + 1] = 1;
+                            if (y0) {
+                                scanMap[sHeight][x + 1] = 1;
+                            } else scanMap[y - 1][x + 1] = 1;
+                        }
                     }
 
-                    if (xMax) {
-                        if (yMax) {
-                            scanMap[0][x] = 1;
-                            scanMap[0][0] = 1;
-                        } else {
-                            scanMap[y + 1][0] = 1;
-                            scanMap[y + 1][x] = 1;
-                        }
-                        scanMap[y][0] = 1;
-                        if (y0) {
-                            scanMap[sHeight][0] = 1;
-                        } else scanMap[y - 1][0] = 1;
-                    } else {
-                        if (yMax) {
-                            scanMap[0][x] = 1;
-                            scanMap[0][x + 1] = 1;
-                        } else {
-                            scanMap[y + 1][x] = 1;
-                            scanMap[y + 1][x + 1] = 1;
-                        }
-                        scanMap[y][x + 1] = 1;
-                        if (y0) {
-                            scanMap[sHeight][x + 1] = 1;
-                        } else scanMap[y - 1][x + 1] = 1;
-                    }
                 //>-----------------------------------------------<
             }
         }
@@ -543,7 +550,7 @@ function start() {
     timer.stop(`interval`);
 
     if(timer.lastTime > 0)
-        intervalTime = timer.lastTime * 1.3;
+        intervalTime = timer.lastTime * 1.2;
     if(intervalTime < minTime)
         intervalTime = minTime;
 
@@ -557,8 +564,6 @@ function start() {
         $(`intervalTime`).innerHTML = intervalTime / 1000;
         $(`time`).innerHTML = timer.lastTime / 1000;
         $(`generation`).innerHTML = generation;
-
-        minTime = +$(`minTime`).value;
     };
 
     generation++;

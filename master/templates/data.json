@@ -74,8 +74,7 @@
       "x": 277,
       "y": -1667,
       "width": 200,
-      "height": 200,
-      "type": "grid"
+      "height": 200
 },
   "forHelp": {
      "name": "forHelp.png",
@@ -103,6 +102,7 @@
       "x": 277,
       "y": -1907,
       "width": 322,
-      "height": 184
+      "height": 184,
+      "type": "grid"
 }
 }

@@ -96,5 +96,13 @@
     "y": -3040,
     "width": 286,
     "height": 95
+},
+  "test": {
+     "name": "test.png",
+      "x": 277,
+      "y": -1907,
+      "width": 322,
+      "height": 184,
+      "type": "grid"
 }
 }

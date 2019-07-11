@@ -110,15 +110,16 @@
         settings.innerHTML =
             `<div id = "settingsDiv" style = "width:250px;display: none; position: absolute; right: 50%; bottom: 50%;">`+
                 `<div class="posy" id="posyt" style="${map.settings[map.style]}.settings[map.style]}">`+
-                    `<span style = "line-height: 35px;">MLPP MINIMAP: settings</span>`+
-                    `<div style = "text-align:left;line-height: 25px">`+
+                    `<a style = "position: absolute;line-height: 35px; left: 5px;">MLPP MINIMAP: settings</a><a id = "settingsDivCancel" style = "position: absolute; right: 5px; top: -2px; cursor: pointer;">[x]</a>`+
+                    `<div style = "padding-top: 25px; text-align:left;line-height: 25px">`+
+                        `<hr style = "border-color: darkGrey;">`+
                         `Cursor color: <span id = "cursorColor"style = "cursor:pointer;color:${cursorColor}">${cursorColor}</span>`+
                         `<br>`+
-                        `Draw grid: <span id = "grid"style = "cursor:pointer;">${grid}</span>`+
+                        `Draw grid: <span id = "grid" style = "cursor:pointer;">${grid}</span>`+
                         `<br>`+
-                        `Minimap style: <span id = "mapStyle"style = "cursor:pointer;">${map.style}</span>`+
+                        `Minimap style: <span id = "mapStyle" style = "cursor:pointer;">${map.style}</span>`+
                         `<br>`+
-                        `Sectors: <span id = "sectors"style = "cursor:pointer;">${sectors}</span>`+
+                        `Sectors: <span id = "sectors" style = "cursor:pointer;">${sectors}</span>`+
                     `</div>`+
                 `</div>`+
             `<div>`;
@@ -181,6 +182,10 @@
             localStorage.sectors = sectors;
 
             drawTemplates();
+        };
+
+        $(`settingsDivCancel`).onclick = () => {
+            changeDisplay(`settingsDiv`);
         };
 
         //>----------------------------------------------------
@@ -270,6 +275,8 @@
                 for (let name in factions)
                     $(name).onclick = function() {
                         changeDisplay('settings');
+                        if(this.id == faction)
+                            return;
                         faction = name;
                         localStorage.setItem('faction', name);
                         updateloop();
@@ -511,9 +518,11 @@
         ctx_minimap.clearRect(0, 0, minimap.width, minimap.height);
         ctx_minimapCover.clearRect(0, 0, minimapCover.width, minimapCover.height);
 
-        var x_left = x_window - (minimap.width >>> 1) / zoomlevel,
+        let x_left = x_window - (minimap.width >>> 1) / zoomlevel,
             y_top = y_window - (minimap.height >>> 1) / zoomlevel,
-            pictureShift = 1;//FOR SECTORS
+            pictureShift = 0.75,//FOR SECTORS
+            x_leftG = x_window - (minimap.width >>> 1) / zoomlevel / pictureShift,
+            y_topG = y_window - (minimap.height >>> 1) / zoomlevel / pictureShift;
 
         for (let i = 0; i < needed_templates.length; i++) {
             var template = needed_templates[i];
@@ -521,7 +530,7 @@
             if(template_list[needed_templates[i]].type != `grid`)
                 ctx_minimap.drawImage(image_list[template], ((template_list[template].x - x_left) * zoomlevel), ((template_list[template].y - y_top) * zoomlevel), (zoomlevel * image_list[template].width), (zoomlevel * image_list[template].height));
             else if(sectors == `On`)
-                ctx_minimapCover.drawImage(image_list[template], ((template_list[template].x - x_left) * zoomlevel * pictureShift ), ((template_list[template].y - y_top) * zoomlevel * pictureShift ), (zoomlevel * pictureShift  * image_list[template].width), (zoomlevel * pictureShift  * image_list[template].height));
+                ctx_minimapCover.drawImage(image_list[template], ((template_list[template].x - x_leftG) * zoomlevel * pictureShift ), ((template_list[template].y - y_topG) * zoomlevel * pictureShift ), (zoomlevel * pictureShift  * image_list[template].width), (zoomlevel * pictureShift  * image_list[template].height));
        }
     };
 

@@ -110,7 +110,7 @@
         settings.innerHTML =
             `<div id = "settingsDiv" style = "width:250px;display: none; position: absolute; right: 50%; bottom: 50%;">`+
                 `<div class="posy" id="posyt" style="${map.settings[map.style]}.settings[map.style]}">`+
-                    `<a style = "position: absolute;line-height: 35px; left: 5px;">MLPP MINIMAP: settings</a><a id = "settingsDivCancel" style = "position: absolute; right: 5px; top: -2px; cursor: pointer;">[x]</a>`+
+                    `<a style = "position: absolute;line-height: 35px; left: 5px;">MLPP Minimap: settings</a><a id = "settingsDivCancel" style = "position: absolute; right: 5px; top: -2px; cursor: pointer;">[x]</a>`+
                     `<div style = "padding-top: 25px; text-align:left;line-height: 25px">`+
                         `<hr style = "border-color: darkGrey;">`+
                         `Cursor color: <span id = "cursorColor"style = "cursor:pointer;color:${cursorColor}">${cursorColor}</span>`+
@@ -236,6 +236,9 @@
         minimapCover.width = minimap.width;
         minimapCover.height = minimap.height;
 
+        if((minimap.width % 2 == 1)||(minimap.height % 2 == 1))
+            alert(`It is not recommended to set the height or width of the minimap to an odd one!`);
+
         ctx_minimap = minimap.getContext("2d");
         ctx_minimapCover = minimapCover.getContext(`2d`);
         ctx_minimap_board = minimap_board.getContext("2d");
@@ -256,8 +259,7 @@
         lif.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 factions = JSON.parse(this.responseText);
-                if (debug)
-                    log(this.responseText);
+                if (debug) log(this.responseText);
 
                 if ((localStorage.faction == null) || (factions[localStorage.faction] == undefined))
                     faction = Object.keys(factions)[0];
@@ -278,7 +280,7 @@
                         if(this.id == faction)
                             return;
                         faction = name;
-                        localStorage.setItem('faction', name);
+                        localStorage.faction = name;
                         updateloop();
                     };
             }
@@ -362,8 +364,8 @@
     function updateloop() {
         if (debug) log("Updating Template List");
         // Get JSON of available templates
-        var xmlhttp = new XMLHttpRequest();
-        let url = undefined;
+        let xmlhttp = new XMLHttpRequest();
+            url = undefined;
 
         if (factions[faction].templates == 'own') {
             if (factions[faction].type == 2)
@@ -395,7 +397,7 @@
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
 
-        if (debug) console.log("Refresh got forced.");
+        if (debug) log("Refresh got forced.");
         image_list = [];
         loadTemplates();
 
@@ -455,10 +457,10 @@
         if ((!toggle_show)||(template_list == null))
             return;
 
-        var x_left = x_window - minimap.width / zoomlevel / 2;
-        var x_right = x_window + minimap.width / zoomlevel / 2;
-        var y_top = y_window - minimap.height / zoomlevel / 2;
-        var y_bottom = y_window + minimap.height / zoomlevel / 2;
+        var x_left = x_window - (minimap.width >>> 1) / zoomlevel,
+            x_right = x_window + (minimap.width >>> 1) / zoomlevel,
+            y_top = y_window - (minimap.height >>> 1) / zoomlevel,
+            y_bottom = y_window + (minimap.height >>> 1) / zoomlevel;
 
         needed_templates = [];
 
@@ -498,8 +500,7 @@
     }
 
     function loadImage(imagename) {
-        if (debug)
-            log("    Load image " + imagename);
+        if (debug) log("    Load image " + imagename);
 
         image_list[imagename] = new Image();
 
@@ -534,29 +535,29 @@
     };
 
     function drawBoard() {
-    if ((grid == `Off`)||(zoomlevel <= 4.6))
-        return;
+        if ((grid == `Off`)||(zoomlevel <= 4.6))
+            return;
 
-    ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
+        ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
 
-    ctx_minimap_board.beginPath();
-    var bw = minimap_board.width + zoomlevel,
-        bh = minimap_board.height + zoomlevel,
-        xoff_m = (minimap.width >>> 1) % zoomlevel - zoomlevel,
-        yoff_m = (minimap.height >>> 1) % zoomlevel - zoomlevel;
+        ctx_minimap_board.beginPath();
+        var bw = minimap_board.width + zoomlevel,
+            bh = minimap_board.height + zoomlevel,
+            xoff_m = (minimap.width >>> 1) % zoomlevel - zoomlevel,
+            yoff_m = (minimap.height >>> 1) % zoomlevel - zoomlevel;
 
-    for (var x = 0; x <= bw; x += zoomlevel) {
-        ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
-        ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
-    }
+        for (var x = 0; x <= bw; x += zoomlevel) {
+            ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
+            ctx_minimap_board.lineTo(x + xoff_m, bh + yoff_m);
+        }
 
-    for (var x = 0; x <= bh; x += zoomlevel) {
-        ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
-        ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
-    }
-    ctx_minimap_board.strokeStyle = "black";
-    ctx_minimap_board.stroke();
-}
+        for (var x = 0; x <= bh; x += zoomlevel) {
+            ctx_minimap_board.moveTo(xoff_m, x + yoff_m);
+            ctx_minimap_board.lineTo(bw + xoff_m, x + yoff_m);
+        }
+        ctx_minimap_board.strokeStyle = "black";
+        ctx_minimap_board.stroke();
+    };
 
     function drawCursor() {
         var x_left = x_window - (minimap.width >>> 1) / zoomlevel;
@@ -565,7 +566,10 @@
         var y_bottom = y_window + (minimap.height >>> 1) / zoomlevel;
 
         ctx_minimap_cursor.clearRect(0, 0, minimap_cursor.width, minimap_cursor.height);
-        if (x < x_left || x > x_right || y < y_top || y > y_bottom)return;
+
+        if (x < x_left || x > x_right || y < y_top || y > y_bottom)
+            return;
+
         xoff_c = x - x_left;
         yoff_c = y - y_top;
 

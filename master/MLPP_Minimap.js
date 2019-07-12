@@ -283,7 +283,7 @@
                     };
             }
         };
-        lif.open("GET", 'https://endlessnightnlr.github.io/master/factions_2.json', true);
+        lif.open("GET", 'https://endlessnightnlr.github.io/master/factions_MLPP.json', true);
         lif.send();
 
         drawCursor();
@@ -462,8 +462,7 @@
 
         needed_templates = [];
 
-        for (let k in template_list) {
-            template = k;
+        for (let template in template_list) {
 
             var temp_x = template_list[template].x;
             var temp_y = template_list[template].y;
@@ -504,7 +503,7 @@
 
         image_list[imagename] = new Image();
 
-        image_list[imagename].src = factions[faction].url + "images/" + template_list[imagename].name;
+        image_list[imagename].src = `${factions[faction].url}images/${imagename}.png`;
 
         image_list[imagename].onload = function() {
             counter++;
@@ -537,13 +536,14 @@
     function drawBoard() {
     if ((grid == `Off`)||(zoomlevel <= 4.6))
         return;
+
     ctx_minimap_board.clearRect(0, 0, minimap_board.width, minimap_board.height);
 
     ctx_minimap_board.beginPath();
-    var bw = minimap_board.width + zoomlevel;
-    var bh = minimap_board.height + zoomlevel;
-    var xoff_m = (minimap.width >>> 1) % zoomlevel - zoomlevel;
-    var yoff_m = (minimap.height >>> 1) % zoomlevel - zoomlevel;
+    var bw = minimap_board.width + zoomlevel,
+        bh = minimap_board.height + zoomlevel,
+        xoff_m = (minimap.width >>> 1) % zoomlevel - zoomlevel,
+        yoff_m = (minimap.height >>> 1) % zoomlevel - zoomlevel;
 
     for (var x = 0; x <= bw; x += zoomlevel) {
         ctx_minimap_board.moveTo(x + xoff_m, yoff_m);
@@ -559,10 +559,10 @@
 }
 
     function drawCursor() {
-        var x_left = x_window - minimap.width / zoomlevel / 2;
-        var x_right = x_window + minimap.width / zoomlevel / 2;
-        var y_top = y_window - minimap.height / zoomlevel / 2;
-        var y_bottom = y_window + minimap.height / zoomlevel / 2;
+        var x_left = x_window - (minimap.width >>> 1) / zoomlevel;
+        var x_right = x_window +( minimap.width >>> 1) / zoomlevel;
+        var y_top = y_window - (minimap.height >>> 1) / zoomlevel;
+        var y_bottom = y_window + (minimap.height >>> 1) / zoomlevel;
 
         ctx_minimap_cursor.clearRect(0, 0, minimap_cursor.width, minimap_cursor.height);
         if (x < x_left || x > x_right || y < y_top || y > y_bottom)return;

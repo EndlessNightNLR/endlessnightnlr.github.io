@@ -5,7 +5,7 @@
 // @author       ConsoleBey, Endless Night and MLP Pixel
 // @match        https://pixelzone.io/*
 // @match        http://pixelzone.io/*
-// @homepage     https://github.com/Autumn-Blaze/ponehs
+// @homepage     https://github.com/EndlessNightNLR/endlessnightnlr.github.io
 // @updateURL    https://endlessnightnlr.github.io/master/MLPP/MLPP_Minimap.user.js
 // @downloadURL  https://endlessnightnlr.github.io/master/MLPP/MLPP_Minimap.user.js
 // @grant        none

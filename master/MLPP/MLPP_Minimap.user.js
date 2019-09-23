@@ -1,13 +1,12 @@
 // ==UserScript==
 // @name         MLP Pixel Minimap
-// @version      2.2.1
+// @version      2.6.6
 // @description  My Little Pony Pixel (MLP Pixel) Minimap for PixelZone.io
 // @author       Endless Night
 // @include      *://pixelzone.io/*
-// @homepage     https://github.com/EndlessNightNLR/endlessnightnlr.github.io
+// @homepage     https://github.com/EndlessNightNLR
 // @updateURL    https://endlessnightnlr.github.io/master/MLPP/MLPP_Minimap.user.js
 // @downloadURL  https://endlessnightnlr.github.io/master/MLPP/MLPP_Minimap.user.js
-// @grant        none
 // ==/UserScript==
 //
 // To the glory of Luna and the New Lunar Republic!

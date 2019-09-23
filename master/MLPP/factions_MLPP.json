@@ -1,4 +1,4 @@
 {
-    "MLP : Pixel":{"url":"https://autumn-blaze.github.io/","color":"#1992E3","type":"2","templates":"own"},
-    "New Lunar Republic":{"url":"https://endlessnightnlr.github.io/master/","color":"aqua","type":"2","templates":"mine"}
+    "MLP : Pixel":{"data":"https://autumn-blaze.github.io/templates/data.json","images":"https://autumn-blaze.github.io/images/","color":"#1992E3","type":"2"},
+    "New Lunar Republic":{"data":"https://endlessnightnlr.github.io/master/templates/New Lunar Republic.json","images":"https://endlessnightnlr.github.io/master/images/","color":"aqua","type":"2"}
 }

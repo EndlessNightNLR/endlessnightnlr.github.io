@@ -1,99 +1,58 @@
 {
-  "NLR_Flag": {
-     "name": "NLR_Flag.png",
+  "NLR_Flag": 
       "x": 277,
-      "y": -1907,
-      "width": 322,
-      "height": 184 
+      "y": -1907
 },
   "Starlight": {
-     "name": "Starlight.png",
       "x": 3743,
-      "y": 1321,
-      "width": 353,
-      "height": 199 
+      "y": 1321
 },
   "Rainbow": {
-     "name": "Rainbow.png",
       "x": 277,
-      "y": -1723,
-      "width": 87,
-      "height": 57 
+      "y": -1723
 },
   "Flutty": {
-     "name": "Flutty.png",
       "x": 598,
-      "y": -1907,
-      "width": 93,
-      "height": 128 
+      "y": -1907
 },
   "Aryanne": {
-     "name": "Aryanne.png",
       "x": 3271,
-      "y": 106,
-      "width": 72,
-      "height": 107
+      "y": 106
 },
   "Luna": {
-     "name": "Luna.png",
       "x": 277,
-      "y": -2072,
-      "width": 234,
-      "height": 165
+      "y": -2072
 },
   "white_0": {
-     "name": "white_0.png",
       "x": 598,
-      "y": -1779,
-      "width": 93,
-      "height": 113
+      "y": -1779
 },
   "white_1": {
-     "name": "white_1.png",
       "x": 364,
-      "y": -1723,
-      "width": 234,
-      "height": 57
+      "y": -1723
 },
   "World_NLR": {
-     "name": "World_NLR.png",
       "x": 298,
-      "y": 1759,
-      "width": 596,
-      "height": 329
+      "y": 1759
 },
   "Dash_heart": {
-     "name": "Dash_heart.png",
       "x": 818,
-      "y": -1879,
-      "width": 42,
-      "height": 63
+      "y": -1879
 },
   "Logo": {
-     "name": "Logo.png",
       "x": 277,
-      "y": -1667,
-      "width": 200,
-      "height": 200
+      "y": -1667
 },
   "forHelp": {
-     "name": "forHelp.png",
       "x": 1749,
-      "y": 1218,
-      "width": 181,
-      "height": 177
+      "y": 1218
 },
   "Text": {
-    "name": "Text.png",
     "x": 1288,
-    "y": -3040,
-    "width": 286,
-    "height": 95
+    "y": -3040
 },
   "RL": {
       "x": 3271,
-      "y": -377,
-      "width": 825,
-      "height": 991
+      "y": -377
 }
 }

@@ -1,5 +1,6 @@
 {
     "MLP : Pixel":{"data":"https://autumn-blaze.github.io/templates/data.json","images":"https://autumn-blaze.github.io/images/","color":"#1992E3","type":"2"},
     "MLPP BlackJack Edition":{"data":"https://ShoNCUdoS.github.io/templates/data.json","images":"https://ShoNCUdoS.github.io/images/","color":"#1992E3","type":"2"},
-    "New Lunar Republic":{"data":"https://endlessnightnlr.github.io/master/templates/New Lunar Republic.json","images":"https://endlessnightnlr.github.io/master/images/","color":"aqua","type":"2"}
+    "New Lunar Republic":{"data":"https://endlessnightnlr.github.io/master/templates/New Lunar Republic.json","images":"https://endlessnightnlr.github.io/master/images/","color":"aqua","type":"2"},
+    "PG76":{"data":"https://github.com/powergab76/minimap/blob/master/templates/data.json","images":"https://github.com/powergab76/minimap/tree/master/images","color":"#E67E22","type":"1"},
 }

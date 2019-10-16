@@ -1,26 +1,26 @@
 {
     "MLP : Pixel":{
-	    "data":"https://autumn-blaze.github.io/templates/data.json",
-	    "images":"https://autumn-blaze.github.io/images/",
+	    "data":"https://raw.githubusercontent.com/autumn-blaze.github.io/master/templates/data.json",
+	    "images":"https://raw.githubusercontent.com/autumn-blaze.github.io/master/images/",
 		"color":"#1992E3",
 		"type":"2"
 	},
     "MLPP BlackJack Edition":{
-	    "data":"https://ShoNCUdoS.github.io/templates/data.json",
-		"images":"https://ShoNCUdoS.github.io/images/",
+	    "data":"https://raw.githubusercontent.com/ShoNCUdoS.github.io/templates/master/data.json",
+		"images":"https://raw.githubusercontent.com/ShoNCUdoS.github.io/master/images/",
 		"color":"#1992E3",
 		"type":"2"
 	},
     "New Lunar Republic":{
-	    "data":"https://endlessnightnlr.github.io/master/templates/New Lunar Republic.json",
-		"images":"https://endlessnightnlr.github.io/master/images/",
+	    "data":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/templates/New Lunar Republic.json",
+		"images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
 		"color":"aqua",
 		"type":"2"
 	},
     "PG76":{
-	    "data":"https://powergab76.github.io/templates/data.json",
-	"images":"https://powergab76.github.io/images/",
-	"color":"#E67E22",
-	"type":"2"
+	    "data":"https://raw.githubusercontent.com/powergab76.github.io/master/templates/data.json",
+		"images":"https://raw.githubusercontent.com/powergab76.github.io/master/images/",
+		"color":"#E67E22",
+		"type":"2"
 	}
 }

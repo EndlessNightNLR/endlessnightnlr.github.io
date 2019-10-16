@@ -19,8 +19,8 @@
 	},
     "PG76":{
 	    "data":"https://powergab76.github.io/templates/data.json",
-	"images":"https://powergab76.github.io/images/",
-	"color":"#E67E22",
-	"type":"2"
+		"images":"https://powergab76.github.io/images/",
+		"color":"#E67E22",
+		"type":"2"
 	}
 }

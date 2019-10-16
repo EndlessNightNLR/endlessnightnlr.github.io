@@ -1,0 +1,9 @@
+#settingsDiv{
+  user-select:none;
+}
+#minimapbg{
+  user-select:none;
+}
+.textButton{
+  cursor:pointer;
+}

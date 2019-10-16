@@ -1,13 +1,13 @@
 {
     "MLP : Pixel":{
-	    "data":"https://raw.githubusercontent.com/autumn-blaze.github.io/master/templates/data.json",
-	    "images":"https://raw.githubusercontent.com/autumn-blaze.github.io/master/images/",
+	    "data":"https://raw.githubusercontent.com/autumn-blaze/autumn-blaze.github.io/master/templates/data.json",
+	    "images":"https://raw.githubusercontent.com/autumn-blaze/autumn-blaze.github.io/master/images/",
 		"color":"#1992E3",
 		"type":"2"
 	},
     "MLPP BlackJack Edition":{
-	    "data":"https://raw.githubusercontent.com/ShoNCUdoS.github.io/templates/master/data.json",
-		"images":"https://raw.githubusercontent.com/ShoNCUdoS.github.io/master/images/",
+	    "data":"https://raw.githubusercontent.com/ShoNCUdoS/ShoNCUdoS.github.io/templates/master/data.json",
+		"images":"https://raw.githubusercontent.com/ShoNCUdoS/ShoNCUdoS.github.io/master/images/",
 		"color":"#1992E3",
 		"type":"2"
 	},
@@ -18,8 +18,8 @@
 		"type":"2"
 	},
     "PG76":{
-	    "data":"https://raw.githubusercontent.com/powergab76.github.io/master/templates/data.json",
-		"images":"https://raw.githubusercontent.com/powergab76.github.io/master/images/",
+	    "data":"https://raw.githubusercontent.com/powergab76/powergab76.github.io/master/templates/data.json",
+		"images":"https://raw.githubusercontent.com/powergab76/powergab76.github.io/master/images/",
 		"color":"#E67E22",
 		"type":"2"
 	}

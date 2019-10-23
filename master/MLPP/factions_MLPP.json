@@ -12,8 +12,8 @@
 		"type":"2"
 	},
 	"New Lunar Republic":{
-	    "data":"",
-	    "images":"",
+	    "data":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/templates/New%20Lunar%20Republic.json",
+	    "images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
 		"color":"aqua",
 		"type":"2"
 	},

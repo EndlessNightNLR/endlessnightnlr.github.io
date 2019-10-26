@@ -16,8 +16,7 @@
 	    "data":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/templates/New%20Lunar%20Republic.json",
 	    "images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
 		"color":"aqua",
-		"type":"2",
-		"chunks" : "true"
+		"type":"2"
 	},
     "PG76":{
 	    "data":"https://raw.githubusercontent.com/powergab76/powergab76.github.io/master/templates/data.json",

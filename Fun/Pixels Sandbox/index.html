@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="icon.png">
+		<title>Pixels</title>
+		<style>
+			.color{
+				width:40px;
+				height:40px;
+				border-radius:12px;
+				user-select:none;
+				cursor:pointer;
+			}
+			input{
+				color:inherit;
+				background-color:rgb(40,40,40);
+				border-width:2px;
+				border-radius:5px;
+				border-color:green;
+			}
+			button{
+				color:inherit;
+				font-size:inherit;
+				background-color:rgb(40,40,40);
+				border-width:2px;
+				border-radius:5px;
+				border-color:green;
+				user-select:none;
+				cursor:pointer;
+			}
+			body{
+				color:rgb(230,230,230);
+				font-size:110%;
+			}
+		</style>
+		<script defer src="code.js"></script>
+	</head>
+	<body style="background-color:black;">
+		<canvas id="canvas" style="position:fixed; top:0; left:0;"></canvas>
+
+		<button id="clear" style="position:fixed; top:10px; left:10px;">Clear</button>
+
+		<div id="palette" style="position:fixed; left:10px; top:50px; background-color:rgba(125,125,125,0.35); border-radius:12px; padding:5px;">
+			<div class="color" name="cyan"  style="background-color:rgb(20,230,230);"></div>
+			<div class="color" name="blue"  style="background-color:rgb(50,50,255);"></div>
+			<div class="color" name="green" style="background-color:rgb(30,240,30);"></div>
+			<div class="color" name="red"   style="background-color:rgb(255,30,30);"></div>
+			<div class="color" name="pink"  style="background-color:rgb(255,60,175);"></div>
+			<div class="color" name="white" style="background-color:rgb(250,250,250);"></div>
+			<div class="color" name="grey"  style="background-color:rgb(125,125,125);"></div>
+			<div class="color" name="black" style="background-color:rgb(0,0,0);"></div>
+		</div>
+	</body>
+</html>

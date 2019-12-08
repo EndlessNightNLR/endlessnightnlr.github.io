@@ -1,9 +1,11 @@
 //Endless
 //Glory to the Luna and New Lunar Republic!
-
+//ЭТА НАДПИСЬ ЗДЕСЬ ПРОСТО ТАК
 'use strict';
 
-let canvas = document.getElementById('canvas'),
+let mobile = !!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)),
+
+	canvas = document.getElementById('canvas'),
 	ctx = canvas.getContext('2d'),
 
 	width = window.outerWidth,
@@ -150,21 +152,23 @@ function selectColor(id){
 };
 
 (function listener(){
-	if(pixels.length){
-		for(let i=0,len=pixels.length;i<len;i++){
-			let pxl = pixels[i];
-			setPxl(pxl.x,pxl.y,[0,0,0]);
-			if(pxl.y+speed>=layers[pxl.x]){
-				setPxl(pxl.x,layers[pxl.x],pxl.rgb);
-				pixels.splice(i,1);
-				i--;len--;layers[pxl.x]--;
-			} else {
-				pxl.y+=speed;
-				setPxl(pxl.x,pxl.y,pxl.rgb);
+	try{
+		if(pixels.length){
+			for(let i=0,len=pixels.length;i<len;i++){
+				let pxl = pixels[i];
+				setPxl(pxl.x,pxl.y,[0,0,0]);
+				if(pxl.y+speed>=layers[pxl.x]){
+					setPxl(pxl.x,layers[pxl.x],pxl.rgb);
+					pixels.splice(i,1);
+					i--;len--;layers[pxl.x]--;
+				} else {
+					pxl.y+=speed;
+					setPxl(pxl.x,pxl.y,pxl.rgb);
+				};
 			};
+			ctx.putImageData(imageData,0,0);
 		};
-		ctx.putImageData(imageData,0,0);
-	};
-	if(mouseDown && worldY<layers[worldX]) addPxls(worldX,worldY);
+		if(mouseDown && worldY<layers[worldX]) addPxls(worldX,worldY);
+	} catch (e) {console.log(e)};
 	window.requestAnimationFrame(listener);
 })();

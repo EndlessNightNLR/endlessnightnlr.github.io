@@ -73,7 +73,7 @@ canvas.onmousemove = e => {
 	worldX = e.clientX;
 	worldY = e.clientY;
 
-	let pixelsCount = 5;
+	let pixelsCount = 7;
 
 	let stepX = Math.abs(lastX-worldX)/pixelsCount,
 		stepY = Math.abs(lastY-worldY)/pixelsCount;

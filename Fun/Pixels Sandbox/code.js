@@ -54,7 +54,6 @@ let palette = {
 		return null;
 	}
 };
-palette.selectedColorID = 15;
 for(let i=0;i<palette.elems.length;i++) {
 	let e = palette.elems[i];
 	palette.colors.push(e.style.backgroundColor.match(/-?\d+/g).map(x=>+x));
@@ -68,7 +67,7 @@ for(let i=0;i<palette.elems.length;i++) {
 	};
 };
 
-selectColor(palette.selectedColorID);
+selectColor(palette.selectedColorID = 15);
 selectBackground(0);
 console.log(palette.colors.join('\n'));
 //>------------------------------------------------

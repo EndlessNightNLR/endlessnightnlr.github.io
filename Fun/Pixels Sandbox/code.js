@@ -4,8 +4,9 @@
 'use strict';
 
 let mobile = !!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)),
+	fromFile = location.protocol.includes('file'),
 
-	canvas = document.getElementById('canvas'),
+	canvas = $('canvas'),
 	ctx = canvas.getContext('2d'),
 
 	width = window.outerWidth,
@@ -19,7 +20,9 @@ let mobile = !!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|
 
 	speed = 10,
 	pixels = [],
-	layers = new Array(width);
+	layers = new Array(width),
+
+	save = null;
 
 //PALETTE
 let palette = {
@@ -51,7 +54,7 @@ let palette = {
 		return null;
 	}
 };
-palette.selectedColorID = 0;
+palette.selectedColorID = 15;
 for(let i=0;i<palette.elems.length;i++) {
 	let e = palette.elems[i];
 	palette.colors.push(e.style.backgroundColor.match(/-?\d+/g).map(x=>+x));
@@ -61,13 +64,19 @@ for(let i=0;i<palette.elems.length;i++) {
 	e.oncontextmenu = () => {
 	    e = e || window.event;
 	    e.preventDefault ? e.preventDefault() : e.returnValue = false;
-	    console.log(i);
 		selectBackground(i);
 	};
 };
 
 selectColor(palette.selectedColorID);
+selectBackground(0);
 console.log(palette.colors.join('\n'));
+//>------------------------------------------------
+
+//LOCALE STORAGE
+if(!fromFile){
+	if(localStorage.save) save = JSON.parse(localStorage.save);
+};
 //>------------------------------------------------
 
 //CANVAS
@@ -76,7 +85,7 @@ let imageData = ctx.getImageData(0,0,width,height),
 	data = imageData.data;
 //>------------------------------------------------
 
-//PIXELS
+//BORDER
 for(let i=0;i<width;i++) layers[i]=border;
 //>------------------------------------------------
 
@@ -103,7 +112,7 @@ canvas.onmousemove = e => {
 canvas.onmousedown = e => {mouseDown=true; worldX=e.clientX; worldY=e.clientY};
 window.onblur = canvas.onmouseleave = canvas.onmouseup = () => mouseDown = false;
 
-document.getElementById('clear').onclick = () => {
+$('clear').onclick = () => {
 	pixels = [];
 	for(let i=0;i<width*height<<2;i+=4) data[i]=data[i+1]=data[i+2]=data[i+3]=0;
 	ctx.putImageData(imageData,0,0);
@@ -111,6 +120,30 @@ document.getElementById('clear').onclick = () => {
 };
 
 document.oncontextmenu = () => false;
+
+$('save').onclick = () => {
+	save = {
+		data : new Uint8ClampedArray(data.length),
+		layers : [...layers],
+		pixels : [...pixels].map(x=>({x:x.x,y:x.y,rgb:[...x.rgb]}))
+	};
+	for(let i=0,l=data.length;i<l;i++) save.data[i] = data[i];
+	console.log('Saved');
+
+	if(fromFile) return;
+	localStorage.save = JSON.stringify(save);
+};
+
+$('load').onclick = () => {
+	if(save===null) {console.log('Save not found');return};
+	if(save.data.length!==data.length || save.layers.length!==layers.length) {console.log('Dif sizes');return};
+
+	for(let i=0,l=data.length;i<l;i++) data[i] = save.data[i];
+	layers = [...save.layers];
+	pixels = [...save.pixels].map(x=>({x:x.x,y:x.y,rgb:[...x.rgb]}));
+	ctx.putImageData(imageData,0,0);
+	console.log('Loaded	');
+};
 //>------------------------------------------------
 
 //FUNCTIONS
@@ -122,6 +155,10 @@ function addPxls(x,y,count=4,range=6){
 			y:y+rand(-range,range),
 			rgb: [...palette._selectedColorRGB,255]
 		});
+		if(pixels[last].x>=width || pixels[last].x<0){
+			pixels.splice(last,1);
+			continue main
+		};
 		if(pixels[last].y>=layers[pixels[last].x]) {
 			pixels.splice(last,1);
 			count--;
@@ -149,7 +186,7 @@ function setPxl(x,y,rgb){
 };
 
 function selectColor(id){
-	let selector = document.getElementById('selectorColor');
+	let selector = $('selectorColor');
 	selector && selector.remove();
 
 	palette.selectedColorID = id;
@@ -159,48 +196,50 @@ function selectColor(id){
 	let s = selector.style,
 		radius = 5;
 	s.position = 'relative';
-    s.marginLeft = selector.style.marginRight = 'auto';
-	s.width = selector.style.height = radius*2+'px';
+    s.marginLeft = s.marginRight = 'auto';
+	s.width = s.height = radius*2+'px';
     s.top = palette.elems[0].offsetHeight/2-radius+'px';
     s.borderRadius = radius+'px';
     let rgb = palette.colors[id];
-	if(rgb[0]==125 && rgb[1]===125 && rgb[2]===125) selector.style.backgroundColor = `rgb(20,230,230)`;
+	if(rgb[0]===128 && rgb[1]===128 && rgb[2]===128) selector.style.backgroundColor = `rgb(20,230,230)`;
 	else selector.style.backgroundColor = `rgb(${255-rgb[0]},${255-rgb[1]},${255-rgb[2]})`;
 
 	palette.elems[id].appendChild(selector);
 };
 
 function selectBackground(id){
-	let selector = document.getElementById('selectorBg');
+	let selector = $('selectorBg');
 	selector && selector.remove();
 
 	document.body.style.backgroundColor = `rgb(${palette.getColorById(id)})`;
 
 	selector = document.createElement('div');
-	selector.innerText = 'L';
 	selector.id = 'selectorBg';
 	let s = selector.style,
 		radius = 5,
 		borderWidth = 5;
 	s.position = 'relative';
-    s.marginLeft = selector.style.marginRight = 'auto';
-	s.width = selector.style.height = radius*2+'px';
-    s.top = palette.elems[0].offsetHeight/2-radius+'px';
-    s.borderRadius = radius+'px';
+    s.marginLeft = s.marginRight = 'auto';
+	s.width = s.height = radius*2+'px';
+    s.top = palette.elems[0].offsetHeight/2-radius-borderWidth+'px';
+    s.border = `${borderWidth}px solid rgb(${palette.getColorById(id).map(x => 255-x)})`;
+    s.borderRadius = radius*2+'px';
     s.borderWidth = borderWidth+'px';
     let rgb = palette.colors[id];
-	if(rgb[0]==125 && rgb[1]===125 && rgb[2]===125) selector.style.borderColor = `rgb(20,230,230)`;
+	if(rgb[0]==128 && rgb[1]===128 && rgb[2]===128) selector.style.borderColor = `rgb(20,230,230)`;
 	else selector.style.borderColor = `rgb(${255-rgb[0]},${255-rgb[1]},${255-rgb[2]})`;
 
 	palette.elems[id].appendChild(selector);
 };
+
+function $(id){return document.getElementById(id)};
 
 (function listener(){
 	try{
 		if(pixels.length){
 			for(let i=0,len=pixels.length;i<len;i++){
 				let pxl = pixels[i];
-				setPxl(pxl.x,pxl.y,[0,0,0,0]);
+				if(layers[pxl.x]>pxl.y) setPxl(pxl.x,pxl.y,[0,0,0,0]);
 				if(pxl.y+speed>=layers[pxl.x]){
 					setPxl(pxl.x,layers[pxl.x],pxl.rgb);
 					pixels.splice(i,1);

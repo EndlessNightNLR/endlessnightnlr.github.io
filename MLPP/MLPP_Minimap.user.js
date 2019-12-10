@@ -3,7 +3,7 @@ let message = document.createElement('div'),
     msgTimeoutId = null,
     msgIntervalId = null;
 message.style = 'background-color: rgba(0, 0, 0, 0); color: rgba(150, 250, 150, 0); display: none; position: absolute; width: auto; height: 20px; right: 50%; top: 3.75em; text-align: center; line-height: 20px; vertical-align: middle; border-radius: 6px;padding:7px;';
-
+    let a = 0.8;
 document.body.appendChild(message);
 
 function showMsg(msg) {
@@ -12,10 +12,14 @@ function showMsg(msg) {
     if(msgTimeoutId !== null) clearTimeout(msgTimeoutId);
     message.style.display = 'block';
     message.innerText = msg;
-    let a = 0.8;
     message.style.color = `rgba(250, 250, 250, 0.8)`;
     message.style.backgroundColor = `rgba(0, 0, 0, 0.8)`;
-    msgTimeoutId = setTimeout(() => msgIntervalId = setInterval(() => {
+    return msg;
+};
+function $(id){return document.getElementById(id)};
+window.onkeydown = e => {
+    if(e.keyCode !== 70) return;
+    msgIntervalId = setInterval(() => {
             a -= 0.03;
             if(a <= 0){
                 message.style.display = 'none';
@@ -25,11 +29,6 @@ function showMsg(msg) {
             message.style.color = `rgba(250, 250, 250, ${a})`;
             message.style.backgroundColor = `rgba(0, 0, 0, ${a})`;
         },40)
-    ,4000);
-    return msg;
 };
-
-function $(id){return document.getElementById(id)};
-
 showMsg('Press F to pay respect');
 };

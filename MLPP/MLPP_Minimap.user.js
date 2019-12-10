@@ -29,5 +29,7 @@ function showMsg(msg) {
     return msg;
 };
 
+function $(id){return document.getElementById(id)};
+
 showMsg('Press F to pay respect');
 };

@@ -77,6 +77,10 @@ let imageData = ctx.getImageData(0,0,width,height),
 	data = imageData.data;
 //>------------------------------------------------
 
+//BORDER
+for(let i=0;i<width;i++) layers[i]=border;
+//>------------------------------------------------
+
 //LOCALE STORAGE
 if(!fromFile)
 	if(localStorage.save){
@@ -85,11 +89,8 @@ if(!fromFile)
 		for(let i=0;i<data.length;i++) data[i]=save.data[i];
 		layers = [...save.layers];
 		pixels = [...save.pixels].map(x=>[...x]);
+		ctx.putImageData(data,0,0);
 	};
-//>------------------------------------------------
-
-//BORDER
-for(let i=0;i<width;i++) layers[i]=border;
 //>------------------------------------------------
 
 //LISTENERS

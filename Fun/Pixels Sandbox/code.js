@@ -1,6 +1,5 @@
-//Endless
+//Endless Night
 //Glory to the Luna and New Lunar Republic!
-//ЭТА НАДПИСЬ ЗДЕСЬ ПРОСТО ТАК
 'use strict';
 
 let mobile = !!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)),
@@ -46,10 +45,10 @@ let palette = {
 	set selectedBackgroundRGB(rgb){this._selectedBackgroundRGB=rgb;this._selectedBackgroundID=this.getIdByColor(rgb)},
 
 	getColorById : function(id){return this.colors[id] || null},
-	getIdByColor : function(rgb){
+	getIdByColor : function(rgba){
 		for(let i=0;i<this.colors.length;i++) {
 			let palClr = this.colors[i];
-			if(palClr[0]===rgb[0] && palClr[1]===rgb[1] && palClr[2]===rgb[2]) return i;
+			if(palClr[0]===rgba[0] && palClr[1]===rgba[1] && palClr[2]===rgba[2]) return i;
 		};
 		return null;
 	}
@@ -57,9 +56,9 @@ let palette = {
 for(let i=0;i<palette.elems.length;i++) {
 	let e = palette.elems[i];
 	palette.colors.push(e.style.backgroundColor.match(/-?\d+/g).map(x=>+x));
-	//COLOR
+	//PIXEL COLOR
 	e.onclick = () => selectColor(i);
-	//BACKGROUND
+	//BACKGROUND COLOR
 	e.oncontextmenu = () => {
 	    e = e || window.event;
 	    e.preventDefault ? e.preventDefault() : e.returnValue = false;
@@ -113,35 +112,46 @@ window.onblur = canvas.onmouseleave = canvas.onmouseup = () => mouseDown = false
 
 $('clear').onclick = () => {
 	pixels = [];
-	for(let i=0;i<width*height<<2;i+=4) data[i]=data[i+1]=data[i+2]=data[i+3]=0;
+	for(let i=0;i<data.length;i++) data[i]=0;
 	ctx.putImageData(imageData,0,0);
 	for(let i=0;i<width;i++) layers[i]=border;
 };
 
 document.oncontextmenu = () => false;
 
-$('save').onclick = () => {
-	save = {
-		data : new Uint8ClampedArray(data.length),
-		layers : [...layers],
-		pixels : [...pixels].map(x=>({x:x.x,y:x.y,rgb:[...x.rgb]}))
-	};
-	for(let i=0,l=data.length;i<l;i++) save.data[i] = data[i];
-	console.log('Saved');
-
-	if(fromFile) return;
+if(!fromFile) window.onunload = () => {
+	save.data = compressData(save.data);
 	localStorage.save = JSON.stringify(save);
+};
+
+$('save').onclick = () => {
+	let time = performance.now();
+
+	//COPY
+	save = {
+		data   : new Uint8ClampedArray(data.length),
+		layers : [...layers],
+		pixels : [...pixels].map(x=>[...x])
+	};
+	for(let i=0;i<data.length;i++) save.data[i]=data[i];
+	//>------------------------------------------------
+
+	console.log('Saved '+(performance.now()-time));
 };
 
 $('load').onclick = () => {
 	if(save===null) {console.log('Save not found');return};
-	if(save.data.length!==data.length || save.layers.length!==layers.length) {console.log('Dif sizes');return};
+	if(save.layers.length!==layers.length) {console.warn('Dif layers sizes');return};
+	if(save.data.length!==data.length) {console.warn('Dif datas sizes');return};
 
-	for(let i=0,l=data.length;i<l;i++) data[i] = save.data[i];
+	//COPY
+	for(let i=0;i<data.length;i++) data[i]=save.data[i];
 	layers = [...save.layers];
-	pixels = [...save.pixels].map(x=>({x:x.x,y:x.y,rgb:[...x.rgb]}));
+	pixels = [...save.pixels].map(x=>[...x]);
+	//>------------------------------------------------
+
 	ctx.putImageData(imageData,0,0);
-	console.log('Loaded	');
+	console.log('Loaded');
 };
 //>------------------------------------------------
 
@@ -149,22 +159,18 @@ $('load').onclick = () => {
 function addPxls(x,y,count=4,range=6){
 	main : for(let i=0;i<count;i++){
 		let last = pixels.length;
-		pixels.push({
-			x:x+rand(-range,range),
-			y:y+rand(-range,range),
-			rgb: [...palette._selectedColorRGB,255]
-		});
-		if(pixels[last].x>=width || pixels[last].x<0){
+		pixels.push([x+rand(-range,range),y+rand(-range,range),[...palette._selectedColorRGB,255]]);
+		if(pixels[last][0]>=width || pixels[last][0]<0){
 			pixels.splice(last,1);
 			continue main
 		};
-		if(pixels[last].y>=layers[pixels[last].x]) {
+		if(pixels[last][1]>=layers[pixels[last][0]]) {
 			pixels.splice(last,1);
 			count--;
 			continue main
 		};
 		sub : for(let j=1;j<i;j++)
-			if(pixels[last].x==pixels[last-j].x && pixels[last].y==pixels[last-j].y) {
+			if(pixels[last][0]==pixels[last-j][0] && pixels[last][1]==pixels[last-j][1]) {
 				i--;
 				pixels.unshift();
 				break sub
@@ -182,6 +188,32 @@ function getPxl(x,y){
 function setPxl(x,y,rgb){
 	let c=x + y*width << 2;
 	[data[c],data[c+1],data[c+2],data[c+3]] = [...rgb];
+};
+
+function compressData(data){
+	let ids = new Uint8ClampedArray(data.length>>>2),
+		compressed = [],
+		idOfEmpty = 31;
+	for(let i=0,j=0;j<ids.length;i+=4,j++) {
+		if(data[i+3]===0) ids[j]=idOfEmpty;
+		else ids[j]=palette.getIdByColor([data[i],data[i+1],data[i+2]]);
+	};
+	for(let i=0;i<ids.length;i+=2) compressed.push(ids[i]+(ids[i+1]<<5));
+	return compressed.join('.')
+};
+
+function decompressData(compressed){
+	compressed = compressed.split('.');
+	let data = new Uint8ClampedArray(compressed.length<<3),
+		ids  = new Uint8ClampedArray(compressed.length<<1),
+		idOfEmpty = 31;
+	for(let i=0,j=0;j<compressed.length;i+=2,j++)
+		[ids[i],ids[i+1]] = [compressed[j]&31,compressed[j]>>>5];
+	for(let i=0,j=0;j<ids.length;i+=4,j++){
+		if(ids[j]===idOfEmpty) data[i]=data[i+1]=data[i+2]=data[i+3]=0;
+		else [data[i],data[i+1],data[i+2],data[i+3]] = [...palette.getColorById(ids[j]),255];
+	};
+	return data
 };
 
 function selectColor(id){
@@ -233,24 +265,24 @@ function selectBackground(id){
 
 function $(id){return document.getElementById(id)};
 
-(function listener(){
+(window.listener = function(){
 	try{
 		if(pixels.length){
-			for(let i=0,len=pixels.length;i<len;i++){
+			for(let i=0,l=pixels.length;i<l;i++){
 				let pxl = pixels[i];
-				if(layers[pxl.x]>pxl.y) setPxl(pxl.x,pxl.y,[0,0,0,0]);
-				if(pxl.y+speed>=layers[pxl.x]){
-					setPxl(pxl.x,layers[pxl.x],pxl.rgb);
+				if(layers[pxl[0]]>pxl[1]) setPxl(pxl[0],pxl[1],[0,0,0,0]);
+				if(pxl[1]+speed>=layers[pxl[0]]){
+					setPxl(pxl[0],layers[pxl[0]],pxl[2]);
 					pixels.splice(i,1);
-					i--;len--;layers[pxl.x]--;
+					i--;l--;layers[pxl[0]]--;
 				} else {
-					pxl.y+=speed;
-					setPxl(pxl.x,pxl.y,pxl.rgb);
+					pxl[1]+=speed;
+					setPxl(...pxl);
 				};
 			};
 			ctx.putImageData(imageData,0,0);
 		};
 		if(mouseDown && worldY<layers[worldX]) addPxls(worldX,worldY);
-	} catch (e) {console.log(e)};
-	window.requestAnimationFrame(listener);
+	} catch(e){console.log(e)};
+	window.requestAnimationFrame(window.listener);
 })();

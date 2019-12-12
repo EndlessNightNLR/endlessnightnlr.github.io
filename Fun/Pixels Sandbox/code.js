@@ -72,9 +72,14 @@ console.log(palette.colors.join('\n'));
 //>------------------------------------------------
 
 //LOCALE STORAGE
-if(!fromFile){
-	if(localStorage.save) save = JSON.parse(localStorage.save);
-};
+if(!fromFile)
+	if(localStorage.save){
+		save = JSON.parse(localStorage.save);
+		save.data = decompressData(save.data);
+		for(let i=0;i<data.length;i++) data[i]=save.data[i];
+		layers = [...data.layers];
+		pixels = [...save.pixels].map(x=>[...x]);
+	};
 //>------------------------------------------------
 
 //CANVAS

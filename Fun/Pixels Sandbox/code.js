@@ -21,6 +21,7 @@ let mobile = !!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|
 	pixels = [],
 	layers = new Array(width),
 
+	hasBeenSaved = false,
 	save = null;
 
 //PALETTE
@@ -126,11 +127,13 @@ $('clear').onclick = () => {
 document.oncontextmenu = () => false;
 
 if(!fromFile) window.onunload = () => {
+	if(!hasBeenSaved) return;
 	save.data = compressData(save.data);
 	localStorage.save = JSON.stringify(save);
 };
 
 $('save').onclick = () => {
+	hasBeenSaved = true;
 	let time = performance.now();
 
 	//COPY

@@ -71,6 +71,12 @@ selectBackground(0);
 console.log(palette.colors.join('\n'));
 //>------------------------------------------------
 
+//CANVAS
+canvas.width=width; canvas.height=height;
+let imageData = ctx.getImageData(0,0,width,height),
+	data = imageData.data;
+//>------------------------------------------------
+
 //LOCALE STORAGE
 if(!fromFile)
 	if(localStorage.save){
@@ -80,12 +86,6 @@ if(!fromFile)
 		layers = [...data.layers];
 		pixels = [...save.pixels].map(x=>[...x]);
 	};
-//>------------------------------------------------
-
-//CANVAS
-canvas.width=width; canvas.height=height;
-let imageData = ctx.getImageData(0,0,width,height),
-	data = imageData.data;
 //>------------------------------------------------
 
 //BORDER

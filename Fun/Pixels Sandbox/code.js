@@ -83,7 +83,7 @@ if(!fromFile)
 		save = JSON.parse(localStorage.save);
 		save.data = decompressData(save.data);
 		for(let i=0;i<data.length;i++) data[i]=save.data[i];
-		layers = [...data.layers];
+		layers = [...save.layers];
 		pixels = [...save.pixels].map(x=>[...x]);
 	};
 //>------------------------------------------------

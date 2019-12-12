@@ -89,7 +89,7 @@ if(!fromFile)
 		for(let i=0;i<data.length;i++) data[i]=save.data[i];
 		layers = [...save.layers];
 		pixels = [...save.pixels].map(x=>[...x]);
-		ctx.putImageData(data,0,0);
+		ctx.putImageData(imageData,0,0);
 	};
 //>------------------------------------------------
 

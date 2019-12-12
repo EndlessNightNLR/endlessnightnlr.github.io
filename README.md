@@ -1,3 +1,5 @@
 # endlessnightnlr.github.io
 
-Здесь хранятся шаблоны для фракции MLPP и NLR и может будет что-то ещё
+Здесь хранятся шаблоны для фракции MLPP и NLR.
+
+My little pixel sandbox https://endlessnightnlr.github.io/Fun/Pixels%20Sandbox/index.html

@@ -1,0 +1,9 @@
+{
+    "fenerzone":{
+	    "data":"https://raw.githubusercontent.com/seniorlonely/fenerzone/master/templates/data.json",
+	    "images":"https://raw.githubusercontent.com/seniorlonely/fenerzone/master/images/",
+	    "color":"red",
+	    "type":"2",
+	    "chunks" : "false"
+	}
+}

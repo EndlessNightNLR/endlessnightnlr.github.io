@@ -52,5 +52,11 @@
     "y": -1036,
     "width": 394,
     "height": 598
+  },
+  "gloryToTheNLR": {
+  	"x": -200,
+  	"y": 200,
+  	"width": 320,
+  	"height": 183
   }
 }

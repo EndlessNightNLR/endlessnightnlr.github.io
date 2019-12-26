@@ -25,6 +25,13 @@
 		"type":"2",
 	    "chunks" : "true"
 	},
+    "Turkey":{
+	    "data":"https://raw.githubusercontent.com/seniorlonely/TurkeyMap/master/templates/data.json",
+	    "images":"https://raw.githubusercontent.com/seniorlonely/TurkeyMap/master/images/",
+	    "color":"red",
+	    "type":"2",
+	    "chunks" : "false"
+	},
     "FenerZone":{
 	    "data":"https://raw.githubusercontent.com/seniorlonely/fenerzone/master/templates/data.json",
 	    "images":"https://raw.githubusercontent.com/seniorlonely/fenerzone/master/images/",

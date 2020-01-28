@@ -2,4 +2,6 @@
 
 Здесь хранятся шаблоны и скрипты фракций MLPP и NLR.
 
-Also my little pixel sandbox https://endlessnightnlr.github.io/Fun/Pixels%20Sandbox/index.html
+My little pixel sandbox https://endlessnightnlr.github.io/Fun/Pixels%20Sandbox/index.html
+
+Particles in space https://endlessnightnlr.github.io/Fun/ParticlesInSpace/index.html

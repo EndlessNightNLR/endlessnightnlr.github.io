@@ -11,4 +11,5 @@ Gravity simulation https://endlessnightnlr.github.io/Fun/Gravity/Gravity.html
   f - follow the biggest
   click - follow selected body
   space - start/stop
+  [/] - faster/slower
   also has a zoom

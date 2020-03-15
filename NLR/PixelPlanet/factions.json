@@ -13,8 +13,8 @@
 	},
 	"Rony":{
 	    "data"  :"https://raw.githubusercontent.com/RonyRam/miniMapPlanet/master/templates/data.json",
-	    "images":"https://raw.githubusercontent.com/RonyRam/miniMapPlanet//master/images/",
+	    "images":"https://raw.githubusercontent.com/RonyRam/miniMapPlanet/master/images/",
 		"color" :"aqua",
 		"type"	:2
-	},
+	}
 }

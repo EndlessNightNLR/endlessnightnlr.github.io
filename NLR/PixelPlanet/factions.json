@@ -1,6 +1,6 @@
 {
 	"Pony Planet":{
-	    "data"  :"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/PixelPlanet/templates.json",
+	    "data"  :"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/Pony Planet/PixelPlanet/templates.json",
 	    "images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
 		"color" :"aqua",
 		"type"	:2

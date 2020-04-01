@@ -16,5 +16,11 @@
 	    "images":"https://raw.githubusercontent.com/RonyRam/miniMapPlanet/master/images/",
 		"color" :"aqua",
 		"type"	:2
+	},
+	"MLPP":{
+	    "data"  :"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/data.json",
+	    "images":"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/images/",
+		"color" :"#1992E3",
+		"type"	:2
 	}
 }

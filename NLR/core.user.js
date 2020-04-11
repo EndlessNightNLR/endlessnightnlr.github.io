@@ -12,6 +12,7 @@
 // ==/UserScript==
 //
 // To the glory of Luna and the New Lunar Republic!
+// (sorry Arkeros)
 //
 {
 	let e = document.createElement(`script`);

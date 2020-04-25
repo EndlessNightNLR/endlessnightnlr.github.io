@@ -4,5 +4,12 @@
         "y" : -700,
         "width"  : 765,
         "height" : 527
+    },
+    "error":{
+        "type":'"sector",
+        "x" : -21000,
+        "y" : -700,
+        "width"  : 765,
+        "height" : 527
     }
 }  

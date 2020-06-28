@@ -22,5 +22,11 @@
 	    "images":"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/images/",
 		"color" :"#1992E3",
 		"type"	:2
+	},
+	"idk":{
+	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/templates/data.json",
+	    "images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/PP/images/",
+		"color" :"grey",
+		"type"	:2
 	}
 }

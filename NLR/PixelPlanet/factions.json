@@ -23,7 +23,7 @@
 		"color" :"#1992E3",
 		"type"	:2
 	},
-	"idk":{
+	"TEF":{
 	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/templates/data.json",
 	    "images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/images/",
 		"color" :"grey",

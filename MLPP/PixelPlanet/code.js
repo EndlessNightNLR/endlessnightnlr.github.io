@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         MLP Pixel Minimap
-// @version      2.7.1.8
+// @version      2.7.1.9
 // @description  My Little Pony Pixel (MLP Pixel) Minimap for PixelPlanet.fun
 // @author       Endless Night
 // @include      *://pixelplanet.fun/*

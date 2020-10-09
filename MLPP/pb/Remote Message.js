@@ -12,13 +12,6 @@ function initCode(){
     window.mapModules.push(module);
     function module({
         minimap,
-        settings,
-        mouse,
-        palette,
-        chunkInterface,
-        templates,
-        sectors,
-        ws,
         uo,
         BigMessage,
         functions

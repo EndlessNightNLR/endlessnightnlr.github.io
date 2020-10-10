@@ -1,5 +1,5 @@
 {
-  "test": {
+  "MLPP": {
     "data": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/pb/templates.json",
     "images": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/pb/",
     "color": "aqua"

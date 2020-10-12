@@ -2,5 +2,9 @@
 	"Remote Message": {
 		"desc": "none",
 		"src": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/pb/Remote%20Message.js"
+	},	
+	"one more script": {
+		"desc": "none",
+		"src": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/pb/moreCode.js"
 	}
 }

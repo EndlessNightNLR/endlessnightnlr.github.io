@@ -5,11 +5,10 @@
         "width"  : 765,
         "height" : 527
     },
-    "error":{
-        "type":"sector",
-        "x" : -21000,
-        "y" : -700,
-        "width"  : 554,
-        "height" : 61
+    "sych_anarchy":{
+        "x" : -16534,
+        "y" : -2506,
+        "width"  : 133,
+        "height" : 69
     }
 }  

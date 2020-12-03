@@ -13,13 +13,13 @@
     },
     "MainButt":{
         "x" : -22329,
-        "y" : -2581,
-        "width"  : 466,
-        "height" : 535
+        "y" : -2582,
+        "width"  : 849,
+        "height" : 714
     },
     "anya_unicorn":{
         "x":-15247,
-        "y":-2237,
+        "y":-2236,
         "width": 207,
         "height": 218
     }

@@ -34,5 +34,11 @@
         "y":-2193,
         "width": 213,
         "height": 170
+    },
+    "rennet_things":{
+        "x":-23448,
+        "y":-3376,
+        "width": 153,
+        "height": 427
     }
 }  

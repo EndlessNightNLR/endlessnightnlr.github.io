@@ -11,7 +11,7 @@
 		"color" :"aqua"
 	},
 	"TEF":{
-	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/NLR/PixelPlanet/templates.json",
+	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/templates/data.json",
 	    "images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/images/",
 		"color" :"grey"
 	}

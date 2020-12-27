@@ -9,5 +9,10 @@
 	    "data"  :"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/NLR/PixelPlanet/templates.json",
 	    "images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
 		"color" :"aqua"
+	},
+	"TEF":{
+	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/NLR/PixelPlanet/templates.json",
+	    "images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/images/",
+		"color" :"grey"
 	}
 }

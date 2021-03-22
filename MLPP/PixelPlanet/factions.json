@@ -14,5 +14,10 @@
 	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/templates/data.json",
 	    "images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/images/",
 		"color" :"grey"
+	},
+	"Italy":{
+	    "data"  :"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/templates/data.json",
+	    "images":"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/images/",
+		"color" :"rgb(0, 255, 153)"
 	}
 }

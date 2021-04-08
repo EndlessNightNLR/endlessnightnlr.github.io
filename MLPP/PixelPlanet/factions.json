@@ -19,5 +19,10 @@
 	    "data"  :"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/templates/data.json",
 	    "images":"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/images/",
 		"color" :"rgb(0, 255, 153)"
+	},
+	"Гиперборея":{
+	    "data"  :"https://raw.githubusercontent.com/ForKorny/super-eureka/main/templates.json",
+	    "images":"https://raw.githubusercontent.com/ForKorny/super-eureka/main/images/",
+		"color" :"rgb(0, 91, 255);"
 	}
 }

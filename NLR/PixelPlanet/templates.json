@@ -1,7 +1,7 @@
 {
     "Flag":{
-        "x" : -21000,
-        "y" : -700,
+        "x" : 0,
+        "y" : 0,
         "width"  : 765,
         "height" : 527
     },
@@ -16,12 +16,6 @@
         "y" : -2587,
         "width"  : 849,
         "height" : 714
-    },
-    "anya_unicorn":{
-        "x":-15247,
-        "y":-2236,
-        "width": 207,
-        "height": 218
     },
     "Schutzstaffeln":{
         "x":-20202,
@@ -40,5 +34,23 @@
         "y":-3376,
         "width": 153,
         "height": 427
+    },
+    "hazbin_luna":{
+        "x":-20850,
+        "y":-1114,
+        "width": 357,
+        "height": 372
+    },
+    "Italy":{
+        "x":1215,
+        "y":-9968,
+        "width": 2132,
+        "height": 2243
+    },
+    "sardinia":{
+        "x":1453,
+        "y":-8586,
+        "width": 330,
+        "height": 631
     }
 }  

@@ -7,6 +7,10 @@
 // @icon         https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/NLRicon.png
 // ==/UserScript==
 
-const script = document.createElement('script');
-script.src = 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/userscripts/pixelzone%20pixelstack/code.js';
-document.body.appendChild(script);
+fetch('https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/userscripts/pixelzone%20pixelstack/code.js')
+.then(res => res.text())
+.then(code => {
+  const script = document.createElement('script');
+  script.innerHTML = '(' + code + ')();';
+  document.body.appendChild(script);
+});

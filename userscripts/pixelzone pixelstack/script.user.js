@@ -11,6 +11,6 @@ fetch('https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.
 .then(res => res.text())
 .then(code => {
   const script = document.createElement('script');
-  script.innerHTML = '(' + code + ')();';
+  script.innerHTML = '(() => {\n' + code + '\n})();';
   document.body.appendChild(script);
 });

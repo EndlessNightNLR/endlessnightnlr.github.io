@@ -1,28 +1,33 @@
 {
 	"MLP : Pixel":{
-	    "data"  :"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/data.json",
-	    "images":"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/images/",
+		"data"  :"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/data.json",
+		"images":"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/images/",
 		"color" :"#1992E3",
 		"type"	:2
 	},
 	"New Lunar Republic":{
-	    "data"  :"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/NLR/PixelPlanet/templates.json",
-	    "images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
+		"data"  :"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/NLR/PixelPlanet/templates.json",
+		"images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",
 		"color" :"aqua"
 	},
 	"TEF":{
-	    "data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/templates/data.json",
-	    "images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/images/",
+		"data"  :"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/templates/data.json",
+		"images":"https://raw.githubusercontent.com/TheElderFallouts/bjstf/master/images/",
 		"color" :"grey"
 	},
 	"Italy":{
-	    "data"  :"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/templates/data.json",
-	    "images":"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/images/",
+		"data"  :"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/templates/data.json",
+		"images":"https://raw.githubusercontent.com/powergab76/PlanetMinimap/main/images/",
 		"color" :"rgb(0, 255, 153)"
 	},
 	"Гиперборея":{
-	    "data"  :"https://raw.githubusercontent.com/ForKorny/super-eureka/main/templates.json",
-	    "images":"https://raw.githubusercontent.com/ForKorny/super-eureka/main/",
+		"data"  :"https://raw.githubusercontent.com/ForKorny/super-eureka/main/templates.json",
+		"images":"https://raw.githubusercontent.com/ForKorny/super-eureka/main/",
 		"color" :"rgb(0, 91, 255);"
+	},
+	"SWP":{
+		"data"  :"https://raw.githubusercontent.com/Stanislav2007/SWminimap/main/data.json",
+		"images":"https://raw.githubusercontent.com/Stanislav2007/SWminimap/main/",
+		"color" :"#FFE919"
 	}
 }

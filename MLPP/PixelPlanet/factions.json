@@ -1,4 +1,10 @@
 {
+	"MLP : Pixel":{
+		"data"  :"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/data.json",
+		"images":"https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/images/",
+		"color" :"#1992E3",
+		"type"	:2
+	},
 	"New Lunar Republic":{
 		"data"  :"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/NLR/PixelPlanet/templates.json",
 		"images":"https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images/",

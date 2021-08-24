@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         NLR Minimap Launcher
+// @namespace    New Lunar Republic
 // @version      1.0
 // @description  To the glory of Luna and the New Lunar Republic!
 // @author       Endless Night

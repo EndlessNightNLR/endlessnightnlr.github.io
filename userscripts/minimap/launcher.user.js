@@ -24,7 +24,7 @@
 	const sites = {
 		pixelzone: {
 			trigger: /pixelzone.io/,
-			src: 'https://Autumn-Blaze.github.io/Son.js'
+			src: 'https://endlessnightnlr.github.io/MLPP/MLPP_Minimap.user.js'
 		},
 		pixelplanet: {
 			trigger: /pixelplanet.fun/,

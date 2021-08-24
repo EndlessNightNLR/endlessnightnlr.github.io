@@ -17,8 +17,8 @@
 // @include      https://prod-app*
 // @include      https://pixelwar-mts.ru/*
 // @homepage     https://endlessnightnlr.github.io
-// @updateURL    https://endlessnightnlr.github.io/userscrpits/minimap/launcher.user.js
-// @downloadURL  https://endlessnightnlr.github.io/userscrpits/minimap/launcher.user.js
+// @updateURL    https://endlessnightnlr.github.io/userscripts/minimap/launcher.user.js
+// @downloadURL  https://endlessnightnlr.github.io/userscripts/minimap/launcher.user.js
 // ==/UserScript==
 {
 	const sites = {
@@ -28,11 +28,11 @@
 		},
 		pixelplanet: {
 			trigger: /pixelplanet.fun/,
-			src: 'https://endlessnightnlr.github.io/userscrpits/minimap/v3/code.js'
+			src: 'https://endlessnightnlr.github.io/userscripts/minimap/v3/code.js'
 		},
 		pixelplanetMirror: {
 			trigger: /fuckyouarkeros.fun/,
-			src: 'https://endlessnightnlr.github.io/userscrpits/minimap/v3/code.js'
+			src: 'https://endlessnightnlr.github.io/userscripts/minimap/v3/code.js'
 		},
 		pixelbattle2020: {
 			trigger: /https:\/\/prod-app/,

@@ -20,6 +20,7 @@
 // @updateURL    https://endlessnightnlr.github.io/userscripts/minimap/launcher.user.js
 // @downloadURL  https://endlessnightnlr.github.io/userscripts/minimap/launcher.user.js
 // ==/UserScript==
+
 {
 	const sites = {
 		pixelzone: {

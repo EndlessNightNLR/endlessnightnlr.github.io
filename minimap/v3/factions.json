@@ -1,0 +1,32 @@
+{
+	"NLR": {
+		"description": "Glory to the Luna!",
+		"canvases": {
+			"pz": {
+				"templates": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/templates/New Lunar Republic.json",
+				"images": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images"
+			},
+			"ppfd": {
+				"templates": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/NLR/PixelPlanet/templates.json",
+				"images": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images"
+			},
+			"ppfm": {
+				"templates": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/NLR/PixelPlanet/templates.json",
+				"images": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/images"
+			}
+		}
+	},
+	"MLPP": {
+		"canvases": {
+			"pz": {
+				"templates":"https://raw.githubusercontent.com/autumn-blaze/autumn-blaze.github.io/master/templates/data.json",	
+				"images":"https://raw.githubusercontent.com/autumn-blaze/autumn-blaze.github.io/master/images"
+			},
+			"ppfd": {
+				"home": "./#d,-18037,-2717,13",
+				"templates": "https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/data.json",
+				"images": "https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/PP/images"
+			}
+		}
+	}
+}

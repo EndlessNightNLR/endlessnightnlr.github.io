@@ -1,3 +1,4 @@
+
 // ==UserScript==
 // @name         Module Bot
 // @version      1.0
@@ -7,403 +8,347 @@
 // ==/UserScript==
 
 function initCode(){
-    if(window.initModule) return window.initModule(module);
-    if(!window.mapModules) window.mapModules = [];
-    window.mapModules.push(module);
-    function module({
-        minimap,
-        settings,
-        mouse,
-        palette,
-        templates,
-        secretTemplates,
-        functions,
-        Template,
-        uo
-    }){
-        let ws = null;
+	if(window.initModule) return window.initModule(module);
+	if(!window.mapModules) window.mapModules = [];
+	window.mapModules.push(module);
+	async function module({
+		minimap,
+		settings,
+		mouse,
+		// palette,
+		templates,
+		// secretTemplates,
+		functions,
+		GM,
+		Template,
+		uo
+	}){
+		const COLORS = [[190,0,57],[255,69,0],[255,168,0],[255,214,53],[0,163,104],[0,204,120],[126,237,86],[0,117,111],[0,158,170],[36,80,164],[54,144,234],[81,233,244],[73,58,193],[106,92,255],[129,30,159],[180,74,192],[255,56,129],[255,153,170],[109,72,47],[156,105,38],[0,0,0],[137,141,144],[212,215,217],[255,255,255]];
 
-        let overrideInterval = setInterval(() => {
-            if(window.updateChannel) {
-                clearInterval(overrideInterval);
-                overrideUpdateChannel();
-            };
-        }, 50);
-        function overrideUpdateChannel(){
-            const {updateChannel} = window;
+		document.querySelector("mona-lisa-embed").wakeUp();
 
-            //ПОДМЕНА DISPATCH
-            updateChannel._dispatch = updateChannel.dispatch;
-            updateChannel.dispatch = function({t,v}){
-                console.log(arguments[0]);
-                if(t === 12 && v[0] && v[0].t === 2 && v[0].v.wait){
-                    timer = v[0].v.wait / 1e3;
-                    console.warn('timer '+timer);
-                };
-                return this._dispatch(...arguments);
-            };
+		const templateUrl = 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png';
 
-            //ПОДМЕНА ВЕБСОКЕТА
-            const origWebsocket = WebSocket;
-            window.WebSocket = function(){
-                ws = new origWebsocket(...arguments);
-                console.warn('ws catched');
-                return ws;
-            };
+		const {
+			asyncQuerySelector,
+			abs,
+			factory,
+			rand
+		} = functions;
 
-            updateChannel.ws.close();
-        };
+		console.log('[BOT] init started');
 
-        const templateSrc = 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/pb/PBTest.png';
-        const tmp = new Template({
-            x: 0,
-            y: 0,
-            width: 1590,
-            height: 400,
-            name: 'botTemp',
-            src: templateSrc
-        });
+		// template		
+		const tmp = new Template({
+			x: 0,
+			y: 0,
+			width: 1590,
+			height: 400,
+			name: 'botTemp',
+			src: templateUrl 
+		});
 
-        const {factory,rand} = functions;
+		// place button
+		const placeButton = await asyncQuerySelector(document, "mona-lisa-embed")
+			.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
+			.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
+		console.log('[BOT] find place button');
 
-        let panel = factory({
-            type: 'div',
-            style: 'position: absolute; top:0; background-color: rgba(0,0,0,0.9); z-index:1000; left:50%; transform:translate(-50%,0); color: white; padding: 5px;'
-        });
-        document.body.appendChild(panel);
+		// game canvas
+		const rPlaceCanvas = document.querySelector("mona-lisa-embed").shadowRoot.querySelector("mona-lisa-share-container mona-lisa-canvas").shadowRoot.querySelector("canvas");
 
-        let strategy = uo.getOrDefault('botStrategy','rand');
+		const botCanvas = document.createElement('canvas');
+		botCanvas.width = rPlaceCanvas.width;
+		botCanvas.height = rPlaceCanvas.height;
+		const botCtx = botCanvas.getContext('2d');
+		
+		botCtx.clearRect(0, 0, botCanvas.width, botCanvas.height);
+		// botCtx.globalCompositeOperation = 'source-in';
+		botCtx.drawImage(rPlaceCanvas, 0, 0);
+		// botCtx.globalCompositeOperation = 'source-over';
 
-        //TIMER
-        let timer = 0;
-        setInterval(() => {
-            timer--;
-            if(timer < 0)
-                timer = 0;
-/*
-            let uitime = getTimerFromUI();
-            if(!uitime)
-                timer = uitime;
-*/
-            showTimer(timer);
-        }, 1e3);
-        let timerContainer;
-        let timerContent;
-        timerContainer = factory({
-            type: 'div',
-            text: 'timer: '
-        }, [
-            timerContent = factory({
-                type: 'span',
-                text: 'null'
-            })
-        ]);
-        panel.appendChild(timerContainer);
+		// palette
+		const paletteButtons = document.querySelector("mona-lisa-embed").shadowRoot.querySelector("mona-lisa-color-picker").shadowRoot.querySelectorAll('.palette button.color');
+		const palette = [];
+		for(const paletteButton of paletteButtons){
+			const parsedData = paletteButton.children[0].style.backgroundColor.match(/rgb\(([0-9]{1,3}), ([0-9]{1,3}), ([0-9]{1,3})\)/);
+			if(parsedData){
+				palette.push([parsedData[1],parsedData[2],parsedData[3]]);
+			}else{
+				palette.push([0,0,0]);
+			}
+		}
 
-        //BOT STATUS
-        let statusDisplayContainer;
-        let statusDisplay;
-        statusDisplayContainer = factory({
-            type: 'div',
-            text: 'status: '
-        }, [
-            statusDisplay = factory({
-                type: 'span',
-                text: 'off'
-            })
-        ]);
-        panel.appendChild(statusDisplayContainer);
+		async function loadTargets (templateUrl) {
+			await tmp.reload();
+			return shuffle(createTargets(tmp))
+		}
 
-        //LAST PIXEL
-        let lastPxlDisplayContainer, lastPxlDisplay;
-        lastPxlDisplayContainer = factory({
-            type: 'div',
-            text: 'last: '
-        }, [
-             lastPxlDisplay = factory({
-                type: 'span',
-                text: 'null'
-            })
-        ]);
-        panel.appendChild(lastPxlDisplayContainer);
+		function createTargets (tmp) {
+			const targets = [];
 
-        //TARGETS COUNT
-        let targetsCountDesc;
-        let targetsCount;
-        targetsCountDesc = factory({
-            type: 'div',
-            text: 'errors: '
-        },[
-            targetsCount = factory({
-                type: 'span',
-                text: 'undef'
-            })
-        ]);
-        panel.appendChild(targetsCountDesc);
+			for (let i = 0, y = 0; y !== tmp.height; y++) {
+				for (let x = 0; x !== tmp.width; x++) {
+					i += 4;
+					if (tmp.data[i | 3] > 128) {
+						const conv = convertPixel([tmp.data[i | 0], tmp.data[i | 1], tmp.data[i | 2]]);
+						targets.push([x, y, conv[0], conv[1], conv[2]]);
+					}
+				}
+			}
 
-        //BOT BUTTON
-        let botBtn = factory({
-            type: 'button',
-            style: 'cursor:pointer;',
-            text: 'work',
-            listeners: {
-                click: function(){
-                    if(works){
-                        works = false;
-                        setStatus('off');
-                    } else {
-                        works = true;
-                        setStatus('on');
-                    };
-                }
-            }
-        });
-        panel.appendChild(botBtn);
+			return targets;
+		}
 
-        //STRATEGY
-        let strategyContainer;
-        let strategyContainerDesc;
-        strategyContainerDesc = factory({
-            type: 'div',
-            text: 'mode: '
-        }, [
-            strategyContainer = factory({
-                type: 'select'
-            })
-        ]);
-        const addStrategy = value => {
-            let option = document.createElement('option');
-            option.value = option.innerText = value;
-            strategyContainer.appendChild(option);
-        };
-        panel.appendChild(strategyContainerDesc);
+		function getCanvasData () {
+			botCtx.clearRect(0, 0, botCanvas.width, botCanvas.height);
+			botCtx.drawImage(rPlaceCanvas, 0, 0);
+			return botCtx.getImageData(0, 0, botCanvas.width, botCanvas.height).data;
+		}
 
-        addStrategy('rand');
-        addStrategy('line');
-        //addStrategy('server');
+		function same(f,s,range = 15){
+			return abs(f[0] - s[0]) < range && abs(f[1] - s[1]) < range && abs(f[2] - s[2]) < range;
+		}
 
-        strategyContainer.addEventListener('change', e => {
-            strategy = e.target.value;
-            uo.set('botStrategy', strategy);
-        });
-        strategyContainer.childNodes.forEach(node => node.value === strategy && node.setAttribute('selected',''));
+		function convertPixel (rgb) {
+			let nearIndex;
+	        let nearD = Infinity;
+	        let d, p;
+			for(let i = 2; i !== COLORS.length; i++){
+	            p = COLORS[i];
+				if(same(p,rgb)){
+	                return p;
+	            };
 
-        panel.appendChild(factory({type:'hr'}));
+	            d = abs(p[0]-rgb[0]) + abs(p[1]-rgb[1]) + abs(p[2]-rgb[2]);
+				if(d < nearD){
+	                nearD = d;
+	                nearIndex = i;
+	            };
+			};
+			return [...COLORS[nearIndex]];
+		}
 
-        //REMOTE BOT
-        let remoteBotDesc = factory({
-            type: 'div'
-        }, [
-            factory({
-                type: 'div',
-                text: 'Удаленный бот'
-            }),
-            factory({
-                type: 'span',
-                text: 'On',
-                style: 'color: green; background-color: rgba(0,0,0,0); font-weight: bold; cursor: pointer;',
-                listeners: {
-                    click: () => {
-                        fetch('https://mlpp.itpony.ru/botEnable?userData=' + encodeURIComponent(location.search.substring(1).split('#')[0]) + '&enable=true')
-                        .finally(window.close);
-                    }
-                }
-            }),
-            document.createTextNode(' | '),
-            factory({
-                type: 'span',
-                text: 'Off',
-                style: 'color: red; background-color: rgba(0,0,0,0); font-weight: bold; cursor: pointer;',
-                listeners: {
-                    click: () => {
-                        fetch('https://mlpp.itpony.ru/botEnable?userData=' + encodeURIComponent(location.search.substring(1).split('#')[0]) + '&enable=false')
-                    }
-                }
-            })
-        ]);
-        panel.appendChild(remoteBotDesc);
+		function shuffle(array) {
+		  let currentIndex = array.length, randomIndex;
 
-        //BOT THINGS
-        let works = false;
+		  while (currentIndex != 0) {
+		    randomIndex = Math.floor(Math.random() * currentIndex);
+		    currentIndex--;
+		    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+		  }
 
-        (async function cycle(){
-            if(works) {
-                await work();
-            };
-            setTimeout(cycle, 100);
-        })();
+		  return array;
+		}
 
-        setInterval(() => {
-            tmp.reload().then(() => console.log('bot tmp updated'));
-        }, 60e3);
+		function sleep (time) {
+			return new Promise(r => setTimeout(r, time));
+		}
 
-        async function work(){
-            if(tmp.status === 0) return tmp.load().then(() => console.log('bot tmp loaded'));
-            if(tmp.status === 1) return;
-            if(timer !== 0) return;
-            
-            let target;
-            let errors;
+		async function nextCycle(delay, reason = null) {
+			if (reason !== null) {
+				console.log(`[BOT] next cycle | ${delay} ms. | ${reason}`);
+			}
+			setTimeout(cycle, delay);
+		}
 
-            switch(strategy){
-                case 'rand':
-                    let targets = getTargets(tmp);
-                    if(targets.length){
-                        errors = targets.length;
-                        target = targets[rand(0, targets.length-1)];
-                        showErrorsCount(targets.length-1);
-                    } else {
-                        errors = 0;
-                        showErrorsCount(errors);
-                    };
-                    break;
-                case 'line':
-                    target = getTargetLine(tmp);
-                    if(target){
-                        errors = getErrorsCount(tmp)-1
-                        showErrorsCount(errors);
-                    } else {
-                        errors = 0;
-                        showErrorsCount(0);
-                    };
-                    break;
-            };
+		function getErorrsCount (canvas, targets) {
+			let errors = 0;
 
-            if(!target || errors < 5){
-                showErrorsCount(rand(0,10));
-                let x = rand(0,1590);
-                let y = rand(0,400);
-                let clr = palette.RGBToId(updateChannel.context.getImageData(x, y, 1, 1).data);
-                target = [x,y,clr];
-            } else {
-                console.warn(`send pxl ${target[0]} ${target[1]} [${palette.IdToRGB(target[2])}]`);
-                showLastPxl(`${target[0]} ${target[1]} [${palette.IdToRGB(target[2])}]`);
-            };
 
-            if(!target){
-                setStatus('no targets');
-                return;
-            } else {
-                setStatus('on');
-            };
-            
-            timer = 65;
-            sendPixel(...target);
-        };
+			targets.forEach(target => {
+				const canvasIndex = target[0] + target[1] * rPlaceCanvas.width;
 
-        function getTargetLine(tmp){
-            let {data} = tmp;
-            let canvasData = updateChannel.context.getImageData(tmp.x1, tmp.y1, tmp.x2, tmp.y2).data;
+				if (
+					canvas[canvasIndex | 0] !== target[2] ||
+					canvas[canvasIndex | 1] !== target[3] ||
+					canvas[canvasIndex | 2] !== target[4]
+				){
+					errors++;
+				}
+			});
 
-            let x,y,i=0,tmpPxl;
+			return errors;		
+		}
 
-            for(y = tmp.y1; y !== tmp.y2; y++){
-                for(x = tmp.x1; x !== tmp.x2; x++, i+=4){
-                    if(!data[i+3]) continue;
-                    tmpPxl = [data[i],data[i+1],data[i+2]];
-                    if(!palette.same(
-                        [canvasData[i],canvasData[i+1],canvasData[i+2]],
-                        tmpPxl
-                    )) return [x,y,palette.RGBToId(tmpPxl)];
-                };
-            };
-            return void 0;
-        };
+		function autoColorPick([r, g, b]){
+			let diff = [];
+			for(const color of palette){
+				diff.push(Math.abs(r - color[0]) + Math.abs(g - color[1]) + Math.abs(b - color[2]));
+			}
+			let correctColorID = 0;
+			for(let i = 0; i < diff.length; i++){
+				if(diff[correctColorID] > diff[i]) correctColorID = i
+			}
+			//console.log(correctColorID);
+			paletteButtons[correctColorID].click();
+		}
 
-        function getErrorsCount(tmp){
-            let {data} = tmp;
-            let canvasData = updateChannel.context.getImageData(tmp.x1, tmp.y1, tmp.x2, tmp.y2).data;
+		let works = false;
+		async function cycle () {
+			if (!works) return nextCycle(250);
+			if (getTimerFromUI() !== 0) return nextCycle(2e3, 'timer isnt zero');
 
-            let errors = 0;
+			const targets = await loadTargets(templateUrl);
+			let gameCanvas = getCanvasData();
 
-            for(let i = 0; i !== data.length; i+=4){
-                if(!data[i+3]) continue;
-                if(!palette.same(
-                    [canvasData[i],canvasData[i+1],canvasData[i+2]],
-                    [data[i],data[i+1],data[i+2]]
-                )) errors++;
-            };
+			// update ui 
+			showErrorsCount(getErorrsCount(gameCanvas, targets));
 
-            return errors;
-        };
+			for (let i = 0; i !== targets.length; i++) {
+				const j = i << 2;
+				const target = targets[i];
 
-        function getTargets(tmp){
-            let {data} = tmp;
-            let canvasData = updateChannel.context.getImageData(tmp.x1, tmp.y1, tmp.x2, tmp.y2).data;
+				if (
+					gameCanvas[j | 0] !== target[2] ||
+					gameCanvas[j | 1] !== target[3] ||
+					gameCanvas[j | 2] !== target[4]
+				){
+					console.log(`[BOT] move to ${target[0]}_${target[1]}`);
+					document.querySelector("mona-lisa-embed").selectPixel({x: target[0], y: target[1]});
+					console.log(`[BOT] choose [${target.slice(2).join('_')}]`);
+					autoColorPick(target.slice(2));
+					await sleep(1500);
 
-            let targets = [];
+					gameCanvas = getCanvasData();
+					if (
+						gameCanvas[j | 0] !== target[2] ||
+						gameCanvas[j | 1] !== target[3] ||
+						gameCanvas[j | 2] !== target[4]
+					) {
+						console.log(`[BOT] click`);
+						placeButton.click();
+						showLastPxl(`${target[0]}_${target[1]} [${target.slice(2).join('_')}]`);
+						return nextCycle(5*60e3 + rand(2e3, 10e3), '');
+					} else {
+						console.log('[BOT] now pixel is right, search next target...')
+						continue;
+					}
+				}
+			}
 
-            let x,y,i=0,tmpPxl;
-            for(y = tmp.y1; y !== tmp.y2; y++){
-                for(x = tmp.x1; x !== tmp.x2; x++, i+=4){
-                    if(!data[i+3]) continue;
-                    tmpPxl = [data[i],data[i+1],data[i+2]];
-                    if(!palette.same(
-                        [canvasData[i],canvasData[i+1],canvasData[i+2]],
-                        tmpPxl
-                    )) targets.push([x,y,palette.RGBToId(tmpPxl)]);
-                };
-            };
+			return nextCycle(1e3 + rand(1e3, 2e3), 'all is ready');
+		}
 
-            return targets;
-        };
+		let panel = factory({
+			type: 'div',
+			style: 'position: absolute; top: 40%; right: 0; background-color: rgba(0,0,0,0.9); z-index:9999; transform:translate(-50%,0); color: white; padding: 5px;'
+		});
 
-        async function getPixelFromServer(){
-            return new Promise((resolve,reject) => {
-                fetch('https://mlpp.itpony.ru/getPixel')
-                let targets = getTargets(tmp);
-                if(targets.length){
-                    target = targets[rand(0, targets.length-1)];
-                };
-            });
-        };
+		// let clicks = [];
+		// panel.box.addEventListener('click', () => {
+		// 	clicks.unshift(Date.now());
 
-        function setStatus(text){
-            statusDisplay.innerText = text;
-        };
+		// 	console.log('[BOT] click')
+		// 	if (clicks[0] - clicks[2] < 1e3) {
+		// 		panel.style.display = 'block';
+		// 		console.log('[BOT] opened')
+		// 	}
 
-        function showErrorsCount(text){
-            targetsCount.innerText = text;
-        };
+		// 	if (clicks.length >= 3) {
+		// 		clicks.pop();
+		// 	}
+		// });
 
-        function pack (colorId, flag, x, y) {
-            const MAX_COLOR_ID = 25;
-            const MAX_WIDTH = 1590;
-            const MAX_HEIGHT = 400;
-            const SIZE = MAX_WIDTH * MAX_HEIGHT;
+		document.body.appendChild(panel);
 
-            const b = parseInt(colorId, 10) + parseInt(flag, 10) * MAX_COLOR_ID;
-            return parseInt(x, 10) + parseInt(y, 10) * MAX_WIDTH + SIZE * b;
-        };
+		let strategy = uo.getOrDefault('botStrategy','rand');
 
-        async function sendPixel(x, y, colorId, flag = 0){
-            const c = new ArrayBuffer(4)
-            new Int32Array(c, 0, 1)[0] = pack(colorId, flag, x, y)
-            ws.send(c);
-        };
+		//BOT STATUS
+		let statusDisplayContainer;
+		let statusDisplay;
+		statusDisplayContainer = factory({
+			type: 'div',
+			text: 'status: '
+		}, [
+			statusDisplay = factory({
+				type: 'span',
+				text: 'off'
+			})
+		]);
+		panel.appendChild(statusDisplayContainer);
 
-        function getTimerFromUI(){
-            const UITimer = document.querySelector('.ColorPalette__confirm');
-            if(!UITimer || !UITimer.childNodes[0]) return null;
-            let [min,sec] = UITimer.childNodes[0].innerText.match(/-?\d+/g).map(e => +e);
-            return min*60 + sec;
-        };
+		//LAST PIXEL
+		let lastPxlDisplayContainer, lastPxlDisplay;
+		lastPxlDisplayContainer = factory({
+			type: 'div',
+			text: 'last: '
+		}, [
+			 lastPxlDisplay = factory({
+				type: 'span',
+				text: 'null'
+			})
+		]);
+		panel.appendChild(lastPxlDisplayContainer);
 
-        function getUserId(){
-            return +location.search.substring(1).split('&').find(e => e.startsWith('vk_user_id')).split('=')[1];
-        };
+		//TARGETS COUNT
+		let targetsCountDesc;
+		let targetsCount;
+		targetsCountDesc = factory({
+			type: 'div',
+			text: 'errors: '
+		},[
+			targetsCount = factory({
+				type: 'span',
+				text: 'undef'
+			})
+		]);
+		panel.appendChild(targetsCountDesc);
 
-        function showLastPxl(text){
-            lastPxlDisplay.innerText = text;
-        };
+		//BOT BUTTON
+		let botBtn = factory({
+			type: 'button',
+			style: 'cursor:pointer;',
+			text: 'work',
+			listeners: {
+				click: function(){
+					if(works){
+						works = false;
+						setStatus('off');
+					} else {
+						works = true;
+						setStatus('on');
+					};
+				}
+			}
+		});
+		panel.appendChild(botBtn);
 
-        function showTimer(time){
-            time = Math.round(timer*10)/10;
-            timerContent.innerText = time;
-        };
-    };
+		nextCycle(0, 'first run');
+
+		function setStatus(text){
+			statusDisplay.innerText = text;
+		}
+
+		function showErrorsCount(text){
+			targetsCount.innerText = text;
+		}
+
+		function getTimerFromUI(){
+			const timer = document.querySelector("mona-lisa-embed").shadowRoot
+				.querySelector('mona-lisa-share-container').shadowRoot
+				.querySelector('mona-lisa-status-pill');
+
+			if (!timer) {
+				return 0;
+			} else {
+				return +timer.getAttribute('next-tile-available-in');
+			}
+		};
+
+		function showLastPxl(text){
+			lastPxlDisplay.innerText = text;
+		};
+
+		function showTimer(time){
+			time = Math.round(timer*10)/10;
+			timerContent.innerText = time;
+		};
+	};
 };
 
-let code = document.createElement('script');
-code.innerHTML = '('+initCode.toString()+')()';
-document.body.appendChild(code);
+(() => {
+	let code = document.createElement('script');
+	code.innerHTML = '('+initCode.toString()+')()';
+	document.body.appendChild(code);
+})();

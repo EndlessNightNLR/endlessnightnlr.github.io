@@ -189,8 +189,8 @@ function initCode(){
 			showErrorsCount(getErorrsCount(gameCanvas, targets));
 
 			for (let i = 0; i !== targets.length; i++) {
-				const j = i << 2;
 				const target = targets[i];
+				const j = target[0] + target[1] * rPlaceCanvas.width << 2;
 				const rgb = target.slice(2);
 
 				if (
@@ -201,8 +201,8 @@ function initCode(){
 					console.log(`[BOT] move to ${target[0]}_${target[1]}`);
 					document.querySelector("mona-lisa-embed").selectPixel({x: target[0], y: target[1]});
 					console.log(`[BOT] choose [${rgb.join('_')}]`);
-					autoColorPick(target.slice(2));
-					await sleep(1500);
+					autoColorPick(rgb);
+					await sleep(2000);
 
 					gameCanvas = getCanvasData();
 					if (

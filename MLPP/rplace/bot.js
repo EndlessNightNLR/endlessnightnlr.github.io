@@ -23,17 +23,21 @@ function initCode(){
 		Template,
 		uo
 	}){
-		const COLORS = [[190,0,57],[255,69,0],[255,168,0],[255,214,53],[0,163,104],[0,204,120],[126,237,86],[0,117,111],[0,158,170],[36,80,164],[54,144,234],[81,233,244],[73,58,193],[106,92,255],[129,30,159],[180,74,192],[255,56,129],[255,153,170],[109,72,47],[156,105,38],[0,0,0],[137,141,144],[212,215,217],[255,255,255]];
+		const COLORS = [[109,0,26],[190,0,57],[255,69,0],[255,168,0],[255,214,53],[255,248,184],[0,163,104],[0,204,120],[126,237,86],[0,117,111],[0,158,170],[0,204,192],[36,80,164],[54,144,234],[81,233,244],[73,58,193],[106,92,255],[148,179,255],[129,30,159],[180,74,192],[228,171,255],[222,16,127],[255,56,129],[255,153,170],[109,72,47],[156,105,38],[255,180,112],[0,0,0],[81,82,82],[137,141,144],[212,215,217],[255,255,255]]
 
 		document.querySelector("mona-lisa-embed").wakeUp();
 
-		const templateUrl = 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png';
+		const factions = {
+			MLPP: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png',
+			Italy: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png'
+		}
 
 		const {
 			asyncQuerySelector,
 			abs,
 			factory,
-			rand
+			rand,
+			createPanelButton
 		} = functions;
 
 		console.log('[BOT] init started');
@@ -45,7 +49,7 @@ function initCode(){
 			width: 1590,
 			height: 400,
 			name: 'botTemp',
-			src: templateUrl 
+			src: factions.MLPP 
 		});
 
 		// place button
@@ -222,7 +226,17 @@ function initCode(){
 
 		let panel = factory({
 			type: 'div',
-			style: 'position: absolute; top: 40%; right: 0; background-color: rgba(0,0,0,0.9); z-index:9999; transform:translate(-50%,0); color: white; padding: 5px;'
+			style: 'display: none; position: absolute; top: 40%; right: 0; background-color: rgba(0,0,0,0.9); z-index:9999; transform:translate(-50%,0); color: white; padding: 5px;'
+		});
+
+		let showBotButton = createPanelButton('https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/bot_icon.png');
+		minimap.panel.add(showBotButton);
+		showBotButton.addEventListener('click', () => {
+			if(panel.style.display === 'none'){
+				panel.style.display = 'block';
+			} else {
+				panel.style.display = 'none';
+			}
 		});
 
 		document.body.appendChild(panel);
@@ -269,6 +283,35 @@ function initCode(){
 			})
 		]);
 		panel.appendChild(targetsCountDesc);
+
+		//TARGETS COUNT
+		panel.appendChild(factory({
+			type: 'div'
+		},[
+			factory({
+				type: 'span',
+				text: 'current faction:'
+			}),
+			factory({
+				type: 'select',
+				style: 'background: transparent; color: white; padding: 0px;',
+				listeners: {
+					change () {
+						tmp.src = this.value;
+						console.log(`[BOT] faction ${this.options[this.selectedIndex].innerText} ${this.options[this.selectedIndex].value}`)
+					}
+				}
+			}, Object.entries(factions).map(([faction, url]) => {
+					return factory({
+						type: 'option',
+						text: faction,
+						attributes: {
+							value: url
+						}
+					})
+				})
+			)
+		]));
 
 		//BOT BUTTON
 		let botBtn = factory({

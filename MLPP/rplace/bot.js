@@ -73,7 +73,7 @@ function initCode(){
 			}
 		}
 
-		async function loadTargets (templateUrl) {
+		async function loadTargets () {
 			await tmp.reload();
 			return shuffle(createTargets(tmp))
 		}
@@ -178,7 +178,7 @@ function initCode(){
 			if (!works) return nextCycle(250);
 			if (getTimerFromUI() !== 0) return nextCycle(2e3, 'timer isnt zero');
 
-			const targets = await loadTargets(templateUrl);
+			const targets = await loadTargets();
 			let gameCanvas = getCanvasData();
 
 			// update ui 
@@ -196,7 +196,7 @@ function initCode(){
 				){
 					console.log(`[BOT] move to ${target[0]}_${target[1]}`);
 					document.querySelector("mona-lisa-embed").selectPixel({x: target[0], y: target[1]});
-					console.log(`[BOT] choose [${target.slice(2).join('_')}]`);
+					console.log(`[BOT] choose [${rgb.join('_')}]`);
 					autoColorPick(target.slice(2));
 					await sleep(1500);
 
@@ -288,6 +288,52 @@ function initCode(){
 			}
 		});
 		panel.appendChild(botBtn);
+
+		// DOWNLOAD ERORRS BUTTON
+		let errosBtn = factory({
+			type: 'button',
+			style: 'cursor:pointer;',
+			text: 'load errors',
+			listeners: {
+				async click () {
+					const ctx = document.createElement('canvas').getContext('2d');
+					ctx.canvas.width = rPlaceCanvas.width;
+					ctx.canvas.height = rPlaceCanvas.height;
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+					const targets = await loadTargets();
+					ctx.drawImage(tmp.canvas, 0, 0);
+
+					const gData = getCanvasData();
+
+					const id = ctx.getImageData(0, 0, rPlaceCanvas.width, rPlaceCanvas.height);
+					const { data } = id;
+
+					const { width } = rPlaceCanvas
+					targets.forEach(([x, y, r, g, b]) => {
+						const i = x + y * width << 2;
+
+						if (data[i | 3] < 128) return;
+
+						if (
+							gData[i | 0] === r &&
+							gData[i | 1] === g &&
+							gData[i | 2] === b
+						) {
+							data[i | 0] = data[i | 1] = data[i | 2] = (r + g + b) / 3;
+						} else {
+							data[i | 0] = 255;
+							data[i | 1] = data[i | 2] = 0;
+						}
+					});
+
+					ctx.putImageData(id, 0, 0);
+
+					functions.downloadCanvas(ctx.canvas);
+				}
+			}
+		});
+		panel.appendChild(errosBtn);
 
 		nextCycle(0, 'first run');
 

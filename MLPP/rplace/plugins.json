@@ -5,6 +5,6 @@
 	},
   "Bot": {
 		"desc": "none",
-		"src": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/bot.js"
+		"src": "http://localhost:8080"
 	}
 }

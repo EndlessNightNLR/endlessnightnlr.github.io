@@ -52,21 +52,16 @@ function initCode(){
 			src: factions.MLPP 
 		});
 
-		// place button
-		const placeButton = await asyncQuerySelector(document, "mona-lisa-embed")
-			.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
-			.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
-		console.log('[BOT] find place button');
-
 		// game canvas
 		const rPlaceCanvas = document.querySelector("mona-lisa-embed").shadowRoot
 			.querySelector("mona-lisa-share-container mona-lisa-canvas").shadowRoot
 			.querySelector("canvas");
 
 		// palette
-		const paletteButtons = document.querySelector("mona-lisa-embed").shadowRoot
-			.querySelector("mona-lisa-color-picker").shadowRoot
-			.querySelectorAll('.palette button.color');
+		const paletteButtons = await asyncQuerySelector(
+				document.querySelector("mona-lisa-embed").shadowRoot,
+				"mona-lisa-color-picker"
+			).then(e => e.shadowRoot.querySelectorAll('.palette button.color'));
 		const palette = [];
 		for(const paletteButton of paletteButtons){
 			const parsedData = paletteButton.children[0].style.backgroundColor.match(/rgb\(([0-9]{1,3}), ([0-9]{1,3}), ([0-9]{1,3})\)/);
@@ -211,7 +206,11 @@ function initCode(){
 						gameCanvas[j | 2] !== rgb[2]
 					) {
 						console.log(`[BOT] click`);
-						placeButton.click();
+						const button = await asyncQuerySelector(document, "mona-lisa-embed")
+							.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
+							.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
+						button.click();
+
 						showLastPxl(`${target[0]}_${target[1]} [${target.slice(2).join('_')}]`);
 						return nextCycle(5*60e3 + rand(2e3, 10e3), '');
 					} else {
@@ -242,6 +241,12 @@ function initCode(){
 		document.body.appendChild(panel);
 
 		let strategy = uo.getOrDefault('botStrategy','rand');
+
+		panel.appendChild(factory({
+			type: 'div',
+			style: 'font-weight: bold;',
+			text: 'Бот строит только Дерпи!\nThe bot builds only Derpy!'
+		}));
 
 		//BOT STATUS
 		let statusDisplayContainer;

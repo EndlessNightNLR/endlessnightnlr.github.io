@@ -55,20 +55,14 @@ function initCode(){
 		console.log('[BOT] find place button');
 
 		// game canvas
-		const rPlaceCanvas = document.querySelector("mona-lisa-embed").shadowRoot.querySelector("mona-lisa-share-container mona-lisa-canvas").shadowRoot.querySelector("canvas");
-
-		const botCanvas = document.createElement('canvas');
-		botCanvas.width = rPlaceCanvas.width;
-		botCanvas.height = rPlaceCanvas.height;
-		const botCtx = botCanvas.getContext('2d');
-		
-		botCtx.clearRect(0, 0, botCanvas.width, botCanvas.height);
-		// botCtx.globalCompositeOperation = 'source-in';
-		botCtx.drawImage(rPlaceCanvas, 0, 0);
-		// botCtx.globalCompositeOperation = 'source-over';
+		const rPlaceCanvas = document.querySelector("mona-lisa-embed").shadowRoot
+			.querySelector("mona-lisa-share-container mona-lisa-canvas").shadowRoot
+			.querySelector("canvas");
 
 		// palette
-		const paletteButtons = document.querySelector("mona-lisa-embed").shadowRoot.querySelector("mona-lisa-color-picker").shadowRoot.querySelectorAll('.palette button.color');
+		const paletteButtons = document.querySelector("mona-lisa-embed").shadowRoot
+			.querySelector("mona-lisa-color-picker").shadowRoot
+			.querySelectorAll('.palette button.color');
 		const palette = [];
 		for(const paletteButton of paletteButtons){
 			const parsedData = paletteButton.children[0].style.backgroundColor.match(/rgb\(([0-9]{1,3}), ([0-9]{1,3}), ([0-9]{1,3})\)/);
@@ -88,8 +82,7 @@ function initCode(){
 			const targets = [];
 
 			for (let i = 0, y = 0; y !== tmp.height; y++) {
-				for (let x = 0; x !== tmp.width; x++) {
-					i += 4;
+				for (let x = 0; x !== tmp.width; x++, i += 4) {
 					if (tmp.data[i | 3] > 128) {
 						const conv = convertPixel([tmp.data[i | 0], tmp.data[i | 1], tmp.data[i | 2]]);
 						targets.push([x, y, conv[0], conv[1], conv[2]]);
@@ -101,9 +94,7 @@ function initCode(){
 		}
 
 		function getCanvasData () {
-			botCtx.clearRect(0, 0, botCanvas.width, botCanvas.height);
-			botCtx.drawImage(rPlaceCanvas, 0, 0);
-			return botCtx.getImageData(0, 0, botCanvas.width, botCanvas.height).data;
+			return rPlaceCanvas.getContext('2d').getImageData(0, 0, rPlaceCanvas.width, rPlaceCanvas.height).data;
 		}
 
 		function same(f,s,range = 15){
@@ -154,10 +145,8 @@ function initCode(){
 
 		function getErorrsCount (canvas, targets) {
 			let errors = 0;
-
-
 			targets.forEach(target => {
-				const canvasIndex = target[0] + target[1] * rPlaceCanvas.width;
+				const canvasIndex = target[0] + target[1] * rPlaceCanvas.width << 2;
 
 				if (
 					canvas[canvasIndex | 0] !== target[2] ||
@@ -198,11 +187,12 @@ function initCode(){
 			for (let i = 0; i !== targets.length; i++) {
 				const j = i << 2;
 				const target = targets[i];
+				const rgb = target.slice(2);
 
 				if (
-					gameCanvas[j | 0] !== target[2] ||
-					gameCanvas[j | 1] !== target[3] ||
-					gameCanvas[j | 2] !== target[4]
+					gameCanvas[j | 0] !== rgb[0] ||
+					gameCanvas[j | 1] !== rgb[1] ||
+					gameCanvas[j | 2] !== rgb[2]
 				){
 					console.log(`[BOT] move to ${target[0]}_${target[1]}`);
 					document.querySelector("mona-lisa-embed").selectPixel({x: target[0], y: target[1]});
@@ -212,9 +202,9 @@ function initCode(){
 
 					gameCanvas = getCanvasData();
 					if (
-						gameCanvas[j | 0] !== target[2] ||
-						gameCanvas[j | 1] !== target[3] ||
-						gameCanvas[j | 2] !== target[4]
+						gameCanvas[j | 0] !== rgb[0] ||
+						gameCanvas[j | 1] !== rgb[1] ||
+						gameCanvas[j | 2] !== rgb[2]
 					) {
 						console.log(`[BOT] click`);
 						placeButton.click();
@@ -234,21 +224,6 @@ function initCode(){
 			type: 'div',
 			style: 'position: absolute; top: 40%; right: 0; background-color: rgba(0,0,0,0.9); z-index:9999; transform:translate(-50%,0); color: white; padding: 5px;'
 		});
-
-		// let clicks = [];
-		// panel.box.addEventListener('click', () => {
-		// 	clicks.unshift(Date.now());
-
-		// 	console.log('[BOT] click')
-		// 	if (clicks[0] - clicks[2] < 1e3) {
-		// 		panel.style.display = 'block';
-		// 		console.log('[BOT] opened')
-		// 	}
-
-		// 	if (clicks.length >= 3) {
-		// 		clicks.pop();
-		// 	}
-		// });
 
 		document.body.appendChild(panel);
 

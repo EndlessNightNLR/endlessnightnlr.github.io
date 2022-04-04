@@ -36,8 +36,8 @@ function initCode(){
 			],
 			Italy: [
 				{
-					x: 782,
-					y: 198,
+					x: 0,
+					y: 0,
 					src: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png',
 				}
 			],
@@ -197,40 +197,6 @@ function initCode(){
 			paletteButtons[correctColorID].click();
 		}
 
-		// function getPixelFromData (canvasData, x, y) {
-		// 	const i = x + y * rPlaceCanvas.width << 2;
-		// 	return [
-		// 		canvasData[i | 0],
-		// 		canvasData[i | 1],
-		// 		canvasData[i | 2],
-		// 		canvasData[i | 3]
-		// 	]
-		// }
-
-		// function checkTemplate (template, canvasData) {
-		// 	const targets = await loadTargets(template);
-
-		// 	let targetToReturn = null;
-		// 	let errors = 0;
-		// 	for (let i = 0; i !== targets.length; i++) {
-		// 		const target = targets[i];
-		// 		const canvasPixel = getPixelFromData(target[0], target[1])
-
-		// 		if (
-		// 			canvasData[canvasIndex | 0] !== target[2] ||
-		// 			canvasData[canvasIndex | 1] !== target[3] ||
-		// 			canvasData[canvasIndex | 2] !== target[4]
-		// 		){
-		// 			if (target === null) {
-		// 				targetToReturn = target
-		// 			}
-		// 			errors++;
-		// 		}
-		// 	};
-
-		// 	return [targetToReturn, errors];
-		// }
-
 		let works = false;
 		async function cycle () {
 			if (!works) return nextCycle(250);
@@ -242,10 +208,9 @@ function initCode(){
 				const targets = await loadTargets(template);
 				console.log(`[BOT] check ${template.x1}_${template.y1} "${template.name}"`);
 
-				const gameCanvas = getCanvasData(template.x1, template.y1, template.width, template.height);
-				// const gameCanvas = getCanvasData();
-
 				for (let i = 0; i !== targets.length; i++) {
+					const gameCanvas = getCanvasData(template.x1, template.y1, template.width, template.height);
+					
 					const target = targets[i];
 					const globalTargetX = target[0] + template.x1;
 					const globalTargetY = target[1] + template.y1;

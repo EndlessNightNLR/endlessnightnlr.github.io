@@ -15,7 +15,7 @@ function initCode(){
 		settings,
 		mouse,
 		// palette,
-		// templates,
+		templates,
 		// secretTemplates,
 		functions,
 		GM,
@@ -27,37 +27,9 @@ function initCode(){
 		document.querySelector("mona-lisa-embed").wakeUp();
 
 		const factions = {
-			MLPP: [
-				{
-					x: 0,
-					y: 0,
-					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png',
-				}
-			],
-			Collab: [
-				{
-					x: 0,
-					y: 0,
-					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/сollab.png',
-				}
-			],
-			Italy: [
-				{
-					x: 0,
-					y: 0,
-					src: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png',
-				}
-			],
-			test: [
-				{
-					x: 1951,
-					y: 357,
-					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/real_test.png',
-				}
-			],
+			MLPP: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png',
+			Italy: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png'
 		}
-
-		let currentFaction = Object.keys(factions)[0];
 
 		const {
 			asyncQuerySelector,
@@ -69,9 +41,15 @@ function initCode(){
 
 		console.log('[BOT] init started');
 
-		// templates
-		let templates = [];
-		updateTemplateList();
+		// template		
+		const tmp = new Template({
+			x: 0,
+			y: 0,
+			width: 1590,
+			height: 400,
+			name: 'botTemp',
+			src: factions.MLPP 
+		});
 
 		// game canvas
 		const rPlaceCanvas = document.querySelector("mona-lisa-embed").shadowRoot
@@ -93,20 +71,9 @@ function initCode(){
 			}
 		}
 
-		async function updateTemplateList () {
-			templates = factions[currentFaction].map(({ x, y, src }) => new Template({
-				x,
-				y,
-				width: 0, // not necessary
-				height: 0,
-				name: src.split('/').pop().split('.')[0],
-				src
-			}));
-		}
-
-		async function loadTargets (template) {
-			await template.reload();
-			return shuffle(createTargets(template))
+		async function loadTargets () {
+			await tmp.reload();
+			return shuffle(createTargets(tmp))
 		}
 
 		function createTargets (tmp) {
@@ -124,8 +91,8 @@ function initCode(){
 			return targets;
 		}
 
-		function getCanvasData (x = 0, y = 0, width = rPlaceCanvas.width, height = rPlaceCanvas.height) {
-			return rPlaceCanvas.getContext('2d').getImageData(x, y, width, height).data;
+		function getCanvasData () {
+			return rPlaceCanvas.getContext('2d').getImageData(0, 0, rPlaceCanvas.width, rPlaceCanvas.height).data;
 		}
 
 		function same(f,s,range = 15){
@@ -211,55 +178,45 @@ function initCode(){
 
 			document.querySelector("mona-lisa-embed").wakeUp();
 
-			for (template of templates) {
-				const targets = await loadTargets(template);
-				console.log(`[BOT] check ${template.x1}_${template.y1} "${template.name}"`);
+			const targets = await loadTargets();
+			let gameCanvas = getCanvasData();
 
-				// const gameCanvas = getCanvasData();
+			// update ui 
+			showErrorsCount(getErorrsCount(gameCanvas, targets));
 
-				for (let i = 0; i !== targets.length; i++) {
-					const target = targets[i];
-					const globalTargetX = target[0] + template.x1;
-					const globalTargetY = target[1] + template.y1;
-					let canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
-					const j = target[0] + target[1] * template.width << 2;
-					// const j = globalTargetX + globalTargetY * rPlaceCanvas.width << 2;
-					const rgb = target.slice(2);
+			for (let i = 0; i !== targets.length; i++) {
+				const target = targets[i];
+				const j = target[0] + target[1] * rPlaceCanvas.width << 2;
+				const rgb = target.slice(2);
 
+				if (
+					gameCanvas[j | 0] !== rgb[0] ||
+					gameCanvas[j | 1] !== rgb[1] ||
+					gameCanvas[j | 2] !== rgb[2]
+				){
+					console.log(`[BOT] move to ${target[0]}_${target[1]}`);
+					document.querySelector("mona-lisa-embed").selectPixel({x: target[0], y: target[1]});
+					console.log(`[BOT] choose [${rgb.join('_')}]`);
+					autoColorPick(rgb);
+					await sleep(2000);
+
+					gameCanvas = getCanvasData();
 					if (
-						canvasPixel[0] !== rgb[0] ||
-						canvasPixel[1] !== rgb[1] ||
-						canvasPixel[2] !== rgb[2]
-					){
+						gameCanvas[j | 0] !== rgb[0] ||
+						gameCanvas[j | 1] !== rgb[1] ||
+						gameCanvas[j | 2] !== rgb[2]
+					) {
+						console.log(`[BOT] click`);
+						const button = await asyncQuerySelector(document, "mona-lisa-embed")
+							.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
+							.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
+						button.click();
 
-						console.log(`[BOT] move to ${globalTargetX}_${globalTargetY}`);
-						document.querySelector("mona-lisa-embed").selectPixel({x: globalTargetX, y: globalTargetY});
-						console.log(`[BOT] choose [${rgb}]`);
-						autoColorPick(rgb);
-						await sleep(2000);
-
-						canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
-						if (
-							canvasPixel[0] !== rgb[0] ||
-							canvasPixel[1] !== rgb[1] ||
-							canvasPixel[2] !== rgb[2]
-						) {
-							console.log(`[BOT] click`);
-							const button = await asyncQuerySelector(document, "mona-lisa-embed")
-								.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
-								.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
-							button.click();
-
-							pixelPlaced = true;
-							showLastPxl(`${globalTargetX}_${globalTargetY} [${rgb.join('_')}]`);
-
-							showErrorsCount(getErorrsCount(getCanvasData(template.x1, template.y1, template.width, template.height), targets));
-
-							return nextCycle(5*60e3 + rand(2e3, 10e3), '');
-						} else {
-							console.log('[BOT] now pixel is right, search next target...')
-							continue;
-						}
+						showLastPxl(`${target[0]}_${target[1]} [${target.slice(2).join('_')}]`);
+						return nextCycle(5*60e3 + rand(2e3, 10e3), '');
+					} else {
+						console.log('[BOT] now pixel is right, search next target...')
+						continue;
 					}
 				}
 			}
@@ -346,17 +303,16 @@ function initCode(){
 				style: 'background: transparent; color: white; padding: 0px;',
 				listeners: {
 					change () {
-						currentFaction = this.value;
-						console.log(`[BOT] faction ${this.options[this.selectedIndex].value}`)
-						updateTemplateList();
+						tmp.src = this.value;
+						console.log(`[BOT] faction ${this.options[this.selectedIndex].innerText} ${this.options[this.selectedIndex].value}`)
 					}
 				}
-			}, Object.keys(factions).map(name => {
+			}, Object.entries(factions).map(([faction, url]) => {
 					return factory({
 						type: 'option',
-						text: name,
+						text: faction,
 						attributes: {
-							value: name
+							value: url
 						}
 					})
 				})
@@ -389,20 +345,20 @@ function initCode(){
 			text: 'load errors',
 			listeners: {
 				async click () {
-					const template = templates[0];
-					const targets = await loadTargets(template);
-
 					const ctx = document.createElement('canvas').getContext('2d');
-					ctx.canvas.width = template.width;
-					ctx.canvas.height = template.height;
-					ctx.drawImage(template.canvas, 0, 0);
+					ctx.canvas.width = rPlaceCanvas.width;
+					ctx.canvas.height = rPlaceCanvas.height;
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-					const gData = getCanvasData(template.x1, template.y1, template.width, template.height);
+					const targets = await loadTargets();
+					ctx.drawImage(tmp.canvas, 0, 0);
 
-					const id = ctx.getImageData(0, 0, template.width, template.height);
+					const gData = getCanvasData();
+
+					const id = ctx.getImageData(0, 0, rPlaceCanvas.width, rPlaceCanvas.height);
 					const { data } = id;
 
-					const { width } = template;
+					const { width } = rPlaceCanvas
 					targets.forEach(([x, y, r, g, b]) => {
 						const i = x + y * width << 2;
 

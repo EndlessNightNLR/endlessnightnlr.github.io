@@ -214,15 +214,15 @@ function initCode(){
 					const target = targets[i];
 					const globalTargetX = target[0] + template.x1;
 					const globalTargetY = target[1] + template.y1;
-					const canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
+					let canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
 					const j = target[0] + target[1] * template.width << 2;
 					// const j = globalTargetX + globalTargetY * rPlaceCanvas.width << 2;
 					const rgb = target.slice(2);
 
 					if (
-						gameCanvas[j | 0] !== rgb[0] ||
-						gameCanvas[j | 1] !== rgb[1] ||
-						gameCanvas[j | 2] !== rgb[2]
+						canvasPixel[0] !== rgb[0] ||
+						canvasPixel[1] !== rgb[1] ||
+						canvasPixel[2] !== rgb[2]
 					){
 
 						console.log(`[BOT] move to ${globalTargetX}_${globalTargetY}`);

@@ -15,7 +15,7 @@ function initCode(){
 		settings,
 		mouse,
 		// palette,
-		templates,
+		// templates,
 		// secretTemplates,
 		functions,
 		GM,
@@ -27,9 +27,30 @@ function initCode(){
 		document.querySelector("mona-lisa-embed").wakeUp();
 
 		const factions = {
-			MLPP: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png',
-			Italy: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png'
+			MLPP: [
+				{
+					x: 0,
+					y: 0,
+					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png',
+				}
+			],
+			Italy: [
+				{
+					x: 0,
+					y: 0,
+					src: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png',
+				}
+			],
+			test: [
+				{
+					x: 1951,
+					y: 357,
+					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/real_test.png',
+				}
+			],
 		}
+
+		let currentFaction = Object.keys(factions)[0];
 
 		const {
 			asyncQuerySelector,
@@ -41,15 +62,9 @@ function initCode(){
 
 		console.log('[BOT] init started');
 
-		// template		
-		const tmp = new Template({
-			x: 0,
-			y: 0,
-			width: 1590,
-			height: 400,
-			name: 'botTemp',
-			src: factions.MLPP 
-		});
+		// templates
+		let templates = [];
+		updateTemplateList();
 
 		// game canvas
 		const rPlaceCanvas = document.querySelector("mona-lisa-embed").shadowRoot
@@ -71,9 +86,20 @@ function initCode(){
 			}
 		}
 
-		async function loadTargets () {
-			await tmp.reload();
-			return shuffle(createTargets(tmp))
+		async function updateTemplateList () {
+			templates = factions[currentFaction].map(({ x, y, src }) => new Template({
+				x,
+				y,
+				width: 0, // not necessary
+				height: 0,
+				name: src.split('/').pop().split('.')[0],
+				src
+			}));
+		}
+
+		async function loadTargets (template) {
+			await template.reload();
+			return shuffle(createTargets(template))
 		}
 
 		function createTargets (tmp) {
@@ -91,8 +117,8 @@ function initCode(){
 			return targets;
 		}
 
-		function getCanvasData () {
-			return rPlaceCanvas.getContext('2d').getImageData(0, 0, rPlaceCanvas.width, rPlaceCanvas.height).data;
+		function getCanvasData (x = 0, y = 0, width = rPlaceCanvas.width, height = rPlaceCanvas.height) {
+			return rPlaceCanvas.getContext('2d').getImageData(x, y, width, height).data;
 		}
 
 		function same(f,s,range = 15){
@@ -171,6 +197,40 @@ function initCode(){
 			paletteButtons[correctColorID].click();
 		}
 
+		// function getPixelFromData (canvasData, x, y) {
+		// 	const i = x + y * rPlaceCanvas.width << 2;
+		// 	return [
+		// 		canvasData[i | 0],
+		// 		canvasData[i | 1],
+		// 		canvasData[i | 2],
+		// 		canvasData[i | 3]
+		// 	]
+		// }
+
+		// function checkTemplate (template, canvasData) {
+		// 	const targets = await loadTargets(template);
+
+		// 	let targetToReturn = null;
+		// 	let errors = 0;
+		// 	for (let i = 0; i !== targets.length; i++) {
+		// 		const target = targets[i];
+		// 		const canvasPixel = getPixelFromData(target[0], target[1])
+
+		// 		if (
+		// 			canvasData[canvasIndex | 0] !== target[2] ||
+		// 			canvasData[canvasIndex | 1] !== target[3] ||
+		// 			canvasData[canvasIndex | 2] !== target[4]
+		// 		){
+		// 			if (target === null) {
+		// 				targetToReturn = target
+		// 			}
+		// 			errors++;
+		// 		}
+		// 	};
+
+		// 	return [targetToReturn, errors];
+		// }
+
 		let works = false;
 		async function cycle () {
 			if (!works) return nextCycle(250);
@@ -178,45 +238,55 @@ function initCode(){
 
 			document.querySelector("mona-lisa-embed").wakeUp();
 
-			const targets = await loadTargets();
-			let gameCanvas = getCanvasData();
+			for (template of templates) {
+				const targets = await loadTargets(template);
+				console.log(`[BOT] check ${template.x1}_${template.y1} "${template.name}"`);
 
-			// update ui 
-			showErrorsCount(getErorrsCount(gameCanvas, targets));
+				const gameCanvas = getCanvasData(template.x1, template.y1, template.width, template.height);
+				// const gameCanvas = getCanvasData();
 
-			for (let i = 0; i !== targets.length; i++) {
-				const target = targets[i];
-				const j = target[0] + target[1] * rPlaceCanvas.width << 2;
-				const rgb = target.slice(2);
+				for (let i = 0; i !== targets.length; i++) {
+					const target = targets[i];
+					const globalTargetX = target[0] + template.x1;
+					const globalTargetY = target[1] + template.y1;
+					const j = target[0] + target[1] * template.width << 2;
+					// const j = globalTargetX + globalTargetY * rPlaceCanvas.width << 2;
+					const rgb = target.slice(2);
 
-				if (
-					gameCanvas[j | 0] !== rgb[0] ||
-					gameCanvas[j | 1] !== rgb[1] ||
-					gameCanvas[j | 2] !== rgb[2]
-				){
-					console.log(`[BOT] move to ${target[0]}_${target[1]}`);
-					document.querySelector("mona-lisa-embed").selectPixel({x: target[0], y: target[1]});
-					console.log(`[BOT] choose [${rgb.join('_')}]`);
-					autoColorPick(rgb);
-					await sleep(2000);
-
-					gameCanvas = getCanvasData();
 					if (
 						gameCanvas[j | 0] !== rgb[0] ||
 						gameCanvas[j | 1] !== rgb[1] ||
 						gameCanvas[j | 2] !== rgb[2]
-					) {
-						console.log(`[BOT] click`);
-						const button = await asyncQuerySelector(document, "mona-lisa-embed")
-							.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
-							.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
-						button.click();
+					){
 
-						showLastPxl(`${target[0]}_${target[1]} [${target.slice(2).join('_')}]`);
-						return nextCycle(5*60e3 + rand(2e3, 10e3), '');
-					} else {
-						console.log('[BOT] now pixel is right, search next target...')
-						continue;
+						console.log(`[BOT] move to ${globalTargetX}_${globalTargetY}`);
+						document.querySelector("mona-lisa-embed").selectPixel({x: globalTargetX, y: globalTargetY});
+						console.log(`[BOT] choose [${rgb}]`);
+						autoColorPick(rgb);
+						await sleep(2000);
+
+						const canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
+						if (
+							canvasPixel[0] !== rgb[0] ||
+							canvasPixel[1] !== rgb[1] ||
+							canvasPixel[2] !== rgb[2]
+						) {
+							console.log(`[BOT] click`);
+							const button = await asyncQuerySelector(document, "mona-lisa-embed")
+								.then(el => asyncQuerySelector(el.shadowRoot, "mona-lisa-color-picker"))
+								.then(el => asyncQuerySelector(el.shadowRoot, "button.confirm"));
+							button.click();
+
+							pixelPlaced = true;
+							showLastPxl(`${globalTargetX}_${globalTargetY} [${rgb.join('_')}]`);
+
+							showErrorsCount(getErorrsCount(gameCanvas, targets));
+
+							return nextCycle(5*60e3 + rand(2e3, 10e3), '');
+						} else {
+							console.log('[BOT] now pixel is right, search next target...')
+							continue;
+						}
 					}
 				}
 			}
@@ -303,16 +373,17 @@ function initCode(){
 				style: 'background: transparent; color: white; padding: 0px;',
 				listeners: {
 					change () {
-						tmp.src = this.value;
-						console.log(`[BOT] faction ${this.options[this.selectedIndex].innerText} ${this.options[this.selectedIndex].value}`)
+						currentFaction = this.value;
+						console.log(`[BOT] faction ${this.options[this.selectedIndex].value}`)
+						updateTemplateList();
 					}
 				}
-			}, Object.entries(factions).map(([faction, url]) => {
+			}, Object.keys(factions).map(name => {
 					return factory({
 						type: 'option',
-						text: faction,
+						text: name,
 						attributes: {
-							value: url
+							value: name
 						}
 					})
 				})
@@ -345,20 +416,20 @@ function initCode(){
 			text: 'load errors',
 			listeners: {
 				async click () {
+					const template = templates[0];
+					const targets = await loadTargets(template);
+
 					const ctx = document.createElement('canvas').getContext('2d');
-					ctx.canvas.width = rPlaceCanvas.width;
-					ctx.canvas.height = rPlaceCanvas.height;
-					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+					ctx.canvas.width = template.width;
+					ctx.canvas.height = template.height;
+					ctx.drawImage(template.canvas, 0, 0);
 
-					const targets = await loadTargets();
-					ctx.drawImage(tmp.canvas, 0, 0);
+					const gData = getCanvasData(template.x1, template.y1, template.width, template.height);
 
-					const gData = getCanvasData();
-
-					const id = ctx.getImageData(0, 0, rPlaceCanvas.width, rPlaceCanvas.height);
+					const id = ctx.getImageData(0, 0, template.width, template.height);
 					const { data } = id;
 
-					const { width } = rPlaceCanvas
+					const { width } = template;
 					targets.forEach(([x, y, r, g, b]) => {
 						const i = x + y * width << 2;
 

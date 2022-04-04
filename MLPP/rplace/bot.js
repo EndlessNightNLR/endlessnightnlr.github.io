@@ -1,4 +1,3 @@
-
 // ==UserScript==
 // @name         Module Bot
 // @version      1.0
@@ -176,6 +175,8 @@ function initCode(){
 		async function cycle () {
 			if (!works) return nextCycle(250);
 			if (getTimerFromUI() !== 0) return nextCycle(2e3, 'timer isnt zero');
+
+			document.querySelector("mona-lisa-embed").wakeUp();
 
 			const targets = await loadTargets();
 			let gameCanvas = getCanvasData();

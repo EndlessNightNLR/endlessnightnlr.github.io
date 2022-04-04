@@ -208,12 +208,13 @@ function initCode(){
 				const targets = await loadTargets(template);
 				console.log(`[BOT] check ${template.x1}_${template.y1} "${template.name}"`);
 
+				// const gameCanvas = getCanvasData();
+
 				for (let i = 0; i !== targets.length; i++) {
-					const gameCanvas = getCanvasData(template.x1, template.y1, template.width, template.height);
-					
 					const target = targets[i];
 					const globalTargetX = target[0] + template.x1;
 					const globalTargetY = target[1] + template.y1;
+					const canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
 					const j = target[0] + target[1] * template.width << 2;
 					// const j = globalTargetX + globalTargetY * rPlaceCanvas.width << 2;
 					const rgb = target.slice(2);
@@ -230,7 +231,7 @@ function initCode(){
 						autoColorPick(rgb);
 						await sleep(2000);
 
-						const canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
+						canvasPixel = getCanvasData(globalTargetX, globalTargetY, 1, 1);
 						if (
 							canvasPixel[0] !== rgb[0] ||
 							canvasPixel[1] !== rgb[1] ||

@@ -36,15 +36,15 @@ function initCode(){
 			],
 			Italy: [
 				{
-					x: 0,
-					y: 0,
+					x: 782,
+					y: 198,
 					src: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/italy.png',
 				}
 			],
 			test: [
 				{
-					x: 782,
-					y: 198,
+					x: 1951,
+					y: 357,
 					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/real_test.png',
 				}
 			],

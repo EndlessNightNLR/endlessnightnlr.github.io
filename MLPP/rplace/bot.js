@@ -34,6 +34,13 @@ function initCode(){
 					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/test.png',
 				}
 			],
+			Collab: [
+				{
+					x: 0,
+					y: 0,
+					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/сollab.png',
+				}
+			],
 			Italy: [
 				{
 					x: 0,

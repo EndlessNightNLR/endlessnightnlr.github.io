@@ -246,7 +246,7 @@ function initCode(){
 							pixelPlaced = true;
 							showLastPxl(`${globalTargetX}_${globalTargetY} [${rgb.join('_')}]`);
 
-							showErrorsCount(getErorrsCount(gameCanvas, targets));
+							showErrorsCount(getErorrsCount(getCanvasData(template.x1, template.y1, template.width, template.height), targets));
 
 							return nextCycle(5*60e3 + rand(2e3, 10e3), '');
 						} else {

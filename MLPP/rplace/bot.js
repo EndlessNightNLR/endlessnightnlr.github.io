@@ -43,8 +43,8 @@ function initCode(){
 			],
 			test: [
 				{
-					x: 1951,
-					y: 357,
+					x: 782,
+					y: 198,
 					src: 'https://raw.githubusercontent.com/Autumn-Blaze/Autumn-Blaze.github.io/master/rplace/images/real_test.png',
 				}
 			],

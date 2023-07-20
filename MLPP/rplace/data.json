@@ -1,9 +1,9 @@
 {
   "rplace": { 
-  "name": "rplace.png", 
-  "x": -95,
-  "y": 199,
-  "width": 125,
-  "height": 56
+  "name": "canvas.png", 
+  "x": 0,
+  "y": 0,
+  "width": 10000,
+  "height": 10000
   }
 }

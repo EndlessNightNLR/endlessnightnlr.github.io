@@ -2,9 +2,5 @@
 	"Remote Message": {
 		"desc": "none",
 		"src": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/remoteMessage.js"
-	},
-  "Bot": {
-		"desc": "none",
-		"src": "http://localhost:8080"
 	}
 }

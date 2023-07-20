@@ -1,7 +1,7 @@
 {
 	"Remote Message": {
 		"desc": "none",
-		"src": "https://raw.githubusercontent.com/EndlessNightNLR/minimap-plugins/master/plugins/Remote%20Message.js"
+		"src": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/remoteMessage.js"
 	},
   "Bot": {
 		"desc": "none",

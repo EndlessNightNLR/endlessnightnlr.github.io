@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         MLP Pixel New Minimap
+// @name         MLP Pixel Minimap Loader
 // @namespace    http://tampermonkey.net/
 // @version      1.3.11
 // @description  MLP Pixel Minimap

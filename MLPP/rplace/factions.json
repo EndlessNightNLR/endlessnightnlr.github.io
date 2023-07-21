@@ -1,7 +1,7 @@
 {
 	"MLP : Pixel":{
 		"data": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/data.json",
-		"images": "https://ponyplace.z19.web.core.windows.net/mlp_alliance/",
+		"images": "https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/",
 		"color": "#1992E3",
 		"type": 2
 	}

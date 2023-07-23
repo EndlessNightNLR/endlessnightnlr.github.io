@@ -6,6 +6,8 @@
 // @include      https://prod-app*
 // ==/UserScript==
 
+/* 0 */
+
 async function initCode(){
 	if(window.initModule) return window.initModule(module);
 	if(!window.mapModules) window.mapModules = [];
@@ -177,8 +179,7 @@ async function initCode(){
 
 					showLastPxl(`${globalTargetX}_${globalTargetY} [${rgb.join('_')}]`);
 					showErrorsCount(getErorrsCount(tmp, targets));
-					nextCycle(9e3 + rand(0, 2e3), '');
-					// return nextCycle(1e3, '');
+					return nextCycle(9e3 + rand(0, 2e3), '');
 					// return nextCycle(5*60e3 + rand(2e3, 4e3), '');
 				}
 			}

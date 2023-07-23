@@ -6,7 +6,7 @@
 // @include      https://prod-app*
 // ==/UserScript==
 
-/* 0 */
+/* 1 */
 
 async function initCode(){
 	if(window.initModule) return window.initModule(module);
@@ -141,7 +141,7 @@ async function initCode(){
 					return;
 				}
 
-				if(same(tmpPixel, getCanvasApi().getPixel(
+				if(!same(tmpPixel, getCanvasApi().getPixel(
 					tmp.x1 + target[0], tmp.y1 + target[1]))) {
 					errors++;
 				}
@@ -153,7 +153,7 @@ async function initCode(){
 		let works = false;
 		async function cycle() {
 			if (!works) return nextCycle(250);
-			if (!getCanvasApi().canPlace) return nextCycle(2e3 + rand(0, 2e3), 'timer isnt zero');
+			if (!getCanvasApi().canPlace) return nextCycle(3e3 + rand(0, 4e3), 'timer isnt zero');
 
 			for(tmp of templates) {
 				const targets = await loadTargets(tmp);
@@ -184,7 +184,7 @@ async function initCode(){
 				}
 			}
 
-			return nextCycle(1e3 + rand(1e3, 2e3), 'all is ready');
+			return nextCycle(5e3 + rand(0, 5e3), 'all is ready');
 		}
 
 		let panel = factory({

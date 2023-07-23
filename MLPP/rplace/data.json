@@ -5,12 +5,5 @@
   "y": -500,
   "width": 10000,
   "height": 10000
-  },
-  "corner": {
-  "name": "corner.png", 
-  "x": -500,
-  "y": -500,
-  "width": 2,
-  "height": 2
   }
 }

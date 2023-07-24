@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MLP Pixel Minimap Loader
 // @namespace    http://tampermonkey.net/
-// @version      1.3.12
+// @version      1.3.13
 // @description  MLP Pixel Minimap
 // @author       Endless Night
 // @grant 		 GM_xmlhttpRequest
@@ -73,22 +73,5 @@
 				console.error(e);
 			}
 		})();
-
-		/*fetch(src)
-		.then(res => {
-			if (res.readyState !== res.DONE) {
-				return;
-			}
-
-			if (res.status !== 200) {
-				alert(`cant load script\ncode: ${res.status}\nreason: ${res.statusText}`);
-				return;
-			}
-
-			return res.text()
-		})
-		.then(code => {
-			new Function("const [self, GM, unsafeWindow] = arguments;\n" + code)(self, GM, unsafeWindow);
-		});*/
 	}
 });

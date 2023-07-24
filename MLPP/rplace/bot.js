@@ -38,6 +38,13 @@ async function initCode(){
 					y: -1000,
 					src: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/canvas_b.png',
 				}
+			],
+			MLP: [
+				{
+					x: -1000,
+					y: -1000,
+					src: 'https://raw.githubusercontent.com/EndlessNightNLR/endlessnightnlr.github.io/master/MLPP/rplace/canvas.png',
+				}
 			]
 		}
 
